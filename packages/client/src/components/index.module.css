@@ -1,0 +1,10 @@
+.container {
+    position: fixed;
+    inset: 0;
+    /* background-image: url("/assets/background.jpg");
+    background-size: cover;
+    background-position: center; */
+    background-color: antiquewhite;
+    overflow: hidden;
+  }
+  

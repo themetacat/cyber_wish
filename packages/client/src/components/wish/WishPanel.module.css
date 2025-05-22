@@ -1,0 +1,137 @@
+.buttonContainer {
+  position: absolute;
+  bottom: 80px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.mainButton {
+  padding: 12px 24px;
+  background-color: rgba(255, 255, 255, 0.85);
+  color: black;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.mainButton:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}
+
+.modalContent {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  width: 470px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+}
+
+.modalContent h1 {
+  text-align: center;
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.imageRow {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.imageItem {
+  width: 64px;
+  height: 64px;
+  cursor: pointer;
+}
+
+.selected {
+  border-color: #3b82f6;
+}
+
+.inputBox {
+  margin-top: -15px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+.sendButton {
+  font-size: 16px;
+  border-radius: 8px;
+  border: 2px solid #becff5;
+}
+
+.sendButton:hover {
+  background-color: #becff5;
+}
+
+.itemTitle{
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.totalEth{
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .buttonContainer {
+    bottom: 10vh;
+  }
+
+  .modalContent {
+    padding: 20px;
+    width: 85vw;
+    gap: 4vw;
+  }
+
+  .imageItem {
+    width: 20vw;
+    height: 20vw;
+  }
+
+  .inputBox,
+  .sendButton {
+    font-size: 4vw;
+    padding: 2.5vw;
+    border-radius: 1.5vw;
+  }
+}
+
+
+.closeButton {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+  color: #999;
+  transition: color 0.2s;
+}
+
+.closeButton:hover {
+  color: #333;
+}

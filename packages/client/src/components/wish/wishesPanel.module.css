@@ -1,0 +1,90 @@
+.container {
+    position: fixed;
+    top: 45%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transform: translateY(-50%);
+    width: 100%;
+    padding: 0 4vw;
+    box-sizing: border-box;
+    pointer-events: none;
+}
+
+.panel {
+    width: 30vw;
+    height: 60vh;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    pointer-events: auto;
+}
+
+.scrollWindow {
+    overflow: hidden;
+    flex-grow: 1;
+    position: relative;
+}
+
+.list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.item {
+    height: 96px;
+    padding: 0 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 1px solid #ddd;
+    box-sizing: border-box;
+    white-space: normal;
+    overflow: hidden;
+    user-select: none;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.2;
+}
+
+.wishContent {
+    font-size: 16px;
+    font-weight: 500;
+    color: #222;
+    line-height: 1.4;
+    max-height: 3em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+}
+
+.wishMeta {
+    display: flex;
+    font-size: 12px;
+    color: #777;
+    margin-top: 6px;
+    word-break: break-word;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.metaTime {
+    color: #777;
+}
+
+@media (max-width: 768px) {
+    .panel {
+        width: 40vw;
+        height: 56vh;
+        /* height: 102vw; */
+    }
+    .wishContent{
+        font-size: 14px;
+    }
+}
