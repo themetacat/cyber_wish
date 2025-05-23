@@ -9,5 +9,7 @@ pragma solidity >=0.8.24;
  * @dev This interface is automatically generated from the corresponding system contract. Do not edit manually.
  */
 interface IBoostWisherSystem {
+  function cyberwish__BoostWisherByPionts(bytes32 poolId, uint256 boostCycle) external;
+
   function cyberwish__BoostWisherByStar(bytes32 poolId, uint256 boostCycle) external;
 }

@@ -42,7 +42,7 @@ export default function Main() {
           console.log("blindBoxId:", blindBoxId);
           console.log("wishContent:", wishContent);
           
-          const tx = await worldContract.write.cyberwish__wish([wishPool, BigInt(incenseId), BigInt(blindBoxId), wishContent], {value: BigInt(Math.floor(value * 1e18))});
+          const tx = await worldContract.write.cyberwish__wish([wishPool, BigInt(incenseId), BigInt(blindBoxId), wishContent], {value: BigInt((value * 1e18).toFixed(0))});
           console.log("tx", tx);
           console.log(await sync.data.waitForTransaction(tx));
           worldContract.simulate.cyberwish__wish([wishPool, BigInt(incenseId), BigInt(blindBoxId), wishContent], {value: BigInt(Math.floor(value * 1e18))});
@@ -53,27 +53,26 @@ export default function Main() {
     [sync.data, worldContract],
   );
 
-  // const boostByStar = useMemo(
-  //   () =>
-  //     sync.data && worldContract
-  //       ? async (incenseId: number, blindBoxId: number, wishContent: string) => {
-  //         console.log("incenseId:", incenseId);
-  //         console.log("blindBoxId:", blindBoxId);
-  //         console.log("wishContent:", wishContent);
+  const boostByStar = useMemo(
+    () =>
+      sync.data && worldContract
+        ? async () => {
+          console.log("boost star");
           
-  //         const tx = await worldContract.write.cyberwish__wish([wishPool, BigInt(incenseId), BigInt(blindBoxId), wishContent], {value: 0n});
-  //         console.log("tx", tx);
-          
-  //         // const tx = await worldContract.write.app__move([entity, mudConfig.enums.Direction.indexOf(direction)]);
-  //         await sync.data.waitForTransaction(tx);
-  //       }
-  //       : undefined,
-  //   [sync.data, worldContract],
-  // );
+          const tx = await worldContract.write.cyberwish__BoostWisherByStar([wishPool, BigInt(1)]);
+          console.log("tx", tx);
+          console.log(await sync.data.waitForTransaction(tx));
+          const simulateRes = await worldContract.simulate.cyberwish__BoostWisherByStar([wishPool, BigInt(1)]);
+          console.log(simulateRes);
+        }
+        : undefined,
+    [sync.data, worldContract],
+  );
 
   return (
     <>
       <div className={styles.container}>
+        <button onClick={() => boostByStar()}>boost star</button>
         <WishPanel wish={wish} />
         <WishesPanel />
       </div>

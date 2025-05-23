@@ -134,6 +134,24 @@
   },
   {
     "type": "function",
+    "name": "cyberwish__BoostWisherByPionts",
+    "inputs": [
+      {
+        "name": "poolId",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "boostCycle",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "cyberwish__BoostWisherByStar",
     "inputs": [
       {
