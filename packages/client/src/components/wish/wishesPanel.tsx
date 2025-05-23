@@ -22,8 +22,7 @@ export default function WishesPanel() {
   const leftRef = useRef<HTMLDivElement>(null);
   const rightRef = useRef<HTMLDivElement>(null);
 
-  const wishInfoArr = useRef<WishInfo[]>([]); // 全部愿望数据
-  // const [tick, setTick] = useState(0); // 控制重渲染
+  const wishInfoArr = useRef<WishInfo[]>([]);
   const [leftOffset, setLeftOffset] = useState(0);
   const [rightOffset, setRightOffset] = useState(0);
   const lastFetchIndexRef = useRef<number>(0);

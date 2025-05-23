@@ -10,6 +10,8 @@ import { getCurrentCycle, getRandom } from "./Utils.sol";
 import { WishPropsResult } from "./Struct.sol";
 
 contract WishSystem is System {
+  // receive() external payable {}
+  
   function wish(bytes32 poolId, uint256 incenseId, uint256 blindBoxId, string memory wishContent) public payable {
     address wisher = _msgSender();
 
@@ -40,15 +42,15 @@ contract WishSystem is System {
       wisherTemporaryRecordsData.points = totalPoints;
       wisherTemporaryRecordsData.wishCount = 1;
     }
-
+    bool isStar;
     if (currentCycle > 0) {
       // for boost wisher
-      _processCycleBoost(poolId, currentCycle, wisher, wisherTemporaryRecordsData, incenseResult.joinWishStar || boxResult.joinWishStar);
+      isStar = _processCycleBoost(poolId, currentCycle, wisher, wisherTemporaryRecordsData, incenseResult.joinWishStar || boxResult.joinWishStar);
     }
 
     wisherTemporaryRecordsData.pointsLastCycle = currentCycle;
 
-    Wishes.set(poolId, uuid(), wisher, block.timestamp, currentCycle, incenseId, blindBoxId, incenseResult.points, boxResult.points, wishContent);
+    Wishes.set(poolId, uuid(), wisher, block.timestamp, currentCycle, incenseId, blindBoxId, incenseResult.points, boxResult.points, isStar, wishContent);
     Wisher.set(poolId, wisher, wisherData);
     WisherTemporaryRecords.set(poolId, wisher, wisherTemporaryRecordsData);
     WisherCycleRecords.set(
@@ -106,7 +108,7 @@ contract WishSystem is System {
       random = 1;
     }
     result.points = getPoints(pointsMin, pointsMax, random);
-    result.joinWishStar = eligibilityWishStar(starProbability);
+    result.joinWishStar = eligibilityWishStar(starProbability, random);
 
     if (amount > 0) {
       uint256 currentCycle = getCurrentCycle(poolId);
@@ -123,7 +125,7 @@ contract WishSystem is System {
     address wisher,
     WisherTemporaryRecordsData memory tempData,
     bool joinWishStar
-  ) internal {
+  ) internal returns (bool isStar) {
     // Normal boost
     uint256 wisherCount = CycleInfo.getWisherCount(poolId, currentCycle, 0) + 1;
     uint256 indexId = CycleInfo.getWisherIndexId(poolId, currentCycle, 0);
@@ -135,6 +137,8 @@ contract WishSystem is System {
     } else if (tempData.pointsLastCycle != currentCycle) {
       CycleInfo.setWisherCount(poolId, currentCycle, 0, wisherCount);
       tempData.pointsWishIndex = wisherCount;
+    }else{
+      wisherCount -= 1;
     }
     IndexToWisher.set(poolId, 0, indexId, wisherCount, wisher, tempData.points);
 
@@ -148,6 +152,7 @@ contract WishSystem is System {
       } else {
         CycleInfo.setWisherCount(poolId, currentCycle, 1, wisherCount);
       }
+      isStar = true;
       tempData.starWishIndex = wisherCount;
       tempData.starLastCycle = currentCycle;
       IndexToWisher.set(poolId, 1, indexId, wisherCount, wisher, tempData.points);
@@ -161,68 +166,22 @@ contract WishSystem is System {
     return points;
   }
 
-  function eligibilityWishStar(uint256 probability) internal view returns (bool) {
+  function eligibilityWishStar(uint256 probability, uint256 random) internal view returns (bool) {
     if (probability == 0) {
       return false;
     }
-    uint256 eligibilityNum = getRandom(probability, 100, _msgSender());
+    uint256 eligibilityNum = getRandom(probability + random, 100, _msgSender());
     return eligibilityNum < probability;
   }
 
   function getWisherIndexId(bytes32 poolId, uint256 boostType, uint256 currentCycle) internal view returns (uint256) {
     for (uint256 index = 0; index < currentCycle; index++) {
-      CycleInfoData memory cycleInfoData = CycleInfo.get(poolId, currentCycle, boostType);
+      uint256 indexId = index + 1;
+      CycleInfoData memory cycleInfoData = CycleInfo.get(poolId, indexId, boostType);
       if (cycleInfoData.wisherCount == 0 || cycleInfoData.isboost) {
-        return index + 1;
+        return indexId;
       }
     }
     return 0;
   }
 }
-
-// uint256 wisherCount = CycleInfo.getWisherCount(poolId, currentCycle, 0) + 1;
-// uint256 wisherIndexId = CycleInfo.getWisherIndexId(poolId, currentCycle, 0);
-// if (wisherIndexId == 0) {
-//   wisherIndexId = getWisherIndexId(poolId, 0, currentCycle);
-//   CycleInfo.set(poolId, currentCycle, 0, wisherCount, false, wisherIndexId);
-//   wisherTemporaryRecordsData.pointsWishIndex = wisherCount;
-// } else {
-//   if (wisherTemporaryRecordsData.pointsLastCycle != currentCycle) {
-//     CycleInfo.setWisherCount(poolId, currentCycle, 0, wisherCount);
-//     wisherTemporaryRecordsData.pointsWishIndex = wisherCount;
-//   }
-// }
-// IndexToWisher.set(
-//   poolId,
-//   0,
-//   wisherIndexId,
-//   wisherTemporaryRecordsData.pointsWishIndex,
-//   wisher,
-//   wisherTemporaryRecordsData.points
-// );
-
-// if (
-//   wisherTemporaryRecordsData.starLastCycle != currentCycle &&
-//   (incenseResult.joinWishStar || boxResult.joinWishStar)
-// ) {
-//   wisherCount = CycleInfo.getWisherCount(poolId, currentCycle, 1) + 1;
-//   wisherIndexId = CycleInfo.getWisherIndexId(poolId, currentCycle, 1);
-
-//   if (wisherIndexId == 0) {
-//     wisherIndexId = getWisherIndexId(poolId, 1, currentCycle);
-//     CycleInfo.set(poolId, currentCycle, 1, wisherCount, false, wisherIndexId);
-//   } else {
-//     CycleInfo.setWisherCount(poolId, currentCycle, 1, wisherCount);
-//   }
-
-//   wisherTemporaryRecordsData.starWishIndex = wisherCount;
-//   wisherTemporaryRecordsData.starLastCycle = currentCycle;
-//   IndexToWisher.set(
-//     poolId,
-//     1,
-//     wisherIndexId,
-//     wisherTemporaryRecordsData.starWishIndex,
-//     wisher,
-//     wisherTemporaryRecordsData.points
-//   );
-// }

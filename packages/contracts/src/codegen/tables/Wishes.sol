@@ -24,6 +24,7 @@ struct WishesData {
   uint256 blindBoxId;
   uint256 pointsIncense;
   uint256 pointsBlindBox;
+  bool isStar;
   string wishContent;
 }
 
@@ -32,12 +33,12 @@ library Wishes {
   ResourceId constant _tableId = ResourceId.wrap(0x6f74637962657277697368000000000057697368657300000000000000000000);
 
   FieldLayout constant _fieldLayout =
-    FieldLayout.wrap(0x00d4070114202020202020000000000000000000000000000000000000000000);
+    FieldLayout.wrap(0x00d5080114202020202020010000000000000000000000000000000000000000);
 
   // Hex-encoded key schema of (bytes32, bytes32)
   Schema constant _keySchema = Schema.wrap(0x004002005f5f0000000000000000000000000000000000000000000000000000);
-  // Hex-encoded value schema of (address, uint256, uint256, uint256, uint256, uint256, uint256, string)
-  Schema constant _valueSchema = Schema.wrap(0x00d40701611f1f1f1f1f1fc50000000000000000000000000000000000000000);
+  // Hex-encoded value schema of (address, uint256, uint256, uint256, uint256, uint256, uint256, bool, string)
+  Schema constant _valueSchema = Schema.wrap(0x00d50801611f1f1f1f1f1f60c500000000000000000000000000000000000000);
 
   /**
    * @notice Get the table's key field names.
@@ -54,7 +55,7 @@ library Wishes {
    * @return fieldNames An array of strings with the names of value fields.
    */
   function getFieldNames() internal pure returns (string[] memory fieldNames) {
-    fieldNames = new string[](8);
+    fieldNames = new string[](9);
     fieldNames[0] = "wisher";
     fieldNames[1] = "wishTime";
     fieldNames[2] = "cycle";
@@ -62,7 +63,8 @@ library Wishes {
     fieldNames[4] = "blindBoxId";
     fieldNames[5] = "pointsIncense";
     fieldNames[6] = "pointsBlindBox";
-    fieldNames[7] = "wishContent";
+    fieldNames[7] = "isStar";
+    fieldNames[8] = "wishContent";
   }
 
   /**
@@ -234,6 +236,28 @@ library Wishes {
   }
 
   /**
+   * @notice Set isStar.
+   */
+  function setIsStar(bytes32 poolId, bytes32 id, bool isStar) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = id;
+
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 7, abi.encodePacked((isStar)), _fieldLayout);
+  }
+
+  /**
+   * @notice Set isStar.
+   */
+  function _setIsStar(bytes32 poolId, bytes32 id, bool isStar) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = id;
+
+    StoreCore.setStaticField(_tableId, _keyTuple, 7, abi.encodePacked((isStar)), _fieldLayout);
+  }
+
+  /**
    * @notice Set the full data using individual values.
    */
   function set(
@@ -246,6 +270,7 @@ library Wishes {
     uint256 blindBoxId,
     uint256 pointsIncense,
     uint256 pointsBlindBox,
+    bool isStar,
     string memory wishContent
   ) internal {
     bytes memory _staticData = encodeStatic(
@@ -255,7 +280,8 @@ library Wishes {
       incenseId,
       blindBoxId,
       pointsIncense,
-      pointsBlindBox
+      pointsBlindBox,
+      isStar
     );
 
     EncodedLengths _encodedLengths = encodeLengths(wishContent);
@@ -281,6 +307,7 @@ library Wishes {
     uint256 blindBoxId,
     uint256 pointsIncense,
     uint256 pointsBlindBox,
+    bool isStar,
     string memory wishContent
   ) internal {
     bytes memory _staticData = encodeStatic(
@@ -290,7 +317,8 @@ library Wishes {
       incenseId,
       blindBoxId,
       pointsIncense,
-      pointsBlindBox
+      pointsBlindBox,
+      isStar
     );
 
     EncodedLengths _encodedLengths = encodeLengths(wishContent);
@@ -314,7 +342,8 @@ library Wishes {
       _table.incenseId,
       _table.blindBoxId,
       _table.pointsIncense,
-      _table.pointsBlindBox
+      _table.pointsBlindBox,
+      _table.isStar
     );
 
     EncodedLengths _encodedLengths = encodeLengths(_table.wishContent);
@@ -338,7 +367,8 @@ library Wishes {
       _table.incenseId,
       _table.blindBoxId,
       _table.pointsIncense,
-      _table.pointsBlindBox
+      _table.pointsBlindBox,
+      _table.isStar
     );
 
     EncodedLengths _encodedLengths = encodeLengths(_table.wishContent);
@@ -366,7 +396,8 @@ library Wishes {
       uint256 incenseId,
       uint256 blindBoxId,
       uint256 pointsIncense,
-      uint256 pointsBlindBox
+      uint256 pointsBlindBox,
+      bool isStar
     )
   {
     wisher = (address(Bytes.getBytes20(_blob, 0)));
@@ -382,6 +413,8 @@ library Wishes {
     pointsIncense = (uint256(Bytes.getBytes32(_blob, 148)));
 
     pointsBlindBox = (uint256(Bytes.getBytes32(_blob, 180)));
+
+    isStar = (_toBool(uint8(Bytes.getBytes1(_blob, 212))));
   }
 
   /**
@@ -417,7 +450,8 @@ library Wishes {
       _table.incenseId,
       _table.blindBoxId,
       _table.pointsIncense,
-      _table.pointsBlindBox
+      _table.pointsBlindBox,
+      _table.isStar
     ) = decodeStatic(_staticData);
 
     (_table.wishContent) = decodeDynamic(_encodedLengths, _dynamicData);
@@ -456,9 +490,10 @@ library Wishes {
     uint256 incenseId,
     uint256 blindBoxId,
     uint256 pointsIncense,
-    uint256 pointsBlindBox
+    uint256 pointsBlindBox,
+    bool isStar
   ) internal pure returns (bytes memory) {
-    return abi.encodePacked(wisher, wishTime, cycle, incenseId, blindBoxId, pointsIncense, pointsBlindBox);
+    return abi.encodePacked(wisher, wishTime, cycle, incenseId, blindBoxId, pointsIncense, pointsBlindBox, isStar);
   }
 
   /**
@@ -494,6 +529,7 @@ library Wishes {
     uint256 blindBoxId,
     uint256 pointsIncense,
     uint256 pointsBlindBox,
+    bool isStar,
     string memory wishContent
   ) internal pure returns (bytes memory, EncodedLengths, bytes memory) {
     bytes memory _staticData = encodeStatic(
@@ -503,7 +539,8 @@ library Wishes {
       incenseId,
       blindBoxId,
       pointsIncense,
-      pointsBlindBox
+      pointsBlindBox,
+      isStar
     );
 
     EncodedLengths _encodedLengths = encodeLengths(wishContent);
@@ -521,5 +558,17 @@ library Wishes {
     _keyTuple[1] = id;
 
     return _keyTuple;
+  }
+}
+
+/**
+ * @notice Cast a value to a bool.
+ * @dev Boolean values are encoded as uint8 (1 = true, 0 = false), but Solidity doesn't allow casting between uint8 and bool.
+ * @param value The uint8 value to convert.
+ * @return result The boolean value.
+ */
+function _toBool(uint8 value) pure returns (bool result) {
+  assembly {
+    result := value
   }
 }
