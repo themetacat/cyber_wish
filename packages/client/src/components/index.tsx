@@ -12,7 +12,7 @@ import { Address } from "viem";
 import styles from "./index.module.css";
 import WishPanel from "./wish/WishPanel";
 import WishesPanel from "./wish/wishesPanel";
-import WishesWall from "./wishWall";
+import WishingWall from "./wishWall";
 
 export default function Main() {
   // const playerEntities = useEntityQuery([Has(components.Owner), Has(components.Position)]);
@@ -92,7 +92,7 @@ export default function Main() {
         <button onClick={() => boostByPoints()}>boost star</button> */}
         <WishPanel wish={wish} />
         {/* <WishesPanel /> */}
-        <WishesWall />
+        <WishingWall />
       </div>
     </>
   );

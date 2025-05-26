@@ -25,7 +25,7 @@ const propsData: Record<number, PropsItem> = {
   3: { name: "sansan", imageUrl:  "assets/img/CLUK.webp" },
 };
 
-export default function WishesWall() {
+export default function WishingWall() {
   const [wishes, setWishes] = useState<WishInfo[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
