@@ -18,7 +18,7 @@ export function useWorldContract():
   | undefined {
   const client = useClient({ chainId });
   const { data: sessionClient } = useSessionClient();
-  console.log(sessionClient);
+  // console.log(sessionClient);
   
   const { data: worldContract } = useQuery({
     queryKey: ["worldContract", client?.uid, sessionClient?.uid],

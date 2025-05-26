@@ -134,7 +134,7 @@
   },
   {
     "type": "function",
-    "name": "cyberwish__BoostWisherByPionts",
+    "name": "cyberwish__BoostWisherByPoints",
     "inputs": [
       {
         "name": "poolId",

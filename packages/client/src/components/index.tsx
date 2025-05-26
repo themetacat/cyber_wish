@@ -12,6 +12,7 @@ import { Address } from "viem";
 import styles from "./index.module.css";
 import WishPanel from "./wish/WishPanel";
 import WishesPanel from "./wish/wishesPanel";
+import WishesWall from "./wishWall";
 
 export default function Main() {
   // const playerEntities = useEntityQuery([Has(components.Owner), Has(components.Position)]);
@@ -33,7 +34,7 @@ export default function Main() {
   const sync = useSync();
   const worldContract = useWorldContract();
   const wishPool = "0x0000000000000000000000000000000000000000000000000000000000000001" as `0x${string}`;
-  
+
   const wish = useMemo(
     () =>
       sync.data && worldContract
@@ -41,13 +42,28 @@ export default function Main() {
           console.log("incenseId:", incenseId);
           console.log("blindBoxId:", blindBoxId);
           console.log("wishContent:", wishContent);
-          
-          const tx = await worldContract.write.cyberwish__wish([wishPool, BigInt(incenseId), BigInt(blindBoxId), wishContent], {value: BigInt((value * 1e18).toFixed(0))});
+
+          const tx = await worldContract.write.cyberwish__wish([wishPool, BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: BigInt((value * 1e18).toFixed(0)) });
           console.log("tx", tx);
           console.log(await sync.data.waitForTransaction(tx));
-          worldContract.simulate.cyberwish__wish([wishPool, BigInt(incenseId), BigInt(blindBoxId), wishContent], {value: BigInt(Math.floor(value * 1e18))});
+          worldContract.simulate.cyberwish__wish([wishPool, BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: BigInt(Math.floor(value * 1e18)) });
           // const simulateRes = await worldContract.simulate.cyberwish__wish([wishPool, BigInt(incenseId), BigInt(blindBoxId), wishContent], {value: BigInt(Math.floor(value * 1e18))});
           // console.log(simulateRes);
+        }
+        : undefined,
+    [sync.data, worldContract],
+  );
+
+  const boostByPoints = useMemo(
+    () =>
+      sync.data && worldContract
+        ? async () => {
+          console.log("boost points");
+          const tx = await worldContract.write.cyberwish__BoostWisherByPoints([wishPool, BigInt(1)]);
+          console.log("tx", tx);
+          console.log(await sync.data.waitForTransaction(tx));
+          const simulateRes = await worldContract.simulate.cyberwish__BoostWisherByPoints([wishPool, BigInt(1)]);
+          console.log(simulateRes);
         }
         : undefined,
     [sync.data, worldContract],
@@ -58,7 +74,6 @@ export default function Main() {
       sync.data && worldContract
         ? async () => {
           console.log("boost star");
-          
           const tx = await worldContract.write.cyberwish__BoostWisherByStar([wishPool, BigInt(1)]);
           console.log("tx", tx);
           console.log(await sync.data.waitForTransaction(tx));
@@ -72,9 +87,12 @@ export default function Main() {
   return (
     <>
       <div className={styles.container}>
-        <button onClick={() => boostByStar()}>boost star</button>
+        {/* <button style={{ position: "absolute" }} onClick={() => boostByStar()}>boost points</button>
+        <br />
+        <button onClick={() => boostByPoints()}>boost star</button> */}
         <WishPanel wish={wish} />
-        <WishesPanel />
+        {/* <WishesPanel /> */}
+        <WishesWall />
       </div>
     </>
   );

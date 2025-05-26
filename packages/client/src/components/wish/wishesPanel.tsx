@@ -12,9 +12,9 @@ import { format } from "date-fns";
 interface WishInfo {
   wisher: string;
   wishContent: string;
-  wishTime: bigint;
+  wishTime: number;
 }
-// const wishInfoArr: WishInfo[] = []; 
+
 const MAX_WISHES = 20;
 const ITEM_HEIGHT = 96;
 
@@ -75,15 +75,15 @@ export default function WishesPanel() {
 
     const id = pad(`0x${wishIndex.toString(16)}`, { size: 32 });
     const key = encodeEntity(Wishes.metadata.keySchema, { poolId: wishPool, id: id });
-    const wishsData = getComponentValue(Wishes, key);
+    const wishData = getComponentValue(Wishes, key);
 
-    if (!wishsData) {
+    if (!wishData) {
       return;
     }
     const wishInfo = {
-      wisher: wishsData.wisher,
-      wishContent: wishsData.wishContent,
-      wishTime: wishsData.wishTime
+      wisher: wishData.wisher,
+      wishContent: wishData.wishContent,
+      wishTime: Number(wishData.wishTime)
     }
 
     return wishInfo;
@@ -184,7 +184,7 @@ export default function WishesPanel() {
                     by {shortenAddress(wish.wisher)}
                   </div>
                   <div className={styles.metaTime}>
-                    {format(new Date(Number(wish.wishTime) * 1000), "h:mma·MMM d, yyyy")}
+                    {format(new Date(wish.wishTime * 1000), "h:mma·MMM d, yyyy")}
                   </div>
                 </div>
               </li>
@@ -208,7 +208,7 @@ export default function WishesPanel() {
                 <div className={styles.wishMeta}>
                   by {shortenAddress(wish.wisher)}
                   <span className={styles.metaTime}>
-                    {format(new Date(Number(wish.wishTime) * 1000), "h:mma·MMM d,yyyy")}
+                    {format(new Date(wish.wishTime * 1000), "h:mma·MMM d,yyyy")}
                   </span>
                 </div>
               </li>

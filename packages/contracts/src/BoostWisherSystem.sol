@@ -13,7 +13,7 @@ struct WisherPoints {
   uint256 points;
 }
 contract BoostWisherSystem is System {
-  function BoostWisherByPionts(bytes32 poolId, uint256 boostCycle) public {
+  function BoostWisherByPoints(bytes32 poolId, uint256 boostCycle) public {
     address sender = _msgSender();
     // require(WishingPool.getCreator(poolId) == sender, "Not eligible");
     require(boostCycle > 0, "Does not exist cycle");
@@ -146,6 +146,9 @@ contract BoostWisherSystem is System {
     address sender
   ) internal view returns (WisherPoints[] memory selected) {
     uint256 boostCount = wisherCount / 3;
+    if (boostCount == 0) {
+      boostCount = 1;
+    }
     uint256[] memory weights = new uint256[](wisherCount);
 
     uint256 totalWeight;
