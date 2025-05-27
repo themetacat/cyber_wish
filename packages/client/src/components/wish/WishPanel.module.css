@@ -1,3 +1,38 @@
+@font-face {
+  font-family: 'Sling';
+  src: url('/fonts/SlingLight.ttf') format('truetype');
+  font-weight: 200;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sling';
+  src: url('/fonts/Sling.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sling';
+  src: url('/fonts/SlingBold.ttf') format('truetype');
+  font-weight: 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'AlibabaPuHuiTi';
+  src: url('/fonts/Alibaba-PuHuiTi-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Orbitron';
+  src: url('/fonts/Orbitron-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
 .buttonContainer {
   position: absolute;
   bottom: 80px;
@@ -32,21 +67,41 @@
 }
 
 .modalContent {
-  background: white;
-  padding: 40px;
-  border-radius: 16px;
-  width: 470px;
-  max-width: 90vw;
+  background-image: url('/images/wish/WishPanel/BG.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 1.5rem 1.9rem;
+  border-radius: 0.5rem;
+  width: 35.26rem;
+  height: 45.511rem;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 0.85rem;
   position: relative;
+  margin: auto;
 }
 
 .modalContent h1 {
   text-align: center;
-  font-weight: 800;
-  font-size: 20px;
+  font-weight: Regular;
+  font-family: 'Sling';
+  font-size: 2.6rem;
+  color: #F4C873;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.01em;
+}
+
+.dividingLine {
+  width: 100%;
+  height: 0.13rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .imageRow {
@@ -66,31 +121,125 @@
   border-color: #3b82f6;
 }
 
+.inputBoxContainer {
+  position: relative;
+  width: 100%;
+  height: 4.34rem;
+}
+
 .inputBox {
-  margin-top: -15px;
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 8px;
+  background-image: linear-gradient(rgba(135, 105, 50, 0.5), rgba(135, 105, 50, 0.5)), url('/images/wish/WishPanel/InputBoxBg.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.7rem;
+  border: none;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  position: relative;
+  resize: none;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.inputBox::placeholder {
+  color: #ffffff;
+  font-family: 'AlibabaPuHuiTi';
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-top: 0.125rem;
+}
+
+.charCount {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  font-family: 'AlibabaPuHuiTi';
+  font-size: 0.7rem;
+  color: #ffffff;
+  opacity: 0.8;
+}
+
+.maxLengthWarning {
+  position: absolute;
+  bottom: -1.5rem;
+  right: 0;
+  font-family: 'AlibabaPuHuiTi';
+  font-size: 0.7rem;
+  color: #ff4d4f;
+  opacity: 0.8;
+}
+
+.chooseYourLight {
+  width: 100%;
+  height: 100%;
 }
 
 .sendButton {
-  font-size: 16px;
-  border-radius: 8px;
-  border: 2px solid #becff5;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 11.44rem;
+  height: 2.94rem;
+  background-image: url('/images/wish/WishPanel/SendTheWishBtn.webp');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-family: 'Orbitron';
+  font-size: 0.95rem;
+  color: #f1f0e9;
+  letter-spacing: 0.05em;
+  transition: transform 0.2s ease;
 }
 
 .sendButton:hover {
-  background-color: #becff5;
+  transform: scale(1.05);
 }
 
-.itemTitle{
-  font-size: 15px;
-  font-weight: bold;
-  margin-top: 10px;
+.sendButtonText {
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFF9E6 40%, #FFEDB3 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 1px #7A4E00;
+  text-stroke: 1px #7A4E00;
+  text-shadow:
+    1px 1px 1px rgba(90, 59, 0, 0.2);
+  font-weight: 1200;
+  white-space: nowrap;
+  line-height: 2.9;
+  padding-top: 0.18em;
+  letter-spacing: 0.02em;
 }
 
-.totalEth{
+.itemTitle {
+  color: #F4C874;
+  font-family: 'Sling';
+  font-size: 0.8rem;
+  font-weight: 200;
+  margin-top: 0.625rem;
+}
+
+.totalEth {
   text-align: center;
+  width: 15.25rem;
+  height: 1.47rem;
+  font-family: 'Orbitron';
+  font-weight: bold;
+  font-size: 0.90rem;
+  color: #000000;
+  -webkit-text-stroke: 1.2px #FFFFFF;
+  text-stroke: 1.0px #FFFFFF;
+  text-align: center;
+  font-style: normal;
+  text-transform: none;
+  margin: 0 auto;
 }
 
 @media (max-width: 768px) {
@@ -117,21 +266,23 @@
   }
 }
 
-
 .closeButton {
   position: absolute;
   top: 18px;
   right: 18px;
   background: transparent;
   border: none;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  line-height: 1;
-  color: #999;
-  transition: color 0.2s;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.closeButton:hover {
-  color: #333;
+.closeButton img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  cursor: pointer;
 }

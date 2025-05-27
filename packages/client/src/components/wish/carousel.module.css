@@ -5,7 +5,12 @@
     position: relative;
     overflow: hidden;
     width: 100%;
-    height: 100px;
+    height: 9.2rem;
+    background-image: url('/images/wish/WishPanel/CarouselBg.webp'), url('/images/wish/WishPanel/CarouselBgBorder.webp');
+    background-size: cover, 100% 100%;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+    border-radius: 0.00625rem;
 }
 
 .carouselInner {
@@ -22,8 +27,8 @@
     opacity: 0;
     transform: scale(0.8);
     z-index: 1;
-    width: 70px;
-    height: 70px;
+    width: 4.375rem;
+    height: 4.375rem;
 }
 
 .active {
@@ -33,29 +38,44 @@
 }
 
 .left {
-    transform: translateX(-110px) scale(0.9);
+    transform: translateX(-6.875rem) scale(0.9);
     opacity: 0.6;
     z-index: 2;
 }
 
 .right {
-    transform: translateX(110px) scale(0.9);
+    transform: translateX(6.875rem) scale(0.9);
     opacity: 0.6;
     z-index: 2;
 }
 
 .navButton {
-    font-size: 24px;
+    font-size: 1.5rem;
     background: none;
     border: none;
     cursor: pointer;
     z-index: 4;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navButton img {
+    width: 1.65rem;
+    height: 1.65rem;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+}
+
+.navButton:hover img {
+    transform: scale(1.15);
 }
 
 @media (max-width: 768px) {
     .card{
-        width: 50px;
-        height: 50px;
+        width: 3.125rem;
+        height: 3.125rem;
     }
 
     .left{
@@ -67,7 +87,7 @@
     }
 
     .carouselContainer {
-        height: 75px;
+        height: 4.6875rem;
     }
 
     .carouselInner{

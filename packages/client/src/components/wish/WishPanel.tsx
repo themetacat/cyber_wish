@@ -31,23 +31,24 @@ const WishPanel = ({ wish }: Props) => {
   const [blindBoxId, setBlindBoxIdRaw] = useState<number | null>(null);
   const [blindBoxPrice, setBlindBoxPrice] = useState<number>(0);
 
+  const MAX_WISH_LENGTH = 120;
 
   const setIncenseId = useCallback((id: number) => {
     setIncenseIdRaw(id);
-    const incenseData = getComponentValue(components.Incense, encodeEntity({poolId: "bytes32", id: "uint256"}, {poolId: wishPool, id: BigInt(id)}));
+    const incenseData = getComponentValue(components.Incense, encodeEntity({ poolId: "bytes32", id: "uint256" }, { poolId: wishPool, id: BigInt(id) }));
     if (!incenseData || incenseData.amount == 0n) {
       setIncensePrice(0);
-    }else{
+    } else {
       setIncensePrice(parseFloat(formatEther(incenseData.amount)));
     }
   }, []);
 
   const setBlindBoxId = useCallback((id: number) => {
     setBlindBoxIdRaw(id);
-    const blindBoxData = getComponentValue(components.PropBlindBox, encodeEntity({poolId: "bytes32", id: "uint256"}, {poolId: wishPool, id: BigInt(id)}));
+    const blindBoxData = getComponentValue(components.PropBlindBox, encodeEntity({ poolId: "bytes32", id: "uint256" }, { poolId: wishPool, id: BigInt(id) }));
     if (!blindBoxData || blindBoxData.amount == 0n) {
       setBlindBoxPrice(0);
-    }else{
+    } else {
       setBlindBoxPrice(parseFloat(formatEther(blindBoxData.amount)));
     }
   }, []);
@@ -93,15 +94,29 @@ const WishPanel = ({ wish }: Props) => {
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
             <h1>MAKE A WISH</h1>
+            <span className={styles.dividingLine}>
+              <img src="/images/wish/WishPanel/DividingLine.webp" alt="dividing line" />
+            </span>
 
             <span className={styles.itemTitle}>WISH</span>
-            <input
-              type="text"
-              className={styles.inputBox}
-              value={wishContent}
-              onChange={(e) => setWishContent(e.target.value)}
-              placeholder="Please enter your wish..."
-            />
+            <div className={styles.inputBoxContainer}>
+              <textarea
+                className={styles.inputBox}
+                value={wishContent}
+                onChange={(e) => setWishContent(e.target.value)}
+                placeholder="Please enter your wish..."
+                maxLength={MAX_WISH_LENGTH}
+              />
+              <div className={styles.charCount}>
+                {wishContent.length}/{MAX_WISH_LENGTH}
+              </div>
+              {wishContent.length >= MAX_WISH_LENGTH && (
+                <div className={styles.maxLengthWarning}>
+                  Maximum length reached
+                </div>
+              )}
+            </div>
+
             <div>
               <span className={styles.itemTitle}>CHOOSE YOUR LIGHT</span>
               <Carousel
@@ -118,13 +133,13 @@ const WishPanel = ({ wish }: Props) => {
               />
             </div>
             <p className={styles.totalEth}>
-              Total ETH: {incensePrice + blindBoxPrice} ETH
+              Total: {incensePrice + blindBoxPrice} ETH
             </p>
             <button className={styles.sendButton} onClick={() => handleSubmit()}>
-              Send the wish
+              <span className={styles.sendButtonText}>Send the wish</span>
             </button>
             <button className={styles.closeButton} onClick={() => setShowModal(false)}>
-              ×
+              <img src="/images/wish/WishPanel/Close.webp" alt="Close" />
             </button>
           </div>
         </div>
@@ -160,7 +175,9 @@ const Carousel = ({ images, onSelectId }: CarouselProps) => {
 
   return (
     <div className={carouselStyles.carouselContainer}>
-      <button className={carouselStyles.navButton} onClick={goPrev}>←</button>
+      <button className={carouselStyles.navButton} onClick={goPrev}>
+        <img src="/images/wish/WishPanel/ArrowLeft.webp" alt="Previous" />
+      </button>
       <div className={carouselStyles.carouselInner}>
         {images.map((src, i) => {
           const offset = (i - currentIndex + total) % total;
@@ -182,7 +199,9 @@ const Carousel = ({ images, onSelectId }: CarouselProps) => {
           );
         })}
       </div>
-      <button className={carouselStyles.navButton} onClick={goNext}>→</button>
+      <button className={carouselStyles.navButton} onClick={goNext}>
+        <img src="/images/wish/WishPanel/ArrowRight.webp" alt="Next" />
+      </button>
     </div>
   );
 };
