@@ -8,12 +8,12 @@ import { wishPool } from "../../utils/contants";
 import { formatEther } from 'viem';
 
 const images = [
-  "assets/img/CLUK.webp",
-  "assets/img/HOOT.webp",
-  "assets/img/KOALA.webp",
-  "assets/img/KUMA.webp",
-  "assets/img/MEOW.webp",
-  "assets/img/MIYA.webp",
+  "/images/wish/WishPanel/Incense/1.1.gif",
+  "/images/wish/WishPanel/Incense/1.2.gif",
+  "/images/wish/WishPanel/Incense/1.3.gif",
+  "/images/wish/WishPanel/Incense/1.4.gif",
+  "/images/wish/WishPanel/Incense/1.5.gif",
+  "/images/wish/WishPanel/Incense/1.11.gif",
 ];
 
 const itemInformation = []
@@ -174,34 +174,49 @@ const Carousel = ({ images, onSelectId }: CarouselProps) => {
   }, [currentIndex, onSelectId])
 
   return (
-    <div className={carouselStyles.carouselContainer}>
-      <button className={carouselStyles.navButton} onClick={goPrev}>
-        <img src="/images/wish/WishPanel/ArrowLeft.webp" alt="Previous" />
-      </button>
-      <div className={carouselStyles.carouselInner}>
-        {images.map((src, i) => {
-          const offset = (i - currentIndex + total) % total;
-          let className = carouselStyles.card;
+    <div className={carouselStyles.carouselWrapper}>
+      <div className={carouselStyles.carouselContainer}>
+        <button className={carouselStyles.navButton} onClick={goPrev}>
+          <img src="/images/wish/WishPanel/ArrowLeft.webp" alt="Previous" />
+        </button>
+        <div className={carouselStyles.carouselInner}>
+          {images.map((src, i) => {
+            const offset = (i - currentIndex + total) % total;
+            let className = carouselStyles.card;
 
-          if (offset === 0) className += ` ${carouselStyles.active}`;
-          else if (offset === 1 || (currentIndex === total - 1 && i === 0))
-            className += ` ${carouselStyles.right}`;
-          else if (offset === total - 1 || (currentIndex === 0 && i === total - 1))
-            className += ` ${carouselStyles.left}`;
+            if (offset === 0) className += ` ${carouselStyles.active}`;
+            else if (offset === 1 || (currentIndex === total - 1 && i === 0))
+              className += ` ${carouselStyles.right}`;
+            else if (offset === total - 1 || (currentIndex === 0 && i === total - 1))
+              className += ` ${carouselStyles.left}`;
 
-          return (
-            <img
-              key={i}
-              src={src}
-              className={className}
-              onClick={() => setCurrentIndex(i)}
-            />
-          );
-        })}
+            return (
+              <div
+                key={i}
+                className={className}
+                onClick={() => setCurrentIndex(i)}
+              >
+                <img
+                  src={src}
+                  className={carouselStyles.cardImage}
+                />
+              </div>
+            );
+          })}
+        </div>
+        <button className={carouselStyles.navButton} onClick={goNext}>
+          <img src="/images/wish/WishPanel/ArrowRight.webp" alt="Next" />
+        </button>
       </div>
-      <button className={carouselStyles.navButton} onClick={goNext}>
-        <img src="/images/wish/WishPanel/ArrowRight.webp" alt="Next" />
-      </button>
+
+      <div className={carouselStyles.carouselText}>
+        <div className={carouselStyles.title}>Fortune Bloom</div>
+        <div className={carouselStyles.sub}>
+          <span className={carouselStyles.price}>0.01 ETH</span>
+          <span className={carouselStyles.time}>Last 24 hours</span>
+        </div>
+        <div className={carouselStyles.desc}>For more wealth and opportunities.</div>
+      </div>
     </div>
   );
 };
