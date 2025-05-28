@@ -89,9 +89,9 @@ const WishPanel = ({ wish }: Props) => {
   const [wishContent, setWishContent] = useState("");
 
   const [incenseId, setIncenseIdRaw] = useState<number | null>(null);
-  const [incensePrice, setIncensePrice] = useState<number>(0);
+  const [incenseAmount, setIncenseAmount] = useState<bigint>(0n);
   const [blindBoxId, setBlindBoxIdRaw] = useState<number | null>(null);
-  const [blindBoxPrice, setBlindBoxPrice] = useState<number>(0);
+  const [blindBoxAmount, setBlindBoxAmount] = useState<bigint>(0n);
 
   const MAX_WISH_LENGTH = 120;
 
@@ -99,9 +99,9 @@ const WishPanel = ({ wish }: Props) => {
     setIncenseIdRaw(id);
     const incenseData = getComponentValue(components.Incense, encodeEntity({ poolId: "bytes32", id: "uint256" }, { poolId: wishPool, id: BigInt(id) }));
     if (!incenseData || incenseData.amount == 0n) {
-      setIncensePrice(0);
+      setIncenseAmount(0n);
     } else {
-      setIncensePrice(parseFloat(formatEther(incenseData.amount)));
+      setIncenseAmount(incenseData.amount);
     }
   }, []);
 
@@ -109,11 +109,13 @@ const WishPanel = ({ wish }: Props) => {
     setBlindBoxIdRaw(id);
     const blindBoxData = getComponentValue(components.PropBlindBox, encodeEntity({ poolId: "bytes32", id: "uint256" }, { poolId: wishPool, id: BigInt(id) }));
     if (!blindBoxData || blindBoxData.amount == 0n) {
-      setBlindBoxPrice(0);
+      setBlindBoxAmount(0n);
     } else {
-      setBlindBoxPrice(parseFloat(formatEther(blindBoxData.amount)));
+      setBlindBoxAmount(blindBoxData.amount);
     }
   }, []);
+
+  const totalAmount = incenseAmount + blindBoxAmount;
 
   const handleSubmit = async () => {
     if (setIncenseId === null || wishContent.trim() === "") {
@@ -126,7 +128,7 @@ const WishPanel = ({ wish }: Props) => {
         if (!incenseId || !blindBoxId) {
           return;
         }
-        await wish(incenseId, blindBoxId, wishContent, incensePrice + blindBoxPrice);
+        await wish(incenseId, blindBoxId, wishContent, Number(formatEther(totalAmount)));
         console.log("wish success");
       } catch (error) {
         console.error("wish error:", error);
@@ -195,7 +197,7 @@ const WishPanel = ({ wish }: Props) => {
               />
             </div>
             <p className={styles.totalEth}>
-              Total: {incensePrice + blindBoxPrice} ETH
+              Total: {formatEther(totalAmount)} ETH
             </p>
             <button className={styles.sendButton} onClick={() => handleSubmit()}>
               <span className={styles.sendButtonText}>Send the wish</span>
