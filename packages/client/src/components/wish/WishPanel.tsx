@@ -127,7 +127,9 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
 
   const handleSubmit = async () => {
     if (setIncenseId === null || wishContent.trim() === "") {
-      alert("no wish content");
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+      }
       return;
     }
 
