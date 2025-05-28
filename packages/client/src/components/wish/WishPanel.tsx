@@ -191,6 +191,7 @@ const WishPanel = ({ wish }: Props) => {
               <Carousel
                 images={blindBoxImages}
                 onSelectId={setBlindBoxId}
+                type="blindBox"
               />
             </div>
             <p className={styles.totalEth}>
@@ -214,6 +215,7 @@ export default WishPanel;
 type CarouselProps = {
   images: ImageItem[];
   onSelectId: (id: number) => void;
+  type?: 'incense' | 'blindBox';
 };
 
 type IncenseData = {
@@ -223,15 +225,21 @@ type IncenseData = {
   desc: string;
 };
 
+type BlindBoxData = {
+  name: string;
+  amount: bigint;
+  desc: string;
+};
+
 const formatDuration = (seconds: bigint): string => {
   const hours = Number(seconds) / 3600;
   return `For ${hours} hours`;
 };
 
-const Carousel = ({ images, onSelectId }: CarouselProps) => {
+const Carousel = ({ images, onSelectId, type = 'incense' }: CarouselProps) => {
   const total = images.length;
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentItemData, setCurrentItemData] = useState<IncenseData | null>(null);
+  const [currentItemData, setCurrentItemData] = useState<IncenseData | BlindBoxData | null>(null);
 
   const goPrev = () => {
     setCurrentIndex((prev) => (prev - 1 + total) % total);
@@ -243,15 +251,26 @@ const Carousel = ({ images, onSelectId }: CarouselProps) => {
 
   useEffect(() => {
     onSelectId(images[currentIndex].id);
-    const itemData = getComponentValue(components.Incense, encodeEntity({ poolId: "bytes32", id: "uint256" }, { poolId: wishPool, id: BigInt(images[currentIndex].id) }));
+    const itemData = type === 'incense'
+      ? getComponentValue(components.Incense, encodeEntity({ poolId: "bytes32", id: "uint256" }, { poolId: wishPool, id: BigInt(images[currentIndex].id) }))
+      : getComponentValue(components.PropBlindBox, encodeEntity({ poolId: "bytes32", id: "uint256" }, { poolId: wishPool, id: BigInt(images[currentIndex].id) }));
+    
     if (itemData) {
-      setCurrentItemData({
-        ...itemData,
-        name: images[currentIndex].name,
-        desc: images[currentIndex].desc
-      } as IncenseData);
+      if (type === 'incense') {
+        setCurrentItemData({
+          ...itemData,
+          name: images[currentIndex].name,
+          desc: images[currentIndex].desc
+        } as IncenseData);
+      } else {
+        setCurrentItemData({
+          ...itemData,
+          name: images[currentIndex].name,
+          desc: images[currentIndex].desc
+        } as BlindBoxData);
+      }
     }
-  }, [currentIndex, onSelectId, images]);
+  }, [currentIndex, onSelectId, images, type]);
 
   return (
     <div className={carouselStyles.carouselWrapper}>
@@ -293,7 +312,11 @@ const Carousel = ({ images, onSelectId }: CarouselProps) => {
         <div className={carouselStyles.title}>{currentItemData?.name || "Loading..."}</div>
         <div className={carouselStyles.sub}>
           <span className={carouselStyles.price}>{currentItemData?.amount ? `${formatEther(currentItemData.amount)} ETH` : "Free"}</span>
-          <span className={carouselStyles.time}>{currentItemData?.duration ? formatDuration(currentItemData.duration) : ""}</span>
+          {type === 'incense' && (
+            <span className={carouselStyles.time}>
+              {(currentItemData as IncenseData)?.duration ? formatDuration((currentItemData as IncenseData).duration) : ""}
+            </span>
+          )}
         </div>
         <div className={carouselStyles.desc}>{currentItemData?.desc || "No description available"}</div>
       </div>
