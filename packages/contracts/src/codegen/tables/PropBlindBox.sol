@@ -23,6 +23,7 @@ struct PropBlindBoxData {
   uint256 starProbability;
   bool easterEggProbability;
   string name;
+  uint256[] propIds;
 }
 
 library PropBlindBox {
@@ -30,12 +31,12 @@ library PropBlindBox {
   ResourceId constant _tableId = ResourceId.wrap(0x7462637962657277697368000000000050726f70426c696e64426f7800000000);
 
   FieldLayout constant _fieldLayout =
-    FieldLayout.wrap(0x0081050120202020010000000000000000000000000000000000000000000000);
+    FieldLayout.wrap(0x0081050220202020010000000000000000000000000000000000000000000000);
 
   // Hex-encoded key schema of (bytes32, uint256)
   Schema constant _keySchema = Schema.wrap(0x004002005f1f0000000000000000000000000000000000000000000000000000);
-  // Hex-encoded value schema of (uint256, uint256, uint256, uint256, bool, string)
-  Schema constant _valueSchema = Schema.wrap(0x008105011f1f1f1f60c500000000000000000000000000000000000000000000);
+  // Hex-encoded value schema of (uint256, uint256, uint256, uint256, bool, string, uint256[])
+  Schema constant _valueSchema = Schema.wrap(0x008105021f1f1f1f60c581000000000000000000000000000000000000000000);
 
   /**
    * @notice Get the table's key field names.
@@ -52,13 +53,14 @@ library PropBlindBox {
    * @return fieldNames An array of strings with the names of value fields.
    */
   function getFieldNames() internal pure returns (string[] memory fieldNames) {
-    fieldNames = new string[](6);
+    fieldNames = new string[](7);
     fieldNames[0] = "amount";
     fieldNames[1] = "pointsMin";
     fieldNames[2] = "pointsMax";
     fieldNames[3] = "starProbability";
     fieldNames[4] = "easterEggProbability";
     fieldNames[5] = "name";
+    fieldNames[6] = "propIds";
   }
 
   /**
@@ -482,6 +484,182 @@ library PropBlindBox {
   }
 
   /**
+   * @notice Get propIds.
+   */
+  function getPropIds(bytes32 poolId, uint256 id) internal view returns (uint256[] memory propIds) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(id));
+
+    bytes memory _blob = StoreSwitch.getDynamicField(_tableId, _keyTuple, 1);
+    return (SliceLib.getSubslice(_blob, 0, _blob.length).decodeArray_uint256());
+  }
+
+  /**
+   * @notice Get propIds.
+   */
+  function _getPropIds(bytes32 poolId, uint256 id) internal view returns (uint256[] memory propIds) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(id));
+
+    bytes memory _blob = StoreCore.getDynamicField(_tableId, _keyTuple, 1);
+    return (SliceLib.getSubslice(_blob, 0, _blob.length).decodeArray_uint256());
+  }
+
+  /**
+   * @notice Set propIds.
+   */
+  function setPropIds(bytes32 poolId, uint256 id, uint256[] memory propIds) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(id));
+
+    StoreSwitch.setDynamicField(_tableId, _keyTuple, 1, EncodeArray.encode((propIds)));
+  }
+
+  /**
+   * @notice Set propIds.
+   */
+  function _setPropIds(bytes32 poolId, uint256 id, uint256[] memory propIds) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(id));
+
+    StoreCore.setDynamicField(_tableId, _keyTuple, 1, EncodeArray.encode((propIds)));
+  }
+
+  /**
+   * @notice Get the length of propIds.
+   */
+  function lengthPropIds(bytes32 poolId, uint256 id) internal view returns (uint256) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(id));
+
+    uint256 _byteLength = StoreSwitch.getDynamicFieldLength(_tableId, _keyTuple, 1);
+    unchecked {
+      return _byteLength / 32;
+    }
+  }
+
+  /**
+   * @notice Get the length of propIds.
+   */
+  function _lengthPropIds(bytes32 poolId, uint256 id) internal view returns (uint256) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(id));
+
+    uint256 _byteLength = StoreCore.getDynamicFieldLength(_tableId, _keyTuple, 1);
+    unchecked {
+      return _byteLength / 32;
+    }
+  }
+
+  /**
+   * @notice Get an item of propIds.
+   * @dev Reverts with Store_IndexOutOfBounds if `_index` is out of bounds for the array.
+   */
+  function getItemPropIds(bytes32 poolId, uint256 id, uint256 _index) internal view returns (uint256) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(id));
+
+    unchecked {
+      bytes memory _blob = StoreSwitch.getDynamicFieldSlice(_tableId, _keyTuple, 1, _index * 32, (_index + 1) * 32);
+      return (uint256(bytes32(_blob)));
+    }
+  }
+
+  /**
+   * @notice Get an item of propIds.
+   * @dev Reverts with Store_IndexOutOfBounds if `_index` is out of bounds for the array.
+   */
+  function _getItemPropIds(bytes32 poolId, uint256 id, uint256 _index) internal view returns (uint256) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(id));
+
+    unchecked {
+      bytes memory _blob = StoreCore.getDynamicFieldSlice(_tableId, _keyTuple, 1, _index * 32, (_index + 1) * 32);
+      return (uint256(bytes32(_blob)));
+    }
+  }
+
+  /**
+   * @notice Push an element to propIds.
+   */
+  function pushPropIds(bytes32 poolId, uint256 id, uint256 _element) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(id));
+
+    StoreSwitch.pushToDynamicField(_tableId, _keyTuple, 1, abi.encodePacked((_element)));
+  }
+
+  /**
+   * @notice Push an element to propIds.
+   */
+  function _pushPropIds(bytes32 poolId, uint256 id, uint256 _element) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(id));
+
+    StoreCore.pushToDynamicField(_tableId, _keyTuple, 1, abi.encodePacked((_element)));
+  }
+
+  /**
+   * @notice Pop an element from propIds.
+   */
+  function popPropIds(bytes32 poolId, uint256 id) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(id));
+
+    StoreSwitch.popFromDynamicField(_tableId, _keyTuple, 1, 32);
+  }
+
+  /**
+   * @notice Pop an element from propIds.
+   */
+  function _popPropIds(bytes32 poolId, uint256 id) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(id));
+
+    StoreCore.popFromDynamicField(_tableId, _keyTuple, 1, 32);
+  }
+
+  /**
+   * @notice Update an element of propIds at `_index`.
+   */
+  function updatePropIds(bytes32 poolId, uint256 id, uint256 _index, uint256 _element) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(id));
+
+    unchecked {
+      bytes memory _encoded = abi.encodePacked((_element));
+      StoreSwitch.spliceDynamicData(_tableId, _keyTuple, 1, uint40(_index * 32), uint40(_encoded.length), _encoded);
+    }
+  }
+
+  /**
+   * @notice Update an element of propIds at `_index`.
+   */
+  function _updatePropIds(bytes32 poolId, uint256 id, uint256 _index, uint256 _element) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(id));
+
+    unchecked {
+      bytes memory _encoded = abi.encodePacked((_element));
+      StoreCore.spliceDynamicData(_tableId, _keyTuple, 1, uint40(_index * 32), uint40(_encoded.length), _encoded);
+    }
+  }
+
+  /**
    * @notice Get the full data.
    */
   function get(bytes32 poolId, uint256 id) internal view returns (PropBlindBoxData memory _table) {
@@ -524,12 +702,13 @@ library PropBlindBox {
     uint256 pointsMax,
     uint256 starProbability,
     bool easterEggProbability,
-    string memory name
+    string memory name,
+    uint256[] memory propIds
   ) internal {
     bytes memory _staticData = encodeStatic(amount, pointsMin, pointsMax, starProbability, easterEggProbability);
 
-    EncodedLengths _encodedLengths = encodeLengths(name);
-    bytes memory _dynamicData = encodeDynamic(name);
+    EncodedLengths _encodedLengths = encodeLengths(name, propIds);
+    bytes memory _dynamicData = encodeDynamic(name, propIds);
 
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = poolId;
@@ -549,12 +728,13 @@ library PropBlindBox {
     uint256 pointsMax,
     uint256 starProbability,
     bool easterEggProbability,
-    string memory name
+    string memory name,
+    uint256[] memory propIds
   ) internal {
     bytes memory _staticData = encodeStatic(amount, pointsMin, pointsMax, starProbability, easterEggProbability);
 
-    EncodedLengths _encodedLengths = encodeLengths(name);
-    bytes memory _dynamicData = encodeDynamic(name);
+    EncodedLengths _encodedLengths = encodeLengths(name, propIds);
+    bytes memory _dynamicData = encodeDynamic(name, propIds);
 
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = poolId;
@@ -575,8 +755,8 @@ library PropBlindBox {
       _table.easterEggProbability
     );
 
-    EncodedLengths _encodedLengths = encodeLengths(_table.name);
-    bytes memory _dynamicData = encodeDynamic(_table.name);
+    EncodedLengths _encodedLengths = encodeLengths(_table.name, _table.propIds);
+    bytes memory _dynamicData = encodeDynamic(_table.name, _table.propIds);
 
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = poolId;
@@ -597,8 +777,8 @@ library PropBlindBox {
       _table.easterEggProbability
     );
 
-    EncodedLengths _encodedLengths = encodeLengths(_table.name);
-    bytes memory _dynamicData = encodeDynamic(_table.name);
+    EncodedLengths _encodedLengths = encodeLengths(_table.name, _table.propIds);
+    bytes memory _dynamicData = encodeDynamic(_table.name, _table.propIds);
 
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = poolId;
@@ -634,13 +814,19 @@ library PropBlindBox {
   function decodeDynamic(
     EncodedLengths _encodedLengths,
     bytes memory _blob
-  ) internal pure returns (string memory name) {
+  ) internal pure returns (string memory name, uint256[] memory propIds) {
     uint256 _start;
     uint256 _end;
     unchecked {
       _end = _encodedLengths.atIndex(0);
     }
     name = (string(SliceLib.getSubslice(_blob, _start, _end).toBytes()));
+
+    _start = _end;
+    unchecked {
+      _end += _encodedLengths.atIndex(1);
+    }
+    propIds = (SliceLib.getSubslice(_blob, _start, _end).decodeArray_uint256());
   }
 
   /**
@@ -662,7 +848,7 @@ library PropBlindBox {
       _table.easterEggProbability
     ) = decodeStatic(_staticData);
 
-    (_table.name) = decodeDynamic(_encodedLengths, _dynamicData);
+    (_table.name, _table.propIds) = decodeDynamic(_encodedLengths, _dynamicData);
   }
 
   /**
@@ -705,10 +891,13 @@ library PropBlindBox {
    * @notice Tightly pack dynamic data lengths using this table's schema.
    * @return _encodedLengths The lengths of the dynamic fields (packed into a single bytes32 value).
    */
-  function encodeLengths(string memory name) internal pure returns (EncodedLengths _encodedLengths) {
+  function encodeLengths(
+    string memory name,
+    uint256[] memory propIds
+  ) internal pure returns (EncodedLengths _encodedLengths) {
     // Lengths are effectively checked during copy by 2**40 bytes exceeding gas limits
     unchecked {
-      _encodedLengths = EncodedLengthsLib.pack(bytes(name).length);
+      _encodedLengths = EncodedLengthsLib.pack(bytes(name).length, propIds.length * 32);
     }
   }
 
@@ -716,8 +905,8 @@ library PropBlindBox {
    * @notice Tightly pack dynamic (variable length) data using this table's schema.
    * @return The dynamic data, encoded into a sequence of bytes.
    */
-  function encodeDynamic(string memory name) internal pure returns (bytes memory) {
-    return abi.encodePacked(bytes((name)));
+  function encodeDynamic(string memory name, uint256[] memory propIds) internal pure returns (bytes memory) {
+    return abi.encodePacked(bytes((name)), EncodeArray.encode((propIds)));
   }
 
   /**
@@ -732,12 +921,13 @@ library PropBlindBox {
     uint256 pointsMax,
     uint256 starProbability,
     bool easterEggProbability,
-    string memory name
+    string memory name,
+    uint256[] memory propIds
   ) internal pure returns (bytes memory, EncodedLengths, bytes memory) {
     bytes memory _staticData = encodeStatic(amount, pointsMin, pointsMax, starProbability, easterEggProbability);
 
-    EncodedLengths _encodedLengths = encodeLengths(name);
-    bytes memory _dynamicData = encodeDynamic(name);
+    EncodedLengths _encodedLengths = encodeLengths(name, propIds);
+    bytes memory _dynamicData = encodeDynamic(name, propIds);
 
     return (_staticData, _encodedLengths, _dynamicData);
   }

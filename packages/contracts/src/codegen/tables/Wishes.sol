@@ -24,6 +24,9 @@ struct WishesData {
   uint256 blindBoxId;
   uint256 pointsIncense;
   uint256 pointsBlindBox;
+  uint256 pointsIncenseEasterEgg;
+  uint256 pointsBlindBoxEasterEgg;
+  uint256 propId;
   bool isStar;
   string wishContent;
 }
@@ -33,12 +36,12 @@ library Wishes {
   ResourceId constant _tableId = ResourceId.wrap(0x6f74637962657277697368000000000057697368657300000000000000000000);
 
   FieldLayout constant _fieldLayout =
-    FieldLayout.wrap(0x00d5080114202020202020010000000000000000000000000000000000000000);
+    FieldLayout.wrap(0x01350b0114202020202020202020010000000000000000000000000000000000);
 
   // Hex-encoded key schema of (bytes32, bytes32)
   Schema constant _keySchema = Schema.wrap(0x004002005f5f0000000000000000000000000000000000000000000000000000);
-  // Hex-encoded value schema of (address, uint256, uint256, uint256, uint256, uint256, uint256, bool, string)
-  Schema constant _valueSchema = Schema.wrap(0x00d50801611f1f1f1f1f1f60c500000000000000000000000000000000000000);
+  // Hex-encoded value schema of (address, uint256, uint256, uint256, uint256, uint256, uint256, uint256, uint256, uint256, bool, string)
+  Schema constant _valueSchema = Schema.wrap(0x01350b01611f1f1f1f1f1f1f1f1f60c500000000000000000000000000000000);
 
   /**
    * @notice Get the table's key field names.
@@ -55,7 +58,7 @@ library Wishes {
    * @return fieldNames An array of strings with the names of value fields.
    */
   function getFieldNames() internal pure returns (string[] memory fieldNames) {
-    fieldNames = new string[](9);
+    fieldNames = new string[](12);
     fieldNames[0] = "wisher";
     fieldNames[1] = "wishTime";
     fieldNames[2] = "cycle";
@@ -63,8 +66,11 @@ library Wishes {
     fieldNames[4] = "blindBoxId";
     fieldNames[5] = "pointsIncense";
     fieldNames[6] = "pointsBlindBox";
-    fieldNames[7] = "isStar";
-    fieldNames[8] = "wishContent";
+    fieldNames[7] = "pointsIncenseEasterEgg";
+    fieldNames[8] = "pointsBlindBoxEasterEgg";
+    fieldNames[9] = "propId";
+    fieldNames[10] = "isStar";
+    fieldNames[11] = "wishContent";
   }
 
   /**
@@ -236,6 +242,72 @@ library Wishes {
   }
 
   /**
+   * @notice Set pointsIncenseEasterEgg.
+   */
+  function setPointsIncenseEasterEgg(bytes32 poolId, bytes32 id, uint256 pointsIncenseEasterEgg) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = id;
+
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 7, abi.encodePacked((pointsIncenseEasterEgg)), _fieldLayout);
+  }
+
+  /**
+   * @notice Set pointsIncenseEasterEgg.
+   */
+  function _setPointsIncenseEasterEgg(bytes32 poolId, bytes32 id, uint256 pointsIncenseEasterEgg) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = id;
+
+    StoreCore.setStaticField(_tableId, _keyTuple, 7, abi.encodePacked((pointsIncenseEasterEgg)), _fieldLayout);
+  }
+
+  /**
+   * @notice Set pointsBlindBoxEasterEgg.
+   */
+  function setPointsBlindBoxEasterEgg(bytes32 poolId, bytes32 id, uint256 pointsBlindBoxEasterEgg) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = id;
+
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 8, abi.encodePacked((pointsBlindBoxEasterEgg)), _fieldLayout);
+  }
+
+  /**
+   * @notice Set pointsBlindBoxEasterEgg.
+   */
+  function _setPointsBlindBoxEasterEgg(bytes32 poolId, bytes32 id, uint256 pointsBlindBoxEasterEgg) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = id;
+
+    StoreCore.setStaticField(_tableId, _keyTuple, 8, abi.encodePacked((pointsBlindBoxEasterEgg)), _fieldLayout);
+  }
+
+  /**
+   * @notice Set propId.
+   */
+  function setPropId(bytes32 poolId, bytes32 id, uint256 propId) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = id;
+
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 9, abi.encodePacked((propId)), _fieldLayout);
+  }
+
+  /**
+   * @notice Set propId.
+   */
+  function _setPropId(bytes32 poolId, bytes32 id, uint256 propId) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = id;
+
+    StoreCore.setStaticField(_tableId, _keyTuple, 9, abi.encodePacked((propId)), _fieldLayout);
+  }
+
+  /**
    * @notice Set isStar.
    */
   function setIsStar(bytes32 poolId, bytes32 id, bool isStar) internal {
@@ -243,7 +315,7 @@ library Wishes {
     _keyTuple[0] = poolId;
     _keyTuple[1] = id;
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 7, abi.encodePacked((isStar)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 10, abi.encodePacked((isStar)), _fieldLayout);
   }
 
   /**
@@ -254,7 +326,7 @@ library Wishes {
     _keyTuple[0] = poolId;
     _keyTuple[1] = id;
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 7, abi.encodePacked((isStar)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 10, abi.encodePacked((isStar)), _fieldLayout);
   }
 
   /**
@@ -270,6 +342,9 @@ library Wishes {
     uint256 blindBoxId,
     uint256 pointsIncense,
     uint256 pointsBlindBox,
+    uint256 pointsIncenseEasterEgg,
+    uint256 pointsBlindBoxEasterEgg,
+    uint256 propId,
     bool isStar,
     string memory wishContent
   ) internal {
@@ -281,6 +356,9 @@ library Wishes {
       blindBoxId,
       pointsIncense,
       pointsBlindBox,
+      pointsIncenseEasterEgg,
+      pointsBlindBoxEasterEgg,
+      propId,
       isStar
     );
 
@@ -307,6 +385,9 @@ library Wishes {
     uint256 blindBoxId,
     uint256 pointsIncense,
     uint256 pointsBlindBox,
+    uint256 pointsIncenseEasterEgg,
+    uint256 pointsBlindBoxEasterEgg,
+    uint256 propId,
     bool isStar,
     string memory wishContent
   ) internal {
@@ -318,6 +399,9 @@ library Wishes {
       blindBoxId,
       pointsIncense,
       pointsBlindBox,
+      pointsIncenseEasterEgg,
+      pointsBlindBoxEasterEgg,
+      propId,
       isStar
     );
 
@@ -343,6 +427,9 @@ library Wishes {
       _table.blindBoxId,
       _table.pointsIncense,
       _table.pointsBlindBox,
+      _table.pointsIncenseEasterEgg,
+      _table.pointsBlindBoxEasterEgg,
+      _table.propId,
       _table.isStar
     );
 
@@ -368,6 +455,9 @@ library Wishes {
       _table.blindBoxId,
       _table.pointsIncense,
       _table.pointsBlindBox,
+      _table.pointsIncenseEasterEgg,
+      _table.pointsBlindBoxEasterEgg,
+      _table.propId,
       _table.isStar
     );
 
@@ -397,6 +487,9 @@ library Wishes {
       uint256 blindBoxId,
       uint256 pointsIncense,
       uint256 pointsBlindBox,
+      uint256 pointsIncenseEasterEgg,
+      uint256 pointsBlindBoxEasterEgg,
+      uint256 propId,
       bool isStar
     )
   {
@@ -414,7 +507,13 @@ library Wishes {
 
     pointsBlindBox = (uint256(Bytes.getBytes32(_blob, 180)));
 
-    isStar = (_toBool(uint8(Bytes.getBytes1(_blob, 212))));
+    pointsIncenseEasterEgg = (uint256(Bytes.getBytes32(_blob, 212)));
+
+    pointsBlindBoxEasterEgg = (uint256(Bytes.getBytes32(_blob, 244)));
+
+    propId = (uint256(Bytes.getBytes32(_blob, 276)));
+
+    isStar = (_toBool(uint8(Bytes.getBytes1(_blob, 308))));
   }
 
   /**
@@ -451,6 +550,9 @@ library Wishes {
       _table.blindBoxId,
       _table.pointsIncense,
       _table.pointsBlindBox,
+      _table.pointsIncenseEasterEgg,
+      _table.pointsBlindBoxEasterEgg,
+      _table.propId,
       _table.isStar
     ) = decodeStatic(_staticData);
 
@@ -491,9 +593,25 @@ library Wishes {
     uint256 blindBoxId,
     uint256 pointsIncense,
     uint256 pointsBlindBox,
+    uint256 pointsIncenseEasterEgg,
+    uint256 pointsBlindBoxEasterEgg,
+    uint256 propId,
     bool isStar
   ) internal pure returns (bytes memory) {
-    return abi.encodePacked(wisher, wishTime, cycle, incenseId, blindBoxId, pointsIncense, pointsBlindBox, isStar);
+    return
+      abi.encodePacked(
+        wisher,
+        wishTime,
+        cycle,
+        incenseId,
+        blindBoxId,
+        pointsIncense,
+        pointsBlindBox,
+        pointsIncenseEasterEgg,
+        pointsBlindBoxEasterEgg,
+        propId,
+        isStar
+      );
   }
 
   /**
@@ -529,6 +647,9 @@ library Wishes {
     uint256 blindBoxId,
     uint256 pointsIncense,
     uint256 pointsBlindBox,
+    uint256 pointsIncenseEasterEgg,
+    uint256 pointsBlindBoxEasterEgg,
+    uint256 propId,
     bool isStar,
     string memory wishContent
   ) internal pure returns (bytes memory, EncodedLengths, bytes memory) {
@@ -540,6 +661,9 @@ library Wishes {
       blindBoxId,
       pointsIncense,
       pointsBlindBox,
+      pointsIncenseEasterEgg,
+      pointsBlindBoxEasterEgg,
+      propId,
       isStar
     );
 

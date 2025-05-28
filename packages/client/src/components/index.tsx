@@ -1,7 +1,7 @@
 import { AccountButton } from "@latticexyz/entrykit/internal";
 import { Direction, Entity } from "../common";
 import mudConfig from "contracts/mud.config";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useWorldContract } from "../mud/useWorldContract";
 import { Synced } from "./mud/Synced";
 import { useSync } from "@latticexyz/store-sync/react";
@@ -13,6 +13,7 @@ import styles from "./index.module.css";
 import WishPanel from "./wish/WishPanel";
 import WishesPanel from "./wish/wishesPanel";
 import WishingWall from "./wishWall";
+import WishResult from "./wish/wishResult";
 
 export default function Main() {
   // const playerEntities = useEntityQuery([Has(components.Owner), Has(components.Position)]);
@@ -30,6 +31,7 @@ export default function Main() {
   //     }),
   //   [playerEntities],
   // );
+  const [wishStatus, setWishStatus] = useState(false);
 
   const sync = useSync();
   const worldContract = useWorldContract();
@@ -45,10 +47,9 @@ export default function Main() {
 
           const tx = await worldContract.write.cyberwish__wish([wishPool, BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: BigInt((value * 1e18).toFixed(0)) });
           console.log("tx", tx);
-          console.log(await sync.data.waitForTransaction(tx));
+          const res = await sync.data.waitForTransaction(tx);
           worldContract.simulate.cyberwish__wish([wishPool, BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: BigInt(Math.floor(value * 1e18)) });
-          // const simulateRes = await worldContract.simulate.cyberwish__wish([wishPool, BigInt(incenseId), BigInt(blindBoxId), wishContent], {value: BigInt(Math.floor(value * 1e18))});
-          // console.log(simulateRes);
+          return res;
         }
         : undefined,
     [sync.data, worldContract],
@@ -87,12 +88,13 @@ export default function Main() {
   return (
     <>
       <div className={styles.container}>
-        {/* <button style={{ position: "absolute" }} onClick={() => boostByStar()}>boost points</button>
+        <button onClick={() => boostByStar()}>boost star</button>
         <br />
-        <button onClick={() => boostByPoints()}>boost star</button> */}
-        <WishPanel wish={wish} />
-        {/* <WishesPanel /> */}
-        <WishingWall />
+        <button onClick={() => boostByPoints()}>boost points</button>
+        <WishPanel wish={wish} setWishStatus={setWishStatus} />
+        <WishesPanel />
+        {/* <WishingWall /> */}
+        <WishResult wishStatus={wishStatus}/>
       </div>
     </>
   );

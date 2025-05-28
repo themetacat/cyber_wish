@@ -16,13 +16,12 @@ const images = [
   "assets/img/MIYA.webp",
 ];
 
-const itemInformation = []
-
 export type Props = {
   readonly wish?: (incenseId: number, blindBoxId: number, wishContent: string, value: number) => Promise<void>;
+  setWishStatus: (status: boolean) => void;
 };
 
-const WishPanel = ({ wish }: Props) => {
+const WishPanel = ({ wish, setWishStatus }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const [wishContent, setWishContent] = useState("");
 
@@ -63,8 +62,16 @@ const WishPanel = ({ wish }: Props) => {
         if (!incenseId || !blindBoxId) {
           return;
         }
-        await wish(incenseId, blindBoxId, wishContent, incensePrice + blindBoxPrice);
-        console.log("wish success");
+        setWishStatus(false);
+        const res = await wish(incenseId, blindBoxId, wishContent, incensePrice + blindBoxPrice);
+        console.log("res: ", res);
+        
+        if (res && res.status == "success") {
+          console.log("wish success");
+          setWishStatus(true);
+        } else {
+          console.log("wish faild");
+        }
       } catch (error) {
         console.error("wish error:", error);
         alert("Please retry");
