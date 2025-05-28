@@ -11,46 +11,86 @@ import { WishPropsResult } from "./Struct.sol";
 
 contract WishSystem is System {
   // receive() external payable {}
+  struct PointsData {
+    uint256 incenseEasterEggPoints;
+    uint256 boxEasterEggPoints;
+    WishPropsResult wishPropsResultIncense;
+    WishPropsResult wishPropsResultBlindBox;
+  }
   
+  struct ProcessPointsParams{
+    bytes32 poolId;
+    uint256 incenseId;
+    uint256 blindBoxId;
+  }
+
   function wish(bytes32 poolId, uint256 incenseId, uint256 blindBoxId, string memory wishContent) public payable {
     address wisher = _msgSender();
 
-    require(WishingPool.getCreator(poolId) != address(0), "No pool");
+    _validatePool(poolId);
 
-    require(
-      _msgValue() == Incense.getAmount(poolId, incenseId) + PropBlindBox.getAmount(poolId, blindBoxId),
-      "Insufficient balance"
-    );
-
-    // !!! check currentCycle isBoosted
-    uint256 currentCycle = getCurrentCycle(poolId);
+    uint256 incenseAmount = Incense.getAmount(poolId, incenseId);
+    uint256 blindboxAmount = PropBlindBox.getAmount(poolId, blindBoxId);
+    require(_msgValue() == incenseAmount + blindboxAmount, "Insufficient balance");
 
     WisherData memory wisherData = Wisher.get(poolId, wisher);
     WisherTemporaryRecordsData memory wisherTemporaryRecordsData = WisherTemporaryRecords.get(poolId, wisher);
 
-    WishPropsResult memory incenseResult = lightingIncense(poolId, incenseId);
-    WishPropsResult memory boxResult = openBox(poolId, blindBoxId);
+    bool isFreeWish = incenseAmount == 0 && blindboxAmount == 0;
+    require(!(isFreeWish && wisherTemporaryRecordsData.freeWishTime >= 10), "Free times limit reached");
 
-    uint256 totalPoints = incenseResult.points + boxResult.points;
+    uint256 propId = getPropsFromBox(poolId, blindBoxId);
+
+    ProcessPointsParams memory processPointsParams = ProcessPointsParams({
+      poolId: poolId,
+      incenseId: incenseId,
+      blindBoxId: blindBoxId
+    });
+    PointsData memory pointsData = _processPoints(processPointsParams);
+
+    uint256 totalPoints = pointsData.wishPropsResultIncense.points + pointsData.wishPropsResultBlindBox.points + pointsData.incenseEasterEggPoints + pointsData.boxEasterEggPoints;
     wisherData.points += totalPoints;
     wisherData.wishCount += 1;
 
-    if (wisherTemporaryRecordsData.pointsLastCycle == currentCycle) {
-      wisherTemporaryRecordsData.points += totalPoints;
-      wisherTemporaryRecordsData.wishCount += 1;
-    } else {
-      wisherTemporaryRecordsData.points = totalPoints;
-      wisherTemporaryRecordsData.wishCount = 1;
-    }
+    // !!! check currentCycle isBoosted
+    uint256 currentCycle = getCurrentCycle(poolId);
+
+    wisherTemporaryRecordsData = updateTemporaryRecords(
+      wisherTemporaryRecordsData,
+      currentCycle,
+      totalPoints,
+      isFreeWish
+    );
+
     bool isStar;
     if (currentCycle > 0) {
       // for boost wisher
-      isStar = _processCycleBoost(poolId, currentCycle, wisher, wisherTemporaryRecordsData, incenseResult.joinWishStar || boxResult.joinWishStar);
+      isStar = _processCycleBoost(
+        poolId,
+        currentCycle,
+        wisher,
+        wisherTemporaryRecordsData,
+        pointsData.wishPropsResultIncense.joinWishStar || pointsData.wishPropsResultBlindBox.joinWishStar
+      );
     }
 
     wisherTemporaryRecordsData.pointsLastCycle = currentCycle;
-
-    Wishes.set(poolId, uuid(), wisher, block.timestamp, currentCycle, incenseId, blindBoxId, incenseResult.points, boxResult.points, isStar, wishContent);
+    Wishes.set(
+      poolId,
+      uuid(),
+      wisher,
+      block.timestamp,
+      currentCycle,
+      incenseId,
+      blindBoxId,
+      pointsData.wishPropsResultIncense.points,
+      pointsData.wishPropsResultBlindBox.points,
+      pointsData.incenseEasterEggPoints,
+      pointsData.boxEasterEggPoints,
+      propId,
+      isStar,
+      wishContent
+    );
     Wisher.set(poolId, wisher, wisherData);
     WisherTemporaryRecords.set(poolId, wisher, wisherTemporaryRecordsData);
     WisherCycleRecords.set(
@@ -64,8 +104,18 @@ contract WishSystem is System {
     );
   }
 
-  function lightingIncense(bytes32 poolId, uint256 incenseId) private returns (WishPropsResult memory) {
-    IncenseData memory incenseData = Incense.get(poolId, incenseId);
+  function _processPoints(ProcessPointsParams memory processPointsParams) private returns (PointsData memory pointsData) {
+    bytes32 poolId = processPointsParams.poolId;
+    IncenseData memory incenseData = Incense.get(poolId, processPointsParams.incenseId);
+    PropBlindBoxData memory blindBoxData = PropBlindBox.get(poolId, processPointsParams.blindBoxId);
+
+    pointsData.wishPropsResultIncense = lightingIncense(poolId, incenseData);
+    pointsData.wishPropsResultBlindBox = openBox(poolId, blindBoxData);
+    pointsData.incenseEasterEggPoints = easterEggPoints(incenseData.amount == 0, pointsData.wishPropsResultIncense.points);
+    pointsData.boxEasterEggPoints = easterEggPoints(blindBoxData.amount == 0, pointsData.wishPropsResultBlindBox.points);
+  }
+
+  function lightingIncense(bytes32 poolId, IncenseData memory incenseData) private returns (WishPropsResult memory) {
     require(incenseData.pointsMax > 0, "Invalid Incense");
     return
       _handleWishProps(
@@ -78,8 +128,7 @@ contract WishSystem is System {
       );
   }
 
-  function openBox(bytes32 poolId, uint256 blindBoxId) private returns (WishPropsResult memory) {
-    PropBlindBoxData memory propBlindBoxData = PropBlindBox.get(poolId, blindBoxId);
+  function openBox(bytes32 poolId, PropBlindBoxData memory propBlindBoxData) private returns (WishPropsResult memory) {
     require(propBlindBoxData.pointsMax > 0, "Invalid Blind Box");
     return
       _handleWishProps(
@@ -102,11 +151,11 @@ contract WishSystem is System {
   ) private returns (WishPropsResult memory result) {
     require(_msgValue() >= amount, "Insufficient balance");
 
-    uint256 random;
-    if (isIncense) {
-      uint256 duration = 1;
-      random = 1;
-    }
+    uint256 random = isIncense ? 1 : 0;
+    // if (isIncense) {
+    //   // uint256 duration = 1;
+    //   random = 1;
+    // }
     result.points = getPoints(pointsMin, pointsMax, random);
     result.joinWishStar = eligibilityWishStar(starProbability, random);
 
@@ -137,7 +186,7 @@ contract WishSystem is System {
     } else if (tempData.pointsLastCycle != currentCycle) {
       CycleInfo.setWisherCount(poolId, currentCycle, 0, wisherCount);
       tempData.pointsWishIndex = wisherCount;
-    }else{
+    } else {
       wisherCount -= 1;
     }
     IndexToWisher.set(poolId, 0, indexId, wisherCount, wisher, tempData.points);
@@ -183,5 +232,62 @@ contract WishSystem is System {
       }
     }
     return 0;
+  }
+
+  function getPropsFromBox(bytes32 poolId, uint256 blindBoxId) internal view returns (uint256) {
+    uint256[] memory propIds = PropBlindBox.getPropIds(poolId, blindBoxId);
+    uint256 propIdsLength = propIds.length;
+    require(propIdsLength > 0, "No Props");
+    uint256 index = getRandom(blindBoxId, propIds.length, _msgSender());
+    return propIds[index];
+  }
+
+  function easterEggPoints(bool isFree, uint256 points) internal view returns (uint256) {
+    uint256 expansionRatio;
+    uint256 expansionPoints;
+    uint256 randomValue = getRandom(points, 100, _msgSender());
+    if (isFree) {
+      if (randomValue < 15) {
+        expansionRatio = 50 + getRandom(points, 51, _msgSender());
+      }
+    } else {
+      if (randomValue < 5) {
+        expansionRatio = 200;
+      } else if (randomValue < 30) {
+        expansionRatio = 50 + getRandom(points, 51, _msgSender());
+      } else if (randomValue < 65) {
+        expansionRatio = 5 + getRandom(points, 46, _msgSender());
+      } else {
+        expansionPoints = 5 + getRandom(points, 21, _msgSender());
+      }
+    }
+    if (expansionRatio > 0) {
+      expansionPoints = (points * expansionRatio) / 100;
+    }
+    return expansionPoints;
+  }
+
+  function updateTemporaryRecords(
+    WisherTemporaryRecordsData memory data,
+    uint256 currentCycle,
+    uint256 totalPoints,
+    bool isFreeWish
+  ) internal pure returns (WisherTemporaryRecordsData memory) {
+    if (data.pointsLastCycle == currentCycle) {
+      data.points += totalPoints;
+      data.wishCount += 1;
+      if (isFreeWish) {
+        data.freeWishTime += 1;
+      }
+    } else {
+      data.points = totalPoints;
+      data.wishCount = 1;
+      data.freeWishTime = isFreeWish ? 1 : 0;
+    }
+    return data;
+  }
+
+  function _validatePool(bytes32 poolId) internal view {
+    require(WishingPool.getCreator(poolId) != address(0), "No pool");
   }
 }
