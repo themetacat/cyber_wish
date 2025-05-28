@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import styles from "./WishPanel.module.css";
 import carouselStyles from "./carousel.module.css";
 import { getComponentValue } from "@latticexyz/recs";
@@ -88,6 +88,13 @@ export type Props = {
 const WishPanel = ({ wish, setWishStatus }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const [wishContent, setWishContent] = useState("");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (showModal && textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  }, [showModal]);
 
   const [incenseId, setIncenseIdRaw] = useState<number | null>(null);
   const [incenseAmount, setIncenseAmount] = useState<bigint>(0n);
@@ -172,6 +179,7 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
             <span className={styles.itemTitle}>WISH</span>
             <div className={styles.inputBoxContainer}>
               <textarea
+                ref={textareaRef}
                 className={styles.inputBox}
                 value={wishContent}
                 onChange={(e) => setWishContent(e.target.value)}

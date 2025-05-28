@@ -114,7 +114,7 @@ export default function WishingWall() {
       wisher: wishData.wisher,
       wishContent: wishData.wishContent,
       wishTime: Number(wishData.wishTime),
-      propId:  Number(wishData.propId)
+      propId: Number(wishData.propId)
     }
 
     return wishInfo;
@@ -169,7 +169,9 @@ export default function WishingWall() {
             <img src={propsData[item.propId].imageUrl} className={styles.image} alt="blessing item" />
           </div>
         ))}
-        {loading && <div className={styles.loading}>loading...</div>}
+        {loading && <div className={styles.loading}>
+          <img src="/images/wishWall/Loading.webp" alt="Loading..." />
+        </div>}
       </div>
     </div>
   );

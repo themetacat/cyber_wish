@@ -10,6 +10,21 @@
   background-repeat: no-repeat;
 }
 
+/* 设置滚动条样式 */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 .secTitle {
   margin-top: 39px;
   display: flex;
@@ -30,11 +45,20 @@
   line-height: 33px;
   white-space: nowrap;
   display: flex;
+  cursor: pointer;
   align-items: center;
   justify-content: center;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.secTitleWishingWall:hover  {
+  transform: scale(1.05);
+}
+
+.secTitleMyWishs:hover  {
+  transform: scale(1.05);
 }
 
 .secTitleWishingWall {
@@ -82,6 +106,11 @@
   background-position: center;
   background-repeat: no-repeat;
   padding: 0 30px;
+  cursor: pointer;
+}
+
+.infoBox:hover {
+  transform: scale(1.01);
 }
 
 .textContent {
@@ -121,10 +150,31 @@
   margin-left: 20px;
 }
 
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .loading {
+  width: 87px;
+  height: 87px;
   text-align: center;
-  padding: 20px;
   color: #888;
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.loading img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  animation: rotate 0.5s linear infinite;
 }
 
 .footer {
