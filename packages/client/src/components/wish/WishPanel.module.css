@@ -50,10 +50,27 @@
   font-size: 16px;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background-image: url('/images/wish/WishPanel/MakeAWishBtnBg.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .mainButton:hover {
   background-color: rgba(255, 255, 255, 1);
+}
+
+.mainButtonText {
+  font-family: 'Orbitron';
+  font-weight: 700;
+  font-size: 1.1rem;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFF9E6 40%, #FFEDB3 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 1px #7A4E00;
+  text-stroke: 1px #7A4E00;
+  text-shadow: 1px 1px 1px rgba(90, 59, 0, 0.2);
 }
 
 .modalOverlay {

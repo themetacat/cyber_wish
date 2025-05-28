@@ -149,7 +149,7 @@ const WishPanel = ({ wish }: Props) => {
     <>
       <div className={styles.buttonContainer}>
         <button className={styles.mainButton} onClick={() => setShowModal(true)}>
-          Make a wish
+          <span className={styles.mainButtonText}>Make a wish</span>
         </button>
       </div>
 
