@@ -88,9 +88,9 @@ export default function Main() {
   return (
     <>
       <div className={styles.container}>
-        <button onClick={() => boostByStar()}>boost star</button>
+        {/* <button onClick={() => boostByStar()}>boost star</button>
         <br />
-        <button onClick={() => boostByPoints()}>boost points</button>
+        <button onClick={() => boostByPoints()}>boost points</button> */}
         <WishPanel wish={wish} setWishStatus={setWishStatus} />
         <WishesPanel />
         {/* <WishingWall /> */}
