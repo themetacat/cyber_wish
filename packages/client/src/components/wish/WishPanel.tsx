@@ -7,16 +7,78 @@ import { encodeEntity } from "@latticexyz/store-sync/recs";
 import { wishPool } from "../../utils/contants";
 import { formatEther } from 'viem';
 
-const images = [
-  "/images/wish/WishPanel/Incense/1.1.gif",
-  "/images/wish/WishPanel/Incense/1.2.gif",
-  "/images/wish/WishPanel/Incense/1.3.gif",
-  "/images/wish/WishPanel/Incense/1.4.gif",
-  "/images/wish/WishPanel/Incense/1.5.gif",
-  "/images/wish/WishPanel/Incense/1.11.gif",
+type ImageItem = {
+  id: number;
+  name: string;
+  desc: string;
+  img: string;
+};
+
+const incenseImages: ImageItem[] = [
+  {
+    id: 1,
+    name: "Pure Wish",
+    desc: "For sincere prayers and pure-hearted intentions to ascend.",
+    img: "/images/wish/WishPanel/Incense/1.1.gif"
+  },
+  {
+    id: 2,
+    name: "Luck  Wish",
+    desc: "For luck and good things to grow.",
+    img: "/images/wish/WishPanel/Incense/1.2.gif"
+  },
+  {
+    id: 3,
+    name: "Fortune Bloom",
+    desc: "For unlocking financial opportunities and abundance flow.",
+    img: "/images/wish/WishPanel/Incense/1.3.gif"
+  },
+  {
+    id: 4,
+    name: "Fate Whisper",
+    desc: "For deepening destined bonds and meaningful encounters.",
+    img: "/images/wish/WishPanel/Incense/1.4.gif"
+  },
+  {
+    id: 5,
+    name: "Celestial Wish",
+    desc: "For big dreams to reach the sky.",
+    img: "/images/wish/WishPanel/Incense/1.5.gif"
+  }
 ];
 
-const itemInformation = []
+const blindBoxImages: ImageItem[] = [
+  {
+    id: 1,
+    name: "Pray",
+    desc: "Pray for a smooth and joyful life.",
+    img: "/images/wish/WishPanel/BlindBox/1.1.gif"
+  },
+  {
+    id: 2,
+    name: "Health Blessing",
+    desc: "May you enjoy strong vitality and lasting balance in body and mind.",
+    img: "/images/wish/WishPanel/BlindBox/1.2.gif"
+  },
+  {
+    id: 3,
+    name: "Fortune Blessing",
+    desc: "May fortune find you, bringing wealth and unexpected opportunities.",
+    img: "/images/wish/WishPanel/BlindBox/1.3.gif"
+  },
+  {
+    id: 4,
+    name: "Wisdom Blessing",
+    desc: "May your mind be clear and your choices filled with insight.",
+    img: "/images/wish/WishPanel/BlindBox/1.4.gif"
+  },
+  {
+    id: 5,
+    name: "Love Blessing",
+    desc: "May you meet your true love and enjoy a harmonious, loving relationship.",
+    img: "/images/wish/WishPanel/BlindBox/1.5.gif"
+  }
+];
 
 export type Props = {
   readonly wish?: (incenseId: number, blindBoxId: number, wishContent: string, value: number) => Promise<void>;
@@ -81,7 +143,6 @@ const WishPanel = ({ wish }: Props) => {
     setWishContent("");
   };
 
-
   return (
     <>
       <div className={styles.buttonContainer}>
@@ -120,7 +181,7 @@ const WishPanel = ({ wish }: Props) => {
             <div>
               <span className={styles.itemTitle}>CHOOSE YOUR LIGHT</span>
               <Carousel
-                images={images}
+                images={incenseImages}
                 onSelectId={setIncenseId}
               />
             </div>
@@ -128,7 +189,7 @@ const WishPanel = ({ wish }: Props) => {
             <div>
               <span className={styles.itemTitle}>SELECT A BLESSING ITEM</span>
               <Carousel
-                images={images}
+                images={blindBoxImages}
                 onSelectId={setBlindBoxId}
               />
             </div>
@@ -150,16 +211,27 @@ const WishPanel = ({ wish }: Props) => {
 
 export default WishPanel;
 
-
 type CarouselProps = {
-  images: string[];
+  images: ImageItem[];
   onSelectId: (id: number) => void;
 };
 
-const Carousel = ({ images, onSelectId }: CarouselProps) => {
+type IncenseData = {
+  name: string;
+  amount: bigint;
+  duration: bigint;
+  desc: string;
+};
 
+const formatDuration = (seconds: bigint): string => {
+  const hours = Number(seconds) / 3600;
+  return `For ${hours} hours`;
+};
+
+const Carousel = ({ images, onSelectId }: CarouselProps) => {
   const total = images.length;
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentItemData, setCurrentItemData] = useState<IncenseData | null>(null);
 
   const goPrev = () => {
     setCurrentIndex((prev) => (prev - 1 + total) % total);
@@ -170,8 +242,16 @@ const Carousel = ({ images, onSelectId }: CarouselProps) => {
   };
 
   useEffect(() => {
-    onSelectId(currentIndex + 1);
-  }, [currentIndex, onSelectId])
+    onSelectId(images[currentIndex].id);
+    const itemData = getComponentValue(components.Incense, encodeEntity({ poolId: "bytes32", id: "uint256" }, { poolId: wishPool, id: BigInt(images[currentIndex].id) }));
+    if (itemData) {
+      setCurrentItemData({
+        ...itemData,
+        name: images[currentIndex].name,
+        desc: images[currentIndex].desc
+      } as IncenseData);
+    }
+  }, [currentIndex, onSelectId, images]);
 
   return (
     <div className={carouselStyles.carouselWrapper}>
@@ -180,7 +260,7 @@ const Carousel = ({ images, onSelectId }: CarouselProps) => {
           <img src="/images/wish/WishPanel/ArrowLeft.webp" alt="Previous" />
         </button>
         <div className={carouselStyles.carouselInner}>
-          {images.map((src, i) => {
+          {images.map((item, i) => {
             const offset = (i - currentIndex + total) % total;
             let className = carouselStyles.card;
 
@@ -197,7 +277,7 @@ const Carousel = ({ images, onSelectId }: CarouselProps) => {
                 onClick={() => setCurrentIndex(i)}
               >
                 <img
-                  src={src}
+                  src={item.img}
                   className={carouselStyles.cardImage}
                 />
               </div>
@@ -210,12 +290,12 @@ const Carousel = ({ images, onSelectId }: CarouselProps) => {
       </div>
 
       <div className={carouselStyles.carouselText}>
-        <div className={carouselStyles.title}>Fortune Bloom</div>
+        <div className={carouselStyles.title}>{currentItemData?.name || "Loading..."}</div>
         <div className={carouselStyles.sub}>
-          <span className={carouselStyles.price}>0.01 ETH</span>
-          <span className={carouselStyles.time}>Last 24 hours</span>
+          <span className={carouselStyles.price}>{currentItemData?.amount ? `${formatEther(currentItemData.amount)} ETH` : "Free"}</span>
+          <span className={carouselStyles.time}>{currentItemData?.duration ? formatDuration(currentItemData.duration) : ""}</span>
         </div>
-        <div className={carouselStyles.desc}>For more wealth and opportunities.</div>
+        <div className={carouselStyles.desc}>{currentItemData?.desc || "No description available"}</div>
       </div>
     </div>
   );
