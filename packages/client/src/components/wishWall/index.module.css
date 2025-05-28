@@ -4,12 +4,24 @@
   align-items: center;
   height: 100vh;
   overflow: hidden;
-  background: #f5f5f5;
+  background-image: url('/images/wishWall/BG.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .title {
-  font-size: 2rem;
-  margin: 20px 0;
+  line-height: 3.06rem;
+  text-align: center;
+  font-family: 'FSKim';
+  font-weight: 400;
+  font-size: 3.38rem;
+  background: linear-gradient(-49deg, #F4C873 0%, #E9CD90 52.5146484375%, #F2C96D 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+  white-space: nowrap;
 }
 
 .content {
