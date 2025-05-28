@@ -47,44 +47,12 @@ const incenseImages: ImageItem[] = [
   }
 ];
 
-const blindBoxImages: ImageItem[] = [
-  {
-    id: 1,
-    name: "Pray",
-    desc: "Pray for a smooth and joyful life.",
-    img: "/images/wish/WishPanel/BlindBox/1.1.gif"
-  },
-  {
-    id: 2,
-    name: "Health Blessing",
-    desc: "May you enjoy strong vitality and lasting balance in body and mind.",
-    img: "/images/wish/WishPanel/BlindBox/1.2.gif"
-  },
-  {
-    id: 3,
-    name: "Fortune Blessing",
-    desc: "May fortune find you, bringing wealth and unexpected opportunities.",
-    img: "/images/wish/WishPanel/BlindBox/1.3.gif"
-  },
-  {
-    id: 4,
-    name: "Wisdom Blessing",
-    desc: "May your mind be clear and your choices filled with insight.",
-    img: "/images/wish/WishPanel/BlindBox/1.4.gif"
-  },
-  {
-    id: 5,
-    name: "Love Blessing",
-    desc: "May you meet your true love and enjoy a harmonious, loving relationship.",
-    img: "/images/wish/WishPanel/BlindBox/1.5.gif"
-  }
-];
-
 export type Props = {
   readonly wish?: (incenseId: number, blindBoxId: number, wishContent: string, value: number) => Promise<void>;
+  setWishStatus: (status: boolean) => void;
 };
 
-const WishPanel = ({ wish }: Props) => {
+const WishPanel = ({ wish, setWishStatus }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const [wishContent, setWishContent] = useState("");
 
@@ -128,8 +96,15 @@ const WishPanel = ({ wish }: Props) => {
         if (!incenseId || !blindBoxId) {
           return;
         }
-        await wish(incenseId, blindBoxId, wishContent, Number(formatEther(totalAmount)));
-        console.log("wish success");
+        setWishStatus(false);
+        const res = await wish(incenseId, blindBoxId, wishContent, Number(formatEther(totalAmount)));
+        console.log("res: ", res);
+        if (res && res.status == "success") {
+          console.log("wish success");
+          setWishStatus(true);
+        } else {
+          console.log("wish faild");
+        }
       } catch (error) {
         console.error("wish error:", error);
         alert("Please retry");

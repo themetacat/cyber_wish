@@ -23,6 +23,7 @@ struct WisherTemporaryRecordsData {
   uint256 starLastCycle;
   uint256 wishCount;
   uint256 points;
+  uint256 freeWishTime;
 }
 
 library WisherTemporaryRecords {
@@ -30,12 +31,12 @@ library WisherTemporaryRecords {
   ResourceId constant _tableId = ResourceId.wrap(0x7462637962657277697368000000000057697368657254656d706f7261727952);
 
   FieldLayout constant _fieldLayout =
-    FieldLayout.wrap(0x00c0060020202020202000000000000000000000000000000000000000000000);
+    FieldLayout.wrap(0x00e0070020202020202020000000000000000000000000000000000000000000);
 
   // Hex-encoded key schema of (bytes32, address)
   Schema constant _keySchema = Schema.wrap(0x003402005f610000000000000000000000000000000000000000000000000000);
-  // Hex-encoded value schema of (uint256, uint256, uint256, uint256, uint256, uint256)
-  Schema constant _valueSchema = Schema.wrap(0x00c006001f1f1f1f1f1f00000000000000000000000000000000000000000000);
+  // Hex-encoded value schema of (uint256, uint256, uint256, uint256, uint256, uint256, uint256)
+  Schema constant _valueSchema = Schema.wrap(0x00e007001f1f1f1f1f1f1f000000000000000000000000000000000000000000);
 
   /**
    * @notice Get the table's key field names.
@@ -52,13 +53,14 @@ library WisherTemporaryRecords {
    * @return fieldNames An array of strings with the names of value fields.
    */
   function getFieldNames() internal pure returns (string[] memory fieldNames) {
-    fieldNames = new string[](6);
+    fieldNames = new string[](7);
     fieldNames[0] = "pointsWishIndex";
     fieldNames[1] = "starWishIndex";
     fieldNames[2] = "pointsLastCycle";
     fieldNames[3] = "starLastCycle";
     fieldNames[4] = "wishCount";
     fieldNames[5] = "points";
+    fieldNames[6] = "freeWishTime";
   }
 
   /**
@@ -352,6 +354,52 @@ library WisherTemporaryRecords {
   }
 
   /**
+   * @notice Get freeWishTime.
+   */
+  function getFreeWishTime(bytes32 poolId, address wisher) internal view returns (uint256 freeWishTime) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(uint160(wisher)));
+
+    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 6, _fieldLayout);
+    return (uint256(bytes32(_blob)));
+  }
+
+  /**
+   * @notice Get freeWishTime.
+   */
+  function _getFreeWishTime(bytes32 poolId, address wisher) internal view returns (uint256 freeWishTime) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(uint160(wisher)));
+
+    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 6, _fieldLayout);
+    return (uint256(bytes32(_blob)));
+  }
+
+  /**
+   * @notice Set freeWishTime.
+   */
+  function setFreeWishTime(bytes32 poolId, address wisher, uint256 freeWishTime) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(uint160(wisher)));
+
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 6, abi.encodePacked((freeWishTime)), _fieldLayout);
+  }
+
+  /**
+   * @notice Set freeWishTime.
+   */
+  function _setFreeWishTime(bytes32 poolId, address wisher, uint256 freeWishTime) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(uint160(wisher)));
+
+    StoreCore.setStaticField(_tableId, _keyTuple, 6, abi.encodePacked((freeWishTime)), _fieldLayout);
+  }
+
+  /**
    * @notice Get the full data.
    */
   function get(bytes32 poolId, address wisher) internal view returns (WisherTemporaryRecordsData memory _table) {
@@ -394,7 +442,8 @@ library WisherTemporaryRecords {
     uint256 pointsLastCycle,
     uint256 starLastCycle,
     uint256 wishCount,
-    uint256 points
+    uint256 points,
+    uint256 freeWishTime
   ) internal {
     bytes memory _staticData = encodeStatic(
       pointsWishIndex,
@@ -402,7 +451,8 @@ library WisherTemporaryRecords {
       pointsLastCycle,
       starLastCycle,
       wishCount,
-      points
+      points,
+      freeWishTime
     );
 
     EncodedLengths _encodedLengths;
@@ -426,7 +476,8 @@ library WisherTemporaryRecords {
     uint256 pointsLastCycle,
     uint256 starLastCycle,
     uint256 wishCount,
-    uint256 points
+    uint256 points,
+    uint256 freeWishTime
   ) internal {
     bytes memory _staticData = encodeStatic(
       pointsWishIndex,
@@ -434,7 +485,8 @@ library WisherTemporaryRecords {
       pointsLastCycle,
       starLastCycle,
       wishCount,
-      points
+      points,
+      freeWishTime
     );
 
     EncodedLengths _encodedLengths;
@@ -457,7 +509,8 @@ library WisherTemporaryRecords {
       _table.pointsLastCycle,
       _table.starLastCycle,
       _table.wishCount,
-      _table.points
+      _table.points,
+      _table.freeWishTime
     );
 
     EncodedLengths _encodedLengths;
@@ -480,7 +533,8 @@ library WisherTemporaryRecords {
       _table.pointsLastCycle,
       _table.starLastCycle,
       _table.wishCount,
-      _table.points
+      _table.points,
+      _table.freeWishTime
     );
 
     EncodedLengths _encodedLengths;
@@ -507,7 +561,8 @@ library WisherTemporaryRecords {
       uint256 pointsLastCycle,
       uint256 starLastCycle,
       uint256 wishCount,
-      uint256 points
+      uint256 points,
+      uint256 freeWishTime
     )
   {
     pointsWishIndex = (uint256(Bytes.getBytes32(_blob, 0)));
@@ -521,6 +576,8 @@ library WisherTemporaryRecords {
     wishCount = (uint256(Bytes.getBytes32(_blob, 128)));
 
     points = (uint256(Bytes.getBytes32(_blob, 160)));
+
+    freeWishTime = (uint256(Bytes.getBytes32(_blob, 192)));
   }
 
   /**
@@ -540,7 +597,8 @@ library WisherTemporaryRecords {
       _table.pointsLastCycle,
       _table.starLastCycle,
       _table.wishCount,
-      _table.points
+      _table.points,
+      _table.freeWishTime
     ) = decodeStatic(_staticData);
   }
 
@@ -576,9 +634,11 @@ library WisherTemporaryRecords {
     uint256 pointsLastCycle,
     uint256 starLastCycle,
     uint256 wishCount,
-    uint256 points
+    uint256 points,
+    uint256 freeWishTime
   ) internal pure returns (bytes memory) {
-    return abi.encodePacked(pointsWishIndex, starWishIndex, pointsLastCycle, starLastCycle, wishCount, points);
+    return
+      abi.encodePacked(pointsWishIndex, starWishIndex, pointsLastCycle, starLastCycle, wishCount, points, freeWishTime);
   }
 
   /**
@@ -593,7 +653,8 @@ library WisherTemporaryRecords {
     uint256 pointsLastCycle,
     uint256 starLastCycle,
     uint256 wishCount,
-    uint256 points
+    uint256 points,
+    uint256 freeWishTime
   ) internal pure returns (bytes memory, EncodedLengths, bytes memory) {
     bytes memory _staticData = encodeStatic(
       pointsWishIndex,
@@ -601,7 +662,8 @@ library WisherTemporaryRecords {
       pointsLastCycle,
       starLastCycle,
       wishCount,
-      points
+      points,
+      freeWishTime
     );
 
     EncodedLengths _encodedLengths;

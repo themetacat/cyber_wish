@@ -46,10 +46,10 @@ contract BoostWisherSystem is System {
         selectedWisher[i].wisher,
         boostAmount[i]
       );
-      Wisher.setBoostedStarAmount(
+      Wisher.setBoostedPointsAmount(
         poolId,
         selectedWisher[i].wisher,
-        Wisher.getBoostedStarAmount(poolId, selectedWisher[i].wisher) + boostAmount[i]
+        Wisher.getBoostedPointsAmount(poolId, selectedWisher[i].wisher) + boostAmount[i]
       );
       WisherCycleRecords.setBoostedPointsAmount(poolId, boostCycle, selectedWisher[i].wisher, boostAmount[i]);
     }
