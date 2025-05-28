@@ -10,12 +10,48 @@
   background-repeat: no-repeat;
 }
 
+.secTitle {
+  margin-top: 39px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.secTitleWishingWall,
+.secTitleMyWishs {
+  width: 185px;
+  height: 36px;
+  font-family: 'Orbitron';
+  font-weight: 400;
+  font-size: 15px;
+  color: #000000;
+  line-height: 33px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.secTitleWishingWall {
+  background-image: url('/images/wishWall/SecTitleSelectedBg.webp');
+}
+
+.secTitleMyWishs {
+  background-image: url('/images/wishWall/SecTitleNotSelectedBg.webp');
+  color: #E2BE76;
+}
+
 .title {
-  line-height: 3.06rem;
+  margin: 27px auto 22px auto;
   text-align: center;
   font-family: 'FSKim';
   font-weight: 400;
-  font-size: 3.38rem;
+  font-size: 54.08px;
   background: linear-gradient(-49deg, #F4C873 0%, #E9CD90 52.5146484375%, #F2C96D 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -37,13 +73,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 16vh;
-  background: #fff;
-  border: 1px solid #ddd;
+  height: 116px;
   border-radius: 10px;
   margin-bottom: 10px;
-  padding: 10px 20px;
+  background-image: url('/images/wishWall/WishContentBg.webp');
   box-sizing: border-box;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 0 30px;
 }
 
 .textContent {
@@ -53,20 +91,27 @@
 }
 
 .wishContent {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-bottom: 10px;
+  width: 570px;
+  height: 62px;
+  font-family: 'FSKim';
+  font-weight: 400;
+  font-size: 15px;
+  color: #FFF5CC;
+  line-height: 31px;
+  word-break: break-word;
 }
 
 .wishMeta {
   display: flex;
-  font-size: 12px;
-  color: #777;
-  margin-top: 6px;
-  word-break: break-word;
-  display: flex;
+  margin-top: 1px;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 30px;
+
+  font-family: 'FSKim';
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: #FFF6D9;
 }
 
 .image {
@@ -81,7 +126,6 @@
   padding: 20px;
   color: #888;
 }
-
 
 .footer {
   height: 16vh;

@@ -92,9 +92,9 @@ export default function Main() {
         <br />
         <button onClick={() => boostByPoints()}>boost points</button> */}
         <WishPanel wish={wish} setWishStatus={setWishStatus} />
-        <WishesPanel />
-        {/* <WishingWall /> */}
-        <WishResult wishStatus={wishStatus}/>
+        {/* <WishesPanel /> */}
+        <WishingWall />
+        {/* <WishResult wishStatus={wishStatus}/> */}
       </div>
     </>
   );

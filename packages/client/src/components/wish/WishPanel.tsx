@@ -52,31 +52,31 @@ const blindBoxImages: ImageItem[] = [
     id: 1,
     name: "Pray",
     desc: "Pray for a smooth and joyful life.",
-    img: "/images/wish/WishPanel/BlindBox/1.1.gif"
+    img: "/images/wish/WishPanel/Props/NAMASKAR.png"
   },
   {
     id: 2,
     name: "Health Blessing",
     desc: "May you enjoy strong vitality and lasting balance in body and mind.",
-    img: "/images/wish/WishPanel/BlindBox/1.2.gif"
+    img: "/images/wish/WishPanel/BlindBox/Health.png"
   },
   {
     id: 3,
     name: "Fortune Blessing",
     desc: "May fortune find you, bringing wealth and unexpected opportunities.",
-    img: "/images/wish/WishPanel/BlindBox/1.3.gif"
+    img: "/images/wish/WishPanel/BlindBox/Fortune.png"
   },
   {
     id: 4,
     name: "Wisdom Blessing",
     desc: "May your mind be clear and your choices filled with insight.",
-    img: "/images/wish/WishPanel/BlindBox/1.4.gif"
+    img: "/images/wish/WishPanel/BlindBox/Wisdom.png"
   },
   {
     id: 5,
     name: "Love Blessing",
     desc: "May you meet your true love and enjoy a harmonious, loving relationship.",
-    img: "/images/wish/WishPanel/BlindBox/1.5.gif"
+    img: "/images/wish/WishPanel/BlindBox/Love.png"
   }
 ];
 
