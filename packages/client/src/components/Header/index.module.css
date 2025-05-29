@@ -55,6 +55,15 @@
   transform: scale(1.05);
 }
 
+.navItem.selected {
+  background-image: url('/images/Header/MenuSelectedBg.webp');
+  color: #000;
+}
+
+.navItem.selected:hover {
+  color: #000;
+}
+
 .connectButton {
   margin-left: 1rem;
 } 
