@@ -56,7 +56,7 @@
 
 .wishContent {
     width: 570px;
-    font-family: 'ShangShouZhongZhengSongTi';
+    font-family: '155-SSZhongZhengSongTi';
     font-weight: 400;
     font-size: 15px;
     color: #FFF5CC;
@@ -71,7 +71,7 @@
     margin-top: 1px;
     flex-wrap: wrap;
     gap: 30px;
-    font-family: 'ShangShouZhongZhengSongTi';
+    font-family: '155-SSZhongZhengSongTi';
     font-size: 12px;
     font-weight: 400;
     letter-spacing: 1px;

@@ -73,7 +73,7 @@
 .title {
   margin: 1px auto 1px auto;
   text-align: center;
-  font-family: 'FSKim';
+  font-family: 'FSKim-Medium';
   font-weight: 400;
   font-size: 54.08px;
   background: linear-gradient(-49deg, #F4C873 0%, #E9CD90 52.5146484375%, #F2C96D 100%);
@@ -122,7 +122,7 @@
 .wishContent {
   width: 570px;
   height: 62px;
-  font-family: 'ShangShouZhongZhengSongTi';
+  font-family: '155-SSZhongZhengSongTi';
   font-weight: 400;
   font-size: 15px;
   color: #FFF5CC;
@@ -138,7 +138,7 @@
   flex-wrap: wrap;
   gap: 30px;
 
-  font-family: 'ShangShouZhongZhengSongTi';
+  font-family: '155-SSZhongZhengSongTi';
   font-size: 12px;
   font-weight: 400;
   letter-spacing: 1px;
@@ -199,7 +199,7 @@
 .notHasMore span:last-child {
   color: #F4C873;
   font-size: 20px;
-  font-family: 'FSKim';
+  font-family: 'FSKim-Medium';
   font-weight: 400;
 }
 
