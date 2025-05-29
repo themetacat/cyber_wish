@@ -1,4 +1,3 @@
-import { AccountButton } from "@latticexyz/entrykit/internal";
 import { Direction, Entity } from "./common";
 import mudConfig from "contracts/mud.config";
 import { useMemo } from "react";
@@ -67,9 +66,6 @@ export function App() {
           <Main/>
           {/* <GameMap players={players} onMove={onMove} onSpawn={onSpawn} /> */}
         </Synced>
-      </div>
-      <div className="fixed top-2 right-2">
-        <AccountButton />
       </div>
     </>
   );

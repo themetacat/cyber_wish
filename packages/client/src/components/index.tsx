@@ -15,6 +15,7 @@ import WishesPanel from "./wish/wishesPanel";
 import WishingWall from "./wishWall";
 import WishResult from "./wish/wishResult";
 import Selected from "./Fate/selected";
+import Header from "./Header";
 
 export default function Main() {
   const [wishStatus, setWishStatus] = useState(false);
@@ -75,6 +76,7 @@ export default function Main() {
   return (
     <>
       <div className={styles.container}>
+        <Header />
         {/* <button onClick={() => boostByStar()}>boost star</button>
         <br />
         <button onClick={() => boostByPoints()}>boost points</button> */}

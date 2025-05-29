@@ -139,15 +139,6 @@ export default function WishingWall() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.secTitle}>
-        <span className={styles.secTitleWishingWall}>
-          WAIHING WALL
-        </span>
-        <span className={styles.secTitleMyWishs}>
-          MY WAIHS
-        </span>
-      </div>
-
       <h1 className={styles.title}>Wishing Wall</h1>
 
       <div className={styles.content} ref={containerRef}>

@@ -25,53 +25,8 @@
   background: transparent;
 }
 
-.secTitle {
-  margin-top: 39px;
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.secTitleWishingWall,
-.secTitleMyWishs {
-  width: 185px;
-  height: 36px;
-  font-family: 'Orbitron';
-  font-weight: 400;
-  font-size: 15px;
-  color: #000000;
-  line-height: 33px;
-  white-space: nowrap;
-  display: flex;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.secTitleWishingWall:hover {
-  transform: scale(1.05);
-}
-
-.secTitleMyWishs:hover {
-  transform: scale(1.05);
-}
-
-.secTitleWishingWall {
-  background-image: url('/images/wishWall/SecTitleSelectedBg.webp');
-}
-
-.secTitleMyWishs {
-  background-image: url('/images/wishWall/SecTitleNotSelectedBg.webp');
-  color: #E2BE76;
-}
-
 .title {
-  margin: 1px auto 1px auto;
+  margin: 55px auto 1px auto;
   text-align: center;
   font-family: 'FSKim-Medium';
   font-weight: 400;

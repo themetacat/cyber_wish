@@ -1,0 +1,60 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.logo {
+  height: 40px;
+  cursor: pointer;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+.logo img {
+  width: 180px;
+  height: 38px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navItem {
+  width: 185px;
+  height: 36px;
+  font-family: 'Orbitron';
+  font-weight: 400;
+  font-size: 18px;
+  color: #E2BE76;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background-image: url('/images/Header/MenuBg.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  text-align: center;
+}
+
+.navItem:hover {
+  color: #ffd700;
+  transform: scale(1.05);
+}
+
+.connectButton {
+  margin-left: 1rem;
+} 
