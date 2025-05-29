@@ -1,0 +1,184 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    background-image: url('../../../public/images/Fate/Selected/Bg.webp');
+    background-size: cover;
+    background-position: center;
+    width: 35vw;
+    height: 74vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    font-family: "155-SSZhongZhengSongTi";
+    overflow: hidden;
+}
+
+.header {
+    text-align: center;
+    font-size: 51px;
+    font-weight: bold;
+    margin-top: 19px;
+    color: rgba(233, 205, 144, 1);
+    font-family: 'FSKim-Medium';
+}
+
+.divider {
+    height: 1px;
+    margin-left: 5%;
+    margin-top: 1%;
+    width: 90%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.05), rgba(242, 201, 109, 1), rgba(255, 255, 255, 0.05));
+    filter: blur(0px);
+    flex-shrink: 0;
+}
+
+.tableWrapper {
+    width: 92%;
+    height: 72.9%;
+    display: flex;
+    flex-direction: column;
+    margin-left: 5%;
+    margin-top: 8%;
+}
+
+.tableHeader {
+    display: flex;
+    color: rgba(255, 209, 98, 1);
+    font-size: 17px;
+}
+
+.scrollbarSpacer {
+    width: 23px;
+    border: none !important;
+}
+
+.scrollContainer {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+}
+
+.tableBodyWrapper {
+    height: 100%;
+    overflow-y: scroll;
+    padding-right: 10px;
+    box-sizing: content-box;
+}
+
+.tableBodyWrapper::-webkit-scrollbar {
+    width: 13px;
+}
+
+.tableBodyWrapper::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.tableBodyWrapper::-webkit-scrollbar-thumb {
+    cursor: pointer;
+
+    background: linear-gradient(to bottom, #F5CB7A, #FBE6AF);
+    border-radius: 2px;
+    box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.6),
+        inset 0 -1px 1px rgba(188, 160, 105, 0.4),
+        0 0 1px rgba(188, 160, 105, 0.6);
+    border: 2px solid rgba(188, 160, 105, 0.3);
+    /* background: url('../../../public/images/Fate/Selected/scrollbar.webp') no-repeat center; */
+}
+
+
+.tableBody {
+    display: flex;
+    flex-direction: column;
+    color: rgba(255, 245, 204, 1);
+    font-size: 14px;
+}
+
+.row {
+    display: flex;
+    border-bottom: 1px solid rgba(255, 209, 98, 1);
+    border-left: 1px solid rgba(255, 209, 98, 1);
+}
+
+.cell {
+    flex: 1;
+    padding: 9px;
+    border-right: 1px solid rgba(255, 209, 98, 1);
+    box-sizing: border-box;
+    text-align: center;
+    word-break: break-word;
+}
+
+.closeButton {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: transparent;
+    border: none;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+
+.closeButton:hover {
+    transform: scale(1.1);
+}
+
+.closeButton:active {
+    transform: scale(0.95);
+}
+
+.closeButton img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+
+@media (max-width: 768px) {
+    .modal {
+        width: 90vw;
+        height: 80vh;
+        padding: 10px;
+    }
+
+    .header {
+        font-size: 32px;
+    }
+
+    .tableWrapper {
+        width: 96%;
+    }
+
+    .scrollbarSpacer {
+        width: 16px;
+    }
+
+    .tableBodyWrapper::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .tableHeader {
+        font-size: 14px;
+    }
+
+    .tableBody {
+        font-size: 11px;
+    }
+
+}

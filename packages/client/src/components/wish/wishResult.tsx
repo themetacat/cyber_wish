@@ -57,13 +57,9 @@ export default function WishesResult({ wishStatus }: Props) {
     const wishCountData = useComponentValue(components.WishCount, singletonEntity);
 
     useEffect(() => {
-        console.log("Check 1111");
-        
         if (wishCount == 0) {
             return;
         }
-
-        console.log("Check 2222");
         
         if (!wishCountData || wishCountData.count <= 0n) {
             return;

@@ -1,10 +1,21 @@
 .container {
-    position: absolute;
-    inset: 0;
-    /* background-image: url("/assets/background.jpg");
+  position: absolute;
+  inset: 0;
+  /* background-image: url("/assets/background.jpg");
     background-size: cover;
     background-position: center; */
-    background-color: antiquewhite;
-    overflow: hidden;
-  }
-  
+  background-color: antiquewhite;
+  overflow: hidden;
+}
+
+@font-face {
+  font-family: 'FSKim-Medium';
+  src: url('/fonts/FSKim-Medium.otf') format('opentype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: '155-SSZhongZhengSongTi';
+  src: url('/fonts/155-SSZhongZhengSongTi.ttf') format('truetype');
+  font-display: swap;
+}

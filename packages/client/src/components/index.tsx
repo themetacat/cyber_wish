@@ -14,24 +14,11 @@ import WishPanel from "./wish/WishPanel";
 import WishesPanel from "./wish/wishesPanel";
 import WishingWall from "./wishWall";
 import WishResult from "./wish/wishResult";
+import Selected from "./Fate/selected";
 
 export default function Main() {
-  // const playerEntities = useEntityQuery([Has(components.Owner), Has(components.Position)]);
-  // const players = useMemo(
-  //   () =>
-  //     playerEntities.map((entity) => {
-  //       const owner = getComponentValueStrict(components.Owner, entity);
-  //       const position = getComponentValueStrict(components.Position, entity);
-  //       return {
-  //         entity: entity as Entity,
-  //         owner: owner.owner as Address,
-  //         x: position.x,
-  //         y: position.y,
-  //       };
-  //     }),
-  //   [playerEntities],
-  // );
   const [wishStatus, setWishStatus] = useState(false);
+  const [showSelected, setShowSelected] = useState(true);
 
   const sync = useSync();
   const worldContract = useWorldContract();
@@ -88,12 +75,13 @@ export default function Main() {
   return (
     <>
       <div className={styles.container}>
-        {/* <button onClick={() => boostByStar()}>boost star</button>
+        <button onClick={() => boostByStar()}>boost star</button>
         <br />
-        <button onClick={() => boostByPoints()}>boost points</button> */}
+        <button onClick={() => boostByPoints()}>boost points</button>
         <WishPanel wish={wish} setWishStatus={setWishStatus} />
         <WishesPanel />
         {/* <WishingWall /> */}
+        {showSelected && <Selected cycle={1} onClose={() => setShowSelected(false)}/>}
         <WishResult wishStatus={wishStatus}/>
       </div>
     </>
