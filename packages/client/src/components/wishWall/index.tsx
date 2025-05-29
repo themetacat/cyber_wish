@@ -169,9 +169,22 @@ export default function WishingWall() {
             <img src={propsData[item.propId].imageUrl} className={styles.image} alt="blessing item" />
           </div>
         ))}
-        {loading && <div className={styles.loading}>
-          <img src="/images/wishWall/Loading.webp" alt="Loading..." />
-        </div>}
+        {loading &&
+          <div className={styles.loading}>
+            <img src="/images/wishWall/Loading.webp" alt="Loading..." />
+          </div>
+        }
+
+        {!hasMore &&
+          <div className={styles.notHasMore}>
+            <span>
+              <img src="/images/wishWall/NotHasMore.svg" alt="notHasMore" />
+            </span>
+            <span>
+              You've reached the end!
+            </span>
+          </div>
+        }
       </div>
     </div>
   );
