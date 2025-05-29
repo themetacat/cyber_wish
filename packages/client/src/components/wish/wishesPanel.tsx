@@ -181,10 +181,10 @@ export default function WishesPanel() {
                 <div className={styles.wishContent}>{wish.wishContent}</div>
                 <div className={styles.wishMeta}>
                   <div className={styles.metaAddress}>
-                    by {shortenAddress(wish.wisher)}
+                    By {shortenAddress(wish.wisher)}
                   </div>
                   <div className={styles.metaTime}>
-                    {format(new Date(wish.wishTime * 1000), "h:mma·MMM d, yyyy")}
+                    {format(new Date(wish.wishTime * 1000), "h:mma·MMMd,yyyy")}
                   </div>
                 </div>
               </li>

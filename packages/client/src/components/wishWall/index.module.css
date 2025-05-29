@@ -53,11 +53,11 @@
   background-repeat: no-repeat;
 }
 
-.secTitleWishingWall:hover  {
+.secTitleWishingWall:hover {
   transform: scale(1.05);
 }
 
-.secTitleMyWishs:hover  {
+.secTitleMyWishs:hover {
   transform: scale(1.05);
 }
 
@@ -122,12 +122,14 @@
 .wishContent {
   width: 570px;
   height: 62px;
-  font-family: 'FSKim';
+  font-family: 'ShangShouZhongZhengSongTi';
   font-weight: 400;
   font-size: 15px;
   color: #FFF5CC;
   line-height: 31px;
   word-break: break-word;
+  display: flex;
+  align-items: center;
 }
 
 .wishMeta {
@@ -136,11 +138,13 @@
   flex-wrap: wrap;
   gap: 30px;
 
-  font-family: 'FSKim';
+  font-family: 'ShangShouZhongZhengSongTi';
   font-size: 12px;
   font-weight: 400;
   letter-spacing: 1px;
   color: #FFF6D9;
+  display: flex;
+  align-items: center;
 }
 
 .image {
@@ -154,6 +158,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
