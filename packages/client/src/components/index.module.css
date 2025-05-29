@@ -1,10 +1,81 @@
+@font-face {
+  font-family: 'FSKim';
+  src: url('/fonts/FSKimTrial-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'FSKim';
+  src: url('/fonts/FSKimTrial-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Sling';
+  src: url('/fonts/SlingLight.ttf') format('truetype');
+  font-weight: 200;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sling';
+  src: url('/fonts/Sling.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sling';
+  src: url('/fonts/SlingBold.ttf') format('truetype');
+  font-weight: 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'AlibabaPuHuiTi';
+  src: url('/fonts/Alibaba-PuHuiTi-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Orbitron';
+  src: url('/fonts/Orbitron-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Orbitron';
+  src: url('/fonts/Orbitron-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Orbitron';
+  src: url('/fonts/Orbitron-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ShangShouZhongZhengSongTi';
+  src: url('/fonts/No.155-ShangShouZhongZhengSongTi-2.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+
 .container {
   position: absolute;
   inset: 0;
-  /* background-image: url("/assets/background.jpg");
-    background-size: cover;
-    background-position: center; */
-  background-color: antiquewhite;
+  background-image: url('/images/BG.webp');
+  background-size: cover;
+  background-position: center;
   overflow: hidden;
 }
 

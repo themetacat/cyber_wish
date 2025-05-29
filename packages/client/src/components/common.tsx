@@ -21,7 +21,6 @@ export interface WisherCycelRecords {
 export const getBoostWisherRecords = (cycle: number): SelectedWisher | undefined => {
     const BoostWisherRecords = components.BoostWisherRecords;
 
-    // const cycleHex = pad(`0x${cycle.toString(16)}`, { size: 32 });
     const key = encodeEntity(BoostWisherRecords.metadata.keySchema, { poolId: wishPool, cycle: BigInt(cycle) });
     const boostWisherRecordsData = getComponentValue(BoostWisherRecords, key);
 

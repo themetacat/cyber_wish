@@ -11,7 +11,7 @@ interface WishInfo {
   wisher: string;
   wishContent: string;
   wishTime: number;
-  props: number;
+  propId: number;
 }
 
 type PropsItem = {
@@ -20,9 +20,30 @@ type PropsItem = {
 };
 
 const propsData: Record<number, PropsItem> = {
-  1: { name: "yiyi", imageUrl:  "assets/img/CLUK.webp" },
-  2: { name: "erer", imageUrl:  "assets/img/CLUK.webp" },
-  3: { name: "sansan", imageUrl:  "assets/img/CLUK.webp" },
+  // Pray Blessing props
+  1: { name: "NAMASKAR", imageUrl: "images/wish/WishPanel/Props/NAMASKAR.png" },
+
+  // Health Blessing Props
+  2: { name: "Medicinal Herb Pouch", imageUrl: "images/wish/WishPanel/Props/2.1.png" },
+  3: { name: "Green Wellness Candle", imageUrl: "images/wish/WishPanel/Props/2.2.png" },
+  4: { name: "Horseshoe", imageUrl: "images/wish/WishPanel/Props/2.3.png" },
+  5: { name: "Red String", imageUrl: "images/wish/WishPanel/Props/2.4.png" },
+
+  // Fortune Blessing Props
+  6: { name: "Treasure Basin", imageUrl: "images/wish/WishPanel/Props/3.1.png" },
+  7: { name: "Lucky Beckoning Cat", imageUrl: "images/wish/WishPanel/Props/3.2.png" },
+  8: { name: "God of Wealth", imageUrl: "images/wish/WishPanel/Props/3.3.png" },
+  9: { name: "BitCoin", imageUrl: "images/wish/WishPanel/Props/3.4.png" },
+
+  // Wisdom Blessing Props
+  10: { name: "Koi Fish", imageUrl: "images/wish/WishPanel/Props/4.1.png" },
+  11: { name: "Athena's Owl", imageUrl: "images/wish/WishPanel/Props/4.2.png" },
+  12: { name: "Albert Einstein", imageUrl: "images/wish/WishPanel/Props/4.3.png" },
+
+  // Love Blessing Props
+  13: { name: "Cupid's Arrow", imageUrl: "images/wish/WishPanel/Props/1.1.png" },
+  14: { name: "Lucky Love Box", imageUrl: "images/wish/WishPanel/Props/1.2.png" },
+  15: { name: "Love Candle", imageUrl: "images/wish/WishPanel/Props/1.3.png" },
 };
 
 export default function WishingWall() {
@@ -36,7 +57,7 @@ export default function WishingWall() {
 
   const loadWishes = async () => {
     if (loading || !hasMore) return;
-    
+
     setLoading(true);
     const newWishes: WishInfo[] = [];
 
@@ -59,7 +80,6 @@ export default function WishingWall() {
     setWishes((prev) => [...prev, ...newWishes]);
     setLoading(false);
   };
-  
 
   useEffect(() => {
     if (noLoadCount.current) {
@@ -94,7 +114,7 @@ export default function WishingWall() {
       wisher: wishData.wisher,
       wishContent: wishData.wishContent,
       wishTime: Number(wishData.wishTime),
-      props: 1
+      propId: Number(wishData.propId)
     }
 
     return wishInfo;
@@ -119,22 +139,52 @@ export default function WishingWall() {
 
   return (
     <div className={styles.page}>
+      <div className={styles.secTitle}>
+        <span className={styles.secTitleWishingWall}>
+          WAIHING WALL
+        </span>
+        <span className={styles.secTitleMyWishs}>
+          MY WAIHS
+        </span>
+      </div>
+
       <h1 className={styles.title}>Wishing Wall</h1>
+
       <div className={styles.content} ref={containerRef}>
         {wishes.map((item, index) => (
           <div key={index} className={styles.infoBox}>
             <div className={styles.textContent}>
-              <div className={styles.wishContent}>{item.wishContent}</div>
+              <div className={styles.wishContent}>
+                {item.wishContent}
+              </div>
+
               <div className={styles.wishMeta}>
-                by {shortenAddress(item.wisher)}
+                By {shortenAddress(item.wisher)}
                 <span className={styles.metaTime}>
                   {format(new Date(item.wishTime * 1000), "h:mma·MMM d,yyyy")}
-                </span></div>
+                </span>
+              </div>
             </div>
-            <img src={propsData[item.props].imageUrl} className={styles.image} alt="图标" />
+
+            <img src={propsData[item.propId].imageUrl} className={styles.image} alt="blessing item" />
           </div>
         ))}
-        {loading && <div className={styles.loading}>loading...</div>}
+        {loading &&
+          <div className={styles.loading}>
+            <img src="/images/wishWall/Loading.webp" alt="Loading..." />
+          </div>
+        }
+
+        {!hasMore &&
+          <div className={styles.notHasMore}>
+            <span>
+              <img src="/images/wishWall/NotHasMore.svg" alt="notHasMore" />
+            </span>
+            <span>
+              You've reached the end!
+            </span>
+          </div>
+        }
       </div>
     </div>
   );
