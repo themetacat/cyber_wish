@@ -67,6 +67,21 @@
   gap: 0.35rem;
   position: relative;
   margin: auto;
+  transform: scale(0);
+  animation: scaleIn 0.15s ease-out forwards;
+}
+
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .modalContent h1 {

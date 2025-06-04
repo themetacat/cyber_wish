@@ -78,7 +78,7 @@ export default function Main() {
         {/* <button onClick={() => boostByStar()}>boost star</button>
         <br />
         <button onClick={() => boostByPoints()}>boost points</button> */}
-        {/* <WishPanel wish={wish} setWishStatus={setWishStatus} /> */}
+        <WishPanel wish={wish} setWishStatus={setWishStatus} />
         {/* <WishesPanel /> */}
         {/* <WishingWall /> */}
         {location.pathname === "/" && <WishesPanel />}
