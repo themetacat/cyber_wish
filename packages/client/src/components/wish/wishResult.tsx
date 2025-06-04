@@ -8,11 +8,13 @@ import { wishPool } from "../../utils/contants";
 import { pad } from "viem";
 import { useAccount } from "wagmi";
 import { propsData } from "../../utils/propsData";
+import { incenseData } from "../../utils/incenseData";
 
 interface WishInfo {
   wisher: string;
   wishContent: string;
   wishTime: number;
+  incenseId: number;
   propId: number;
   lightPoints: number;
   blindBoxPoints: number;
@@ -25,7 +27,10 @@ export type Props = {
 export default function WishesResult({ wishStatus }: Props) {
   const { address: userAddress } = useAccount();
   const Wishes = components.Wishes;
+  const [incenseId, setIncenseId] = useState<number>(0);
   const [propId, setPropId] = useState<number>(0);
+  const [lightPoints, setLightPoints] = useState<number>(0);
+  const [blindBoxPoints, setBlindBoxPoints] = useState<number>(0);
   const [wishCount, setWishCount] = useState<number>(0);
   const [showModal, setShowModal] = useState(true);
 
@@ -44,6 +49,7 @@ export default function WishesResult({ wishStatus }: Props) {
       wisher: wishData.wisher as string,
       wishContent: wishData.wishContent as string,
       wishTime: Number(wishData.wishTime),
+      incenseId: Number(wishData.incenseId),
       propId: Number(wishData.propId),
       lightPoints: Number(wishData.pointsIncense),
       blindBoxPoints: Number(wishData.pointsBlindBox),
@@ -80,7 +86,10 @@ export default function WishesResult({ wishStatus }: Props) {
       return;
     }
     console.log(wishInfo);
+    setIncenseId(wishInfo.incenseId);
     setPropId(wishInfo.propId);
+    setLightPoints(wishInfo.lightPoints);
+    setBlindBoxPoints(wishInfo.blindBoxPoints);
     setWishCount((prev) => prev - 1);
   }, [wishCountData, userAddress, wishCount]);
 
@@ -133,12 +142,12 @@ export default function WishesResult({ wishStatus }: Props) {
               <div className={styles.wishPointsContainer}>
                 <div className={styles.wishPointsTop}>
                   <div className={styles.wishPointsColumn}>
-                    <img src={propsData[propId].imageUrl} alt="light points" />
-                    <span className={styles.wishPointsValue}>+15</span>
+                    <img src={incenseData[incenseId].img} alt="light points" />
+                    <span className={styles.wishPointsValue}>+{lightPoints}</span>
                   </div>
                   <div className={styles.wishPointsColumn}>
                     <img src={propsData[propId].imageUrl} alt="blind box points" />
-                    <span className={styles.wishPointsValue}>+15</span>
+                    <span className={styles.wishPointsValue}>+{blindBoxPoints}</span>
                   </div>
                   <div className={styles.wishPointsColumn}>
                     <span className={styles.wishPointsLabel}>WP:&nbsp;</span>

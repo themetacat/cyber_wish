@@ -8,79 +8,8 @@ import { wishPool } from "../../utils/contants";
 import { formatEther, TransactionReceipt } from 'viem';
 import { useAccount } from "wagmi";
 import { useAccountModal } from "@latticexyz/entrykit/internal";
-
-type ImageItem = {
-  id: number;
-  name: string;
-  desc: string;
-  img: string;
-};
-
-const incenseImages: ImageItem[] = [
-  {
-    id: 1,
-    name: "Pure Wish",
-    desc: "For sincere prayers and pure-hearted intentions to ascend.",
-    img: "/images/wish/WishPanel/Incense/1.1.gif"
-  },
-  {
-    id: 2,
-    name: "Luck  Wish",
-    desc: "For luck and good things to grow.",
-    img: "/images/wish/WishPanel/Incense/1.2.gif"
-  },
-  {
-    id: 3,
-    name: "Fortune Bloom",
-    desc: "For unlocking financial opportunities and abundance flow.",
-    img: "/images/wish/WishPanel/Incense/1.3.gif"
-  },
-  {
-    id: 4,
-    name: "Fate Whisper",
-    desc: "For deepening destined bonds and meaningful encounters.",
-    img: "/images/wish/WishPanel/Incense/1.4.gif"
-  },
-  {
-    id: 5,
-    name: "Celestial Wish",
-    desc: "For big dreams to reach the sky.",
-    img: "/images/wish/WishPanel/Incense/1.5.gif"
-  }
-];
-
-const blindBoxImages: ImageItem[] = [
-  {
-    id: 1,
-    name: "Pray",
-    desc: "Pray for a smooth and joyful life.",
-    img: "/images/wish/WishPanel/BlindBox/Pray.png"
-  },
-  {
-    id: 2,
-    name: "Health Blessing",
-    desc: "May you enjoy strong vitality and lasting balance in body and mind.",
-    img: "/images/wish/WishPanel/BlindBox/Health.png"
-  },
-  {
-    id: 3,
-    name: "Fortune Blessing",
-    desc: "May fortune find you, bringing wealth and unexpected opportunities.",
-    img: "/images/wish/WishPanel/BlindBox/Fortune.png"
-  },
-  {
-    id: 4,
-    name: "Wisdom Blessing",
-    desc: "May your mind be clear and your choices filled with insight.",
-    img: "/images/wish/WishPanel/BlindBox/Wisdom.png"
-  },
-  {
-    id: 5,
-    name: "Love Blessing",
-    desc: "May you meet your true love and enjoy a harmonious, loving relationship.",
-    img: "/images/wish/WishPanel/BlindBox/Love.png"
-  }
-];
+import { incenseData } from "../../utils/incenseData";
+import { blindBoxData } from "../../utils/blindBoxData";
 
 export type Props = {
   readonly wish?: (incenseId: number, blindBoxId: number, wishContent: string, value: number) => Promise<TransactionReceipt>;
@@ -215,7 +144,7 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
             <div>
               <span className={styles.itemTitle}>CHOOSE YOUR LIGHT</span>
               <Carousel
-                images={incenseImages}
+                images={incenseData}
                 onSelectId={setIncenseId}
               />
             </div>
@@ -223,7 +152,7 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
             <div>
               <span className={styles.itemTitle}>SELECT A BLESSING ITEM</span>
               <Carousel
-                images={blindBoxImages}
+                images={blindBoxData}
                 onSelectId={setBlindBoxId}
                 type="blindBox"
               />
