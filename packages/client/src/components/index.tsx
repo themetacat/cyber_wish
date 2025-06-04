@@ -13,6 +13,7 @@ import styles from "./index.module.css";
 import WishPanel from "./wish/WishPanel";
 import WishesPanel from "./wish/wishesPanel";
 import WishingWall from "./wishWall";
+import MyWishes from "./MyWishes";
 import WishResult from "./wish/wishResult";
 import Selected from "./Fate/selected";
 import Header from "./Header";
@@ -85,6 +86,7 @@ export default function Main() {
         <WishPanel wish={wish} setWishStatus={setWishStatus} />
         {location.pathname === "/" && <WishesPanel />}
         {location.pathname === "/wishing-wall" && <WishingWall />}
+        {location.pathname === "/my-wishes" && <MyWishes />}
         {showSelected && <Selected cycle={1} onClose={() => setShowSelected(false)}/>}
         <WishResult wishStatus={wishStatus}/>
       </div>
