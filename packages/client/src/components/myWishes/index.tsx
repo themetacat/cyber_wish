@@ -15,11 +15,6 @@ interface WishInfo {
   propId: number;
 }
 
-type PropsItem = {
-  name: string;
-  imageUrl: string;
-};
-
 export default function MyWishes() {
   const [wishes, setWishes] = useState<WishInfo[]>([]);
   const [loading, setLoading] = useState(false);
