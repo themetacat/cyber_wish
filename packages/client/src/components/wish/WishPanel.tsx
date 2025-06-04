@@ -90,6 +90,7 @@ export type Props = {
 const WishPanel = ({ wish, setWishStatus }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const [wishContent, setWishContent] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { address } = useAccount();
   const { openAccountModal } = useAccountModal();
@@ -147,6 +148,7 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
         if (!incenseId || !blindBoxId) {
           return;
         }
+        setIsSubmitting(true);
         setWishStatus(false);
         const res = await wish(incenseId, blindBoxId, wishContent, Number(formatEther(totalAmount)));
         console.log("res: ", res);
@@ -160,6 +162,8 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
         console.error("wish error:", error);
         alert("Please retry");
         return;
+      } finally {
+        setIsSubmitting(false);
       }
     } else {
       console.warn("no wish fn");
@@ -226,8 +230,14 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
             <p className={styles.totalEth}>
               Total: {formatEther(totalAmount)} ETH
             </p>
-            <button className={styles.sendButton} onClick={() => handleSubmit()}>
-              <span className={styles.sendButtonText}>Send the wish</span>
+            <button 
+              className={styles.sendButton} 
+              onClick={() => handleSubmit()}
+              disabled={isSubmitting}
+            >
+              <span className={styles.sendButtonText}>
+                {isSubmitting ? "Loading..." : "Send the wish"}
+              </span>
             </button>
             <button className={styles.closeButton} onClick={() => setShowModal(false)}>
               <img src="/images/wish/WishPanel/Close.webp" alt="Close" />

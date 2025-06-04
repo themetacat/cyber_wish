@@ -187,12 +187,22 @@
   transition: transform 0.1s ease;
 }
 
-.sendButton:hover{
+.sendButton:hover {
   transform: scale(1.03);
 }
 
 .sendButton:active {
   transform: scale(0.98);
+}
+
+.sendButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none;
+}
+
+.sendButton:disabled:hover {
+  transform: none;
 }
 
 .sendButtonText {
