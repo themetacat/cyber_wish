@@ -39,15 +39,18 @@
     z-index: 1;
     width: 4.375rem;
     height: 4.375rem;
-    background-image: url('/images/wish/WishPanel/ItemBorder.webp');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     border-radius: 0.1rem;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+}
+
+.card.incense {
+    background-image: url('/images/wish/WishPanel/ItemBorder.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .card img {

@@ -54,7 +54,7 @@ const blindBoxImages: ImageItem[] = [
     id: 1,
     name: "Pray",
     desc: "Pray for a smooth and joyful life.",
-    img: "/images/wish/WishPanel/Props/NAMASKAR.png"
+    img: "/images/wish/WishPanel/BlindBox/Pray.png"
   },
   {
     id: 2,
@@ -321,6 +321,9 @@ const Carousel = ({ images, onSelectId, type = 'incense' }: CarouselProps) => {
           {images.map((item, i) => {
             const offset = (i - currentIndex + total) % total;
             let className = carouselStyles.card;
+            if (type === 'incense') {
+                className += ` ${carouselStyles.incense}`;
+            }
 
             if (offset === 0) className += ` ${carouselStyles.active}`;
             else if (offset === 1 || (currentIndex === total - 1 && i === 0))
