@@ -1,12 +1,13 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./wishResult.module.css";
-import { useComponentValue, useEntityQuery } from "@latticexyz/react";
+import { useComponentValue } from "@latticexyz/react";
 import { components } from "../../mud/recs";
-import { getComponentValue, Has } from "@latticexyz/recs";
+import { getComponentValue } from "@latticexyz/recs";
 import { encodeEntity, singletonEntity } from "@latticexyz/store-sync/recs";
 import { wishPool } from "../../utils/contants";
 import { pad } from "viem";
 import { useAccount } from "wagmi";
+import { propsData } from "../../utils/propsData";
 
 interface WishInfo {
   wisher: string;
@@ -39,9 +40,9 @@ export default function WishesResult({ wishStatus }: Props) {
     if (!wishData) {
       return;
     }
-    const wishInfo = {
-      wisher: wishData.wisher,
-      wishContent: wishData.wishContent,
+    const wishInfo: WishInfo = {
+      wisher: wishData.wisher as string,
+      wishContent: wishData.wishContent as string,
       wishTime: Number(wishData.wishTime),
       propId: Number(wishData.propId),
       lightPoints: Number(wishData.pointsIncense),
@@ -49,6 +50,7 @@ export default function WishesResult({ wishStatus }: Props) {
     };
     return wishInfo;
   };
+
   useEffect(() => {
     if (wishStatus) {
       console.log("+1 wish count");
@@ -91,20 +93,68 @@ export default function WishesResult({ wishStatus }: Props) {
       {wishStatus && showModal && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
-            <h1>✨WISH SENT!✨</h1>
+            <span className={styles.title}>✨WISH SENT!✨</span>
             <button
               className={styles.closeButton}
               onClick={() => setShowModal(false)}
             >
               <img src="/images/wish/WishPanel/Close.webp" alt="Close" />
             </button>
-            <h3>Good fortune follows you......</h3>
-
-            <span className={styles.dividingLine}>
-              <img src="/images/wish/WishPanel/DividingLine.webp" alt="dividing line" />
+            <span className={styles.subtitle}>
+              Good fortune follows you......
             </span>
 
-            <h4>Your blessing item is:</h4>
+            <span className={styles.dividingLine}>
+              <img
+                src="/images/wish/WishPanel/DividingLine.webp"
+                alt="dividing line"
+              />
+            </span>
+
+            <span className={styles.blessingItemTitle}>
+              Your blessing item is:
+            </span>
+            {propsData[propId] && (
+              <div className={styles.blessingItemContainer}>
+                <img src={propsData[propId].imageUrl} alt="blessing item img" />
+                <span className={styles.blessingItemContentContainer}>
+                  <span className={styles.blessingItemName}>
+                    {propsData[propId].name}
+                  </span>
+                  <span className={styles.blessingItemDesc}>
+                    {propsData[propId].desc}
+                  </span>
+                </span>
+              </div>
+            )}
+
+            <span className={styles.wishPointsTitle}>Wish Points(WP)</span>
+            {propsData[propId] && (
+              <div className={styles.wishPointsContainer}>
+                <div className={styles.wishPointsTop}>
+                  <div className={styles.wishPointsColumn}>
+                    <img src={propsData[propId].imageUrl} alt="light points" />
+                    <span className={styles.wishPointsValue}>+15</span>
+                  </div>
+                  <div className={styles.wishPointsColumn}>
+                    <img src={propsData[propId].imageUrl} alt="blind box points" />
+                    <span className={styles.wishPointsValue}>+15</span>
+                  </div>
+                  <div className={styles.wishPointsColumn}>
+                    <span className={styles.wishPointsLabel}>WP:&nbsp;</span>
+                    <span className={styles.wishPointsPercentage}>+50%</span>
+                  </div>
+                </div>
+                <div className={styles.wishPointsBottom}>
+                  <span className={styles.wishPointsTotal}>
+                    Total:&nbsp;&nbsp;
+                    <span className={styles.wishPointsTotalValue}>
+                        +100 WP
+                    </span>
+                </span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

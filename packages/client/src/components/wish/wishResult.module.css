@@ -24,7 +24,7 @@
     margin: auto;
 }
 
-.modalContent h1 {
+.title {
     text-align: center;
     font-weight: 500;
     font-family: 'FSKim-Medium';
@@ -39,7 +39,7 @@
     animation: fadeIn 0.5s ease forwards;
 }
 
-.modalContent h3 {
+.subtitle {
     text-align: center;
     font-weight: 400;
     font-family: 'FSKimTrial-Regular';
@@ -60,7 +60,18 @@
     animation: fadeIn 1.0s ease forwards 1.5s;
 }
 
-.modalContent h4 {
+.blessingItemTitle {
+    text-align: left;
+    font-weight: 200;
+    font-family: 'Sling';
+    font-size: 1.0rem;
+    color: #F4C873;
+    opacity: 0;
+    text-transform: uppercase;
+    animation: fadeIn 1.5s ease forwards 2.0s;
+}
+
+.wishPointsTitle {
     text-align: left;
     font-weight: 200;
     font-family: 'Sling';
@@ -110,5 +121,179 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+.blessingItemContainer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    height: auto;
+    margin: 0.5rem 0;
+    background-image: url('/images/wish/WishResult/blessingItemContainerBG.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 1rem;
+}
+
+.blessingItemContainer img {
+    width: 20.33%;
+    height: auto;
+    object-fit: contain;
+    margin-left: 1.0rem;
+}
+
+.blessingItemContainer>span {
+    width: 66.67%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.blessingItemContentContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 50%;
+}
+
+.blessingItemName {
+    font-family: 'FSKim-Medium';
+    font-size: 1.3rem;
+    color: #FFF5CC;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+.blessingItemDesc {
+    font-family: 'FSKimTrial-Regular';
+    font-size: 1.0rem;
+    color: #F4C873;
+    line-height: 1.4;
+    word-wrap: break-word;
+    text-align: center;
+}
+
+.wishPointsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    height: auto;
+    margin: 0.5rem 0;
+    background-image: url('/images/wish/WishResult/wishPointsTitleConainerBG.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 1.5rem;
+}
+
+.wishPointsTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.wishPointsColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.wishPointsColumn:first-child,
+.wishPointsColumn:nth-child(2) {
+    width: 25%;
+}
+
+.wishPointsColumn:last-child {
+    width: 40%;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.5rem;
+    background-image: url('/images/wish/WishResult/wishPointsWheelBorder.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    aspect-ratio: 5/1.94;
+
+    font-family: 'FSKim-Medium';
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: #FAE3A1;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+.wishPointsColumn img {
+    width: 5rem;
+    height: 5rem;
+    object-fit: contain;
+}
+
+.wishPointsValue {
+    font-family: 'FSKim-Medium';
+    font-size: 1.5rem;
+    color: #F4C873;
+}
+
+/* .wishPointsLabel {
+    font-family: 'FSKim-Medium';
+    font-size: 1.2rem;
+    color: #FFF5CC;
+}
+
+.wishPointsPercentage {
+    font-family: 'FSKim-Medium';
+    font-size: 1.2rem;
+    color: #F4C873;
+} */
+
+.wishPointsBottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.wishPointsTotal {
+    font-family: 'FSKim-Medium';
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: #F4C873;
+    line-height: 1.4;
+    white-space: nowrap;
+    text-transform: uppercase;
+}
+
+.wishPointsTotalValue {
+    color: #FFF200;
+    font-family: 'FSKim-Medium';
+    font-size: 1.7rem;
+    font-weight: 500;
+    white-space: nowrap;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(244, 200, 115, 0.5),
+                 0 0 20px rgba(244, 200, 115, 0.3),
+                 0 0 30px rgba(244, 200, 115, 0.2);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 10px rgba(244, 200, 115, 0.5),
+                     0 0 20px rgba(244, 200, 115, 0.3),
+                     0 0 30px rgba(244, 200, 115, 0.2);
+    }
+    to {
+        text-shadow: 0 0 15px rgba(244, 200, 115, 0.6),
+                     0 0 25px rgba(244, 200, 115, 0.4),
+                     0 0 35px rgba(244, 200, 115, 0.3);
     }
 }
