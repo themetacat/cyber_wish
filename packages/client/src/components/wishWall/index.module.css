@@ -30,7 +30,7 @@
   text-align: center;
   font-family: 'FSKim-Medium';
   font-weight: 400;
-  font-size: 54.08px;
+  font-size: 71px;
   background: linear-gradient(-49deg, #F4C873 0%, #E9CD90 52.5146484375%, #F2C96D 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -166,4 +166,11 @@
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+}
+
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 50px;
+  }
 }

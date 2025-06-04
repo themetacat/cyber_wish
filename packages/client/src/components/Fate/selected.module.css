@@ -5,14 +5,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 99;
 }
 
 .modal {
     background-image: url('../../../public/images/Fate/Selected/Bg.webp');
     background-size: cover;
     background-position: center;
-    width: 35vw;
-    height: 74vh;
+    width: 36vw;
+    height: 76vh;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -20,6 +21,20 @@
     border-radius: 20px;
     font-family: "155-SSZhongZhengSongTi";
     overflow: hidden;
+    transform: scale(0);
+    animation: scaleIn 0.1s ease-out forwards;
+}
+
+@keyframes scaleIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .header {
