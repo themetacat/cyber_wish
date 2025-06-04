@@ -6,6 +6,8 @@ import { components } from "../../mud/recs";
 import { encodeEntity } from "@latticexyz/store-sync/recs";
 import { wishPool } from "../../utils/contants";
 import { formatEther, TransactionReceipt } from 'viem';
+import { useAccount } from "wagmi";
+import { useAccountModal } from "@latticexyz/entrykit/internal";
 
 type ImageItem = {
   id: number;
@@ -52,7 +54,7 @@ const blindBoxImages: ImageItem[] = [
     id: 1,
     name: "Pray",
     desc: "Pray for a smooth and joyful life.",
-    img: "/images/wish/WishPanel/Props/NAMASKAR.png"
+    img: "/images/wish/WishPanel/BlindBox/Pray.png"
   },
   {
     id: 2,
@@ -88,7 +90,10 @@ export type Props = {
 const WishPanel = ({ wish, setWishStatus }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const [wishContent, setWishContent] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const { address } = useAccount();
+  const { openAccountModal } = useAccountModal();
 
   useEffect(() => {
     if (showModal && textareaRef.current) {
@@ -126,6 +131,11 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
   const totalAmount = incenseAmount + blindBoxAmount;
 
   const handleSubmit = async () => {
+    if (!address) {
+      openAccountModal();
+      return;
+    }
+
     if (setIncenseId === null || wishContent.trim() === "") {
       if (textareaRef.current) {
         textareaRef.current.focus();
@@ -138,6 +148,7 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
         if (!incenseId || !blindBoxId) {
           return;
         }
+        setIsSubmitting(true);
         setWishStatus(false);
         const res = await wish(incenseId, blindBoxId, wishContent, Number(formatEther(totalAmount)));
         console.log("res: ", res);
@@ -151,6 +162,8 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
         console.error("wish error:", error);
         alert("Please retry");
         return;
+      } finally {
+        setIsSubmitting(false);
       }
     } else {
       console.warn("no wish fn");
@@ -217,8 +230,14 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
             <p className={styles.totalEth}>
               Total: {formatEther(totalAmount)} ETH
             </p>
-            <button className={styles.sendButton} onClick={() => handleSubmit()}>
-              <span className={styles.sendButtonText}>Send the wish</span>
+            <button 
+              className={styles.sendButton} 
+              onClick={() => handleSubmit()}
+              disabled={isSubmitting}
+            >
+              <span className={styles.sendButtonText}>
+                {isSubmitting ? "Loading..." : "Send the wish"}
+              </span>
             </button>
             <button className={styles.closeButton} onClick={() => setShowModal(false)}>
               <img src="/images/wish/WishPanel/Close.webp" alt="Close" />
@@ -302,6 +321,9 @@ const Carousel = ({ images, onSelectId, type = 'incense' }: CarouselProps) => {
           {images.map((item, i) => {
             const offset = (i - currentIndex + total) % total;
             let className = carouselStyles.card;
+            if (type === 'incense') {
+                className += ` ${carouselStyles.incense}`;
+            }
 
             if (offset === 0) className += ` ${carouselStyles.active}`;
             else if (offset === 1 || (currentIndex === total - 1 && i === 0))

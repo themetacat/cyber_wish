@@ -20,7 +20,7 @@ type PropsItem = {
   imageUrl: string;
 };
 
-export default function WishingWall() {
+export default function MyWishes() {
   const [wishes, setWishes] = useState<WishInfo[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -63,24 +63,28 @@ export default function WishingWall() {
     loadWishes();
   }, []);
 
-
   const getWishCount = () => {
-    const wishCountData = getComponentValue(components.WishCount, singletonEntity);
+    const wishCountData = getComponentValue(
+      components.WishCount,
+      singletonEntity
+    );
     if (!wishCountData || wishCountData.count <= 0n) {
       return 0;
     }
     const wishCount = Number(wishCountData.count);
     return wishCount;
-  }
+  };
 
   function shortenAddress(address: string) {
     return `${address.slice(0, 5)}...${address.slice(-4)}`;
   }
 
   const fetchOneWish = (wishIndex: number): WishInfo | undefined => {
-
     const id = pad(`0x${wishIndex.toString(16)}`, { size: 32 });
-    const key = encodeEntity(Wishes.metadata.keySchema, { poolId: wishPool, id: id });
+    const key = encodeEntity(Wishes.metadata.keySchema, {
+      poolId: wishPool,
+      id: id,
+    });
     const wishData = getComponentValue(Wishes, key);
 
     if (!wishData) return;
@@ -88,11 +92,11 @@ export default function WishingWall() {
       wisher: wishData.wisher,
       wishContent: wishData.wishContent,
       wishTime: Number(wishData.wishTime),
-      propId: Number(wishData.propId)
-    }
+      propId: Number(wishData.propId),
+    };
 
     return wishInfo;
-  }
+  };
 
   useEffect(() => {
     const onScroll = () => {
@@ -111,17 +115,38 @@ export default function WishingWall() {
     return () => container?.removeEventListener("scroll", onScroll);
   }, []);
 
+  const MyWishSummary = {
+    totalWishes: 10,
+    totalPoints: 100,
+  };
+
   return (
     <div className={styles.page}>
-      <h1 className={styles.title}>Wishing Wall</h1>
-
+      <h1 className={styles.title}>My Wishes</h1>
       <div className={styles.content} ref={containerRef}>
+        <span className={styles.dividingLine}>
+          <img
+            src="/images/wish/WishPanel/DividingLine.webp"
+            alt="dividing line"
+          />
+        </span>
+
+        <div className={styles.wishSummary}>
+          <div className={styles.wishSummaryItem}>
+            <span>{MyWishSummary.totalWishes} Wishes</span>
+          </div>
+          <div className={styles.wishSummaryItem}>
+            <span>{MyWishSummary.totalPoints} Wish Points</span>
+          </div>
+          <div className={styles.myFatedGifts}>
+            <span>My Fated Gifts</span>
+          </div>
+        </div>
+
         {wishes.map((item, index) => (
           <div key={index} className={styles.infoBox}>
             <div className={styles.textContent}>
-              <div className={styles.wishContent}>
-                {item.wishContent}
-              </div>
+              <div className={styles.wishContent}>{item.wishContent}</div>
 
               <div className={styles.wishMeta}>
                 By {shortenAddress(item.wisher)}
@@ -131,25 +156,27 @@ export default function WishingWall() {
               </div>
             </div>
 
-            <img src={propsData[item.propId].imageUrl} className={styles.image} alt="blessing item" />
+            <img
+              src={propsData[item.propId].imageUrl}
+              className={styles.image}
+              alt="blessing item"
+            />
           </div>
         ))}
-        {loading &&
+        {loading && (
           <div className={styles.loading}>
             <img src="/images/wishWall/Loading.webp" alt="Loading..." />
           </div>
-        }
+        )}
 
-        {!hasMore &&
+        {!hasMore && (
           <div className={styles.notHasMore}>
             <span>
               <img src="/images/wishWall/NotHasMore.svg" alt="notHasMore" />
             </span>
-            <span>
-              You've reached the end!
-            </span>
+            <span>You've reached the end!</span>
           </div>
-        }
+        )}
       </div>
     </div>
   );

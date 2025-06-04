@@ -9,13 +9,15 @@ import styles from "./index.module.css";
 import WishPanel from "./wish/WishPanel";
 import WishesPanel from "./wish/wishesPanel";
 import WishingWall from "./wishWall";
+import MyWishes from "./MyWishes";
 import WishResult from "./wish/wishResult";
-import Selected from "./Fate/selected";
 import FateGifts from "./Fate/fateGifts";
+import Header from "./Header";
+import { useLocation } from "react-router-dom";
 
 export default function Main() {
   const [wishStatus, setWishStatus] = useState(false);
-  const [showSelected, setShowSelected] = useState(false);
+  const location = useLocation();
 
   const sync = useSync();
   const worldContract = useWorldContract();
@@ -72,13 +74,16 @@ export default function Main() {
   return (
     <>
       <div className={styles.container}>
+        <Header />
         {/* <button onClick={() => boostByStar()}>boost star</button>
         <br />
         <button onClick={() => boostByPoints()}>boost points</button> */}
         {/* <WishPanel wish={wish} setWishStatus={setWishStatus} /> */}
         {/* <WishesPanel /> */}
         {/* <WishingWall /> */}
-        {showSelected && <Selected cycle={1} onClose={() => setShowSelected(false)}/>}
+        {location.pathname === "/" && <WishesPanel />}
+        {location.pathname === "/wishing-wall" && <WishingWall />}
+        {location.pathname === "/my-wishes" && <MyWishes />}
         <WishResult wishStatus={wishStatus}/>
         <FateGifts/>
       </div>

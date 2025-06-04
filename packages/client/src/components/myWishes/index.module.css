@@ -30,7 +30,7 @@
   text-align: center;
   font-family: 'FSKim-Medium';
   font-weight: 400;
-  font-size: 71px;
+  font-size: 54.08px;
   background: linear-gradient(-49deg, #F4C873 0%, #E9CD90 52.5146484375%, #F2C96D 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -168,9 +168,53 @@
   box-sizing: border-box;
 }
 
+.dividingLine {
+  width: 100%;
+  height: 2.08px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-@media (max-width: 768px) {
-  .title {
-    font-size: 50px;
-  }
+.wishSummary {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.wishSummaryItem {
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.wishSummaryItem:hover {
+  transform: scale(1.05);
+}
+
+.wishSummaryItem span {
+  color: #F4C874;
+  font-family: 'Sling';
+  font-size: 18px;
+  font-weight: 200;
+}
+
+.myFatedGifts {
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.myFatedGifts:hover {
+  transform: scale(1.05);
+}
+
+.myFatedGifts span {
+  color: #F4C874;
+  font-family: 'Sling';
+  font-size: 18px;
+  font-weight: 200;
 }
