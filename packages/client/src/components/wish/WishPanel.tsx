@@ -155,6 +155,7 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
         if (res && res.status == "success") {
           console.log("wish success");
           setWishStatus(true);
+          setShowModal(false);
         } else {
           console.log("wish faild");
         }
