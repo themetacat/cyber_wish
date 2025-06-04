@@ -6,6 +6,8 @@ import { components } from "../../mud/recs";
 import { encodeEntity } from "@latticexyz/store-sync/recs";
 import { wishPool } from "../../utils/contants";
 import { formatEther, TransactionReceipt } from 'viem';
+import { useAccount } from "wagmi";
+import { useAccountModal } from "@latticexyz/entrykit/internal";
 
 type ImageItem = {
   id: number;
@@ -89,6 +91,8 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const [wishContent, setWishContent] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const { address } = useAccount();
+  const { openAccountModal } = useAccountModal();
 
   useEffect(() => {
     if (showModal && textareaRef.current) {
@@ -126,6 +130,11 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
   const totalAmount = incenseAmount + blindBoxAmount;
 
   const handleSubmit = async () => {
+    if (!address) {
+      openAccountModal();
+      return;
+    }
+
     if (setIncenseId === null || wishContent.trim() === "") {
       if (textareaRef.current) {
         textareaRef.current.focus();
