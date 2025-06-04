@@ -1,10 +1,21 @@
-import { AccountButton } from "@latticexyz/entrykit/internal";
+import { AccountButton, useAccountModal } from "@latticexyz/entrykit/internal";
 import styles from "./index.module.css";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useAccount } from "wagmi";
 
 export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { openAccountModal } = useAccountModal();
+  const { address } = useAccount();
+
+  const handleMyWishesClick = () => {
+    if (!address) {
+      openAccountModal();
+    } else {
+      navigate("/my-wishes");
+    }
+  };
 
   return (
     <header className={styles.header}>
@@ -19,7 +30,7 @@ export default function Header() {
           Wishing Wall
         </button>
         <button 
-          onClick={() => navigate("/my-wishes")} 
+          onClick={handleMyWishesClick} 
           className={`${styles.navItem} ${location.pathname === "/my-wishes" ? styles.selected : ""}`}
         >
           My Wishes
