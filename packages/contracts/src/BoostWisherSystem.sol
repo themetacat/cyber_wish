@@ -28,7 +28,7 @@ contract BoostWisherSystem is System {
     BoostWisherRecordsData memory boostWisherRecordsData = BoostWisherRecords.get(poolId, boostCycle);
     uint256 totalBoostAmount = (boostWisherRecordsData.amount * 24) / 100;
     require(totalBoostAmount > 0 && boostWisherRecordsData.boostedWisherByPoints.length == 0, "Not allow boost");
-    boostWisherRecordsData.amountStar = totalBoostAmount;
+    boostWisherRecordsData.amountPoints = totalBoostAmount;
 
     WisherPoints[] memory selectedWisher = weightedRandomSelection(
       poolId,
@@ -145,7 +145,7 @@ contract BoostWisherSystem is System {
     uint256 wisherCount,
     address sender
   ) internal view returns (WisherPoints[] memory selected) {
-    uint256 boostCount = wisherCount / 3;
+    uint256 boostCount = wisherCount / 1;
     if (boostCount == 0) {
       boostCount = 1;
     }
