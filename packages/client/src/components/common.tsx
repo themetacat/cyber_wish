@@ -51,3 +51,25 @@ export const getWisherCycleRecords = (cycle: number, wisher: any): WisherCycelRe
         boostedStarAmount: wisherCycleRecordsData.boostedStarAmount
     }
 }
+
+export const getTimeStampByCycle = (cycle: number): number => {
+    const wisherPoolData = getWishPoolInfo();
+    if (!wisherPoolData) {
+        return 0;
+    }
+    return  Number(wisherPoolData.duration)*(cycle-1) + Number(wisherPoolData.startTime);
+}
+
+export const getWishPoolInfo = () => {
+    const WishingPool = components.WishingPool;
+    const key = encodeEntity(WishingPool.metadata.keySchema, { id: wishPool});
+    const wisherPoolData = getComponentValue(WishingPool, key);
+    return wisherPoolData;
+}
+
+export const getCycleInfo = (cycle: number, boostType: number) => {
+    const CycleInfo = components.CycleInfo;
+    const key = encodeEntity(CycleInfo.metadata.keySchema, { poolId: wishPool, cycle: BigInt(cycle), boostType: BigInt(boostType)});
+    const cycleInfo = getComponentValue(CycleInfo, key);
+    return cycleInfo;
+}

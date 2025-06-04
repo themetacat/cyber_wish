@@ -5,20 +5,17 @@ import { useMemo, useState } from "react";
 import { useWorldContract } from "../mud/useWorldContract";
 import { Synced } from "./mud/Synced";
 import { useSync } from "@latticexyz/store-sync/react";
-import { components } from "../mud/recs";
-import { useEntityQuery } from "@latticexyz/react";
-import { Has, getComponentValueStrict } from "@latticexyz/recs";
-import { Address } from "viem";
 import styles from "./index.module.css";
 import WishPanel from "./wish/WishPanel";
 import WishesPanel from "./wish/wishesPanel";
 import WishingWall from "./wishWall";
 import WishResult from "./wish/wishResult";
 import Selected from "./Fate/selected";
+import FateGifts from "./Fate/fateGifts";
 
 export default function Main() {
   const [wishStatus, setWishStatus] = useState(false);
-  const [showSelected, setShowSelected] = useState(true);
+  const [showSelected, setShowSelected] = useState(false);
 
   const sync = useSync();
   const worldContract = useWorldContract();
@@ -47,7 +44,7 @@ export default function Main() {
       sync.data && worldContract
         ? async () => {
           console.log("boost points");
-          const tx = await worldContract.write.cyberwish__BoostWisherByPoints([wishPool, BigInt(1)]);
+          const tx = await worldContract.write.cyberwish__BoostWisherByPoints([wishPool, BigInt(5)]);
           console.log("tx", tx);
           console.log(await sync.data.waitForTransaction(tx));
           const simulateRes = await worldContract.simulate.cyberwish__BoostWisherByPoints([wishPool, BigInt(1)]);
@@ -62,7 +59,7 @@ export default function Main() {
       sync.data && worldContract
         ? async () => {
           console.log("boost star");
-          const tx = await worldContract.write.cyberwish__BoostWisherByStar([wishPool, BigInt(1)]);
+          const tx = await worldContract.write.cyberwish__BoostWisherByStar([wishPool, BigInt(5)]);
           console.log("tx", tx);
           console.log(await sync.data.waitForTransaction(tx));
           const simulateRes = await worldContract.simulate.cyberwish__BoostWisherByStar([wishPool, BigInt(1)]);
@@ -78,11 +75,12 @@ export default function Main() {
         {/* <button onClick={() => boostByStar()}>boost star</button>
         <br />
         <button onClick={() => boostByPoints()}>boost points</button> */}
-        <WishPanel wish={wish} setWishStatus={setWishStatus} />
+        {/* <WishPanel wish={wish} setWishStatus={setWishStatus} /> */}
         {/* <WishesPanel /> */}
-        <WishingWall />
+        {/* <WishingWall /> */}
         {showSelected && <Selected cycle={1} onClose={() => setShowSelected(false)}/>}
         <WishResult wishStatus={wishStatus}/>
+        <FateGifts/>
       </div>
     </>
   );

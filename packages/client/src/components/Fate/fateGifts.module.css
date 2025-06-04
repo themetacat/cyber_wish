@@ -1,0 +1,239 @@
+.dataContainer {
+    width: 65%;
+    height: 70vh;
+    margin: 0 auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    color: aliceblue;
+}
+
+.scrollableContent {
+    overflow-y: auto;
+    flex: 1;
+    padding: 15px;
+}
+
+.row {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+    border: 2px solid #F8E49C;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    background-color: rgba(255, 245, 204, 0.1);
+    backdrop-filter: blur(1px);
+}
+
+.row:hover {
+    transform: scale(1.01);
+    backdrop-filter: blur(5px);
+}
+
+.rowHeader {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    color: rgba(255, 245, 204, 1);
+    font-size: 20px;
+    font-family: "155-SSZhongZhengSongTi";
+    user-select: none;
+    justify-items: center;
+    align-items: center;
+}
+
+.rowHeader span {
+    display: flex;
+    justify-items: center;
+    align-items: center;
+}
+
+.expanded {
+    flex-direction: column;
+}
+
+.expandedColor {
+    color: rgba(244, 200, 116, 1);
+}
+
+.boxContainer {
+    display: flex;
+    width: 100%;
+    margin-top: 12px;
+    gap: 20px;
+}
+
+.box {
+    width: 40%;
+    flex: 1;
+    border: 2px solid #F8E49C;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 20px;
+    margin-top: 5px;
+    background: linear-gradient(to bottom, #D4BF8A, #B49F73, #8E7958, #715C43);
+    font-family: "155-SSZhongZhengSongTi";
+}
+
+.boxHeader {
+    text-align: center;
+    position: relative;
+}
+
+.dropdown {
+    width: 29px;
+    height: 20px;
+    transform: scale(-1);
+    user-select: none;
+}
+
+.dropdownSelected {
+    transform: scale(1);
+}
+
+.boxHeaderTitle {
+    color: rgba(52, 52, 52, 1);
+    text-shadow:
+        1px 1px 0 white,
+        -1px 1px 0 white,
+        1px -1px 0 white,
+        -1px -1px 0 white;
+    font-size: clamp(10px, 1.2vw, 20px);
+}
+
+.viewAllButton {
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+    font-family: "Orbitron";
+    font-weight: 700;
+    font-size: clamp(7px, 1vw, 16px);
+    color: rgba(255, 169, 20, 0.35);
+
+    background: linear-gradient(2deg, #BF904C 14.6484375%, #FFEEDB 77.2216796875%, #FFEEDB 100%);
+    -webkit-text-stroke: 1px #240800;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+.viewAllButton::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: rgba(191, 144, 76, 1);
+    box-shadow: 0 0 0 1px #240800;
+    border-radius: 10px;
+    margin-bottom: 1px;
+}
+
+.boxButton:hover {
+    transform: scale(1.05);
+}
+
+.boxButton:active {
+    transform: scale(1.02);
+}
+
+.boxSubtitle {
+    font-size: clamp(9px, 1.2vw, 20px);
+    margin: 8px 0;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.dataRow {
+    font-size: clamp(7px, 0.8vw, 14px);
+    padding: 4px 0;
+    color: rgba(255, 245, 204, 1);
+    display: flex;
+    width: 58%;
+    margin: auto;
+    align-items: center;
+    gap: 10px;
+}
+
+.dataRow span {
+    flex: 1;
+    text-align: left;
+}
+
+.fatedGiftsBtnContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+    margin-top: 10px;
+    margin-right: 12px;
+}
+
+.fatedGiftsBtn {
+    font-family: "Orbitron";
+    font-weight: 700;
+    font-size: clamp(13px, 1vw, 18px);
+    border-radius: 10px;
+    padding: 10px;
+    background: linear-gradient(2deg, #6F573F 14.6%, #ECDD8C 77.2%, #F1E2A0 100%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    transition: transform 0.1s ease;
+}
+
+.fatedGiftsBtn:hover {
+    transform: scale(1.03);
+}
+
+.fatedGiftsBtn:active {
+    transform: scale(1);
+}
+
+.fatedGiftsBtn span {
+    background: linear-gradient(to bottom,
+            #FCEBCA,
+            #EDD39D,
+            #D3A553);
+
+    -webkit-text-stroke: 1px #240800;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 768px) {
+    .dataContainer {
+        width: 100%;
+        padding: 8px;
+    }
+
+    .row {
+        margin-bottom: 8px;
+        padding: 15px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border: 1px solid #F8E49C;
+    }
+
+    .boxContainer {
+        gap: 8px;
+    }
+
+    .dataRow {
+        width: 100%;
+        gap: 5px;
+    }
+}
