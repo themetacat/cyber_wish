@@ -24,7 +24,6 @@
 
 .mainButton:hover {
   transform: scale(1.03);
-  background-color: rgba(255, 255, 255, 1);
 }
 
 .mainButton:active {
@@ -35,14 +34,13 @@
 .mainButtonText {
   font-family: 'Orbitron';
   font-weight: 700;
-  font-size: 1.1rem;
-  background: linear-gradient(180deg, #FFFFFF 0%, #FFF9E6 40%, #FFEDB3 100%);
+  font-size: 1.2rem;
+  color: rgba(255, 169, 20, 0.35);
+
+  background: linear-gradient(2deg, rgba(191, 144, 76, 1) 34.6484375%, rgba(255, 238, 219, 1) 77.2216796875%, rgba(255, 238, 219, 1) 100%);
+  -webkit-text-stroke: 1px rgba(36, 8, 0, 1);
   -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-stroke: 1px #7A4E00;
-  text-stroke: 1px #7A4E00;
-  text-shadow: 1px 1px 1px rgba(90, 59, 0, 0.2);
+  -webkit-text-fill-color: transparent;
 }
 
 .modalOverlay {
@@ -132,14 +130,14 @@
   overflow-y: auto;
   white-space: pre-wrap;
   word-wrap: break-word;
+  color: #ffffff;
+  font-family: 'AlibabaPuHuiTi';
+  font-weight: 700;
 }
 
 .inputBox::placeholder {
   color: #ffffff;
   font-family: 'AlibabaPuHuiTi';
-  font-size: 0.8rem;
-  font-weight: 700;
-  margin-top: 0.125rem;
 }
 
 .charCount {
@@ -183,38 +181,30 @@
   font-family: 'Orbitron';
   font-size: 1rem;
   color: #f1f0e9;
-  letter-spacing: 0.05em;
-  transition: transform 0.1s ease;
+  letter-spacing: 0.02em;
+  font-weight: bold;
 }
 
-.sendButton:hover{
+.sendButton:hover {
   transform: scale(1.03);
 }
 
 .sendButton:active {
-  transform: scale(0.98);
+  transform: scale(1);
 }
 
 .sendButtonText {
-  background: linear-gradient(180deg, #FFFFFF 0%, #FFF9E6 40%, #FFEDB3 100%);
+  background: linear-gradient(2deg, rgba(191, 144, 76, 1) 34.6484375%, rgba(255, 238, 219, 1) 77.2216796875%, rgba(255, 238, 219, 1) 100%);
+  -webkit-text-stroke: 1px rgba(36, 8, 0, 1);
   -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-stroke: 1px #7A4E00;
-  text-stroke: 1px #7A4E00;
-  text-shadow:
-    1px 1px 1px rgba(90, 59, 0, 0.2);
-  font-weight: 1200;
+  -webkit-text-fill-color: transparent;
   white-space: nowrap;
-  line-height: 2.9;
-  padding-top: 0.18em;
-  letter-spacing: 0.02em;
 }
 
 .itemTitle {
   color: #F4C874;
   font-family: 'Sling';
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 200;
   margin-top: 0.625rem;
 }
@@ -278,7 +268,7 @@
   transform: scale(1.1);
 }
 
-.closeButton:active{
+.closeButton:active {
   transform: scale(0.95);
 }
 
