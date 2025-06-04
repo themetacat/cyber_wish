@@ -13,73 +13,15 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    padding: 1.5rem 1.9rem;
-    border-radius: 0.5rem;
+    padding: 24px 30px;
+    border-radius: 8px;
     width: 35.26rem;
     height: 45.511rem;
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: 6px;
     position: relative;
     margin: auto;
-}
-
-.title {
-    text-align: center;
-    font-weight: 500;
-    font-family: 'FSKim-Medium';
-    font-size: 2.6rem;
-    color: #F4C873;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    letter-spacing: 0.01em;
-    opacity: 0;
-    animation: fadeIn 0.5s ease forwards;
-}
-
-.subtitle {
-    text-align: center;
-    font-weight: 400;
-    font-family: 'FSKimTrial-Regular';
-    font-size: 1.2rem;
-    color: #FFF5CC;
-    letter-spacing: 0.15em;
-    opacity: 0;
-    animation: fadeIn 0.5s ease forwards 1.0s;
-}
-
-.dividingLine {
-    width: 100%;
-    height: 1.23rem;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: fadeIn 1.0s ease forwards 1.5s;
-}
-
-.blessingItemTitle {
-    text-align: left;
-    font-weight: 200;
-    font-family: 'Sling';
-    font-size: 1.0rem;
-    color: #F4C873;
-    opacity: 0;
-    text-transform: uppercase;
-    animation: fadeIn 1.5s ease forwards 2.0s;
-}
-
-.wishPointsTitle {
-    text-align: left;
-    font-weight: 200;
-    font-family: 'Sling';
-    font-size: 1.0rem;
-    color: #F4C873;
-    opacity: 0;
-    text-transform: uppercase;
-    animation: fadeIn 1.5s ease forwards 2.0s;
 }
 
 .closeButton {
@@ -112,56 +54,94 @@
     cursor: pointer;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
+.title {
+    text-align: center;
+    font-weight: 500;
+    font-family: 'FSKim-Medium';
+    font-size: 42px;
+    color: #F4C873;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.01em;
+    opacity: 0;
+    animation: fadeIn 1.5s ease forwards;
+}
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.subtitle {
+    text-align: center;
+    font-weight: 400;
+    font-family: 'FSKimTrial-Regular';
+    font-size: 19px;
+    color: #FFF5CC;
+    letter-spacing: 0.15em;
+    opacity: 0;
+    animation: fadeIn 1.5s ease forwards 1.5s;
+}
+
+.dividingLine {
+    width: 100%;
+    height: 20px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeIn 1.0s ease forwards 3.0s;
+}
+
+.blessingItemTitle {
+    text-align: left;
+    font-weight: 200;
+    font-family: 'Sling';
+    font-size: 16px;
+    color: #F4C873;
+    opacity: 0;
+    text-transform: uppercase;
+    animation: fadeIn 1.5s ease forwards 4.0s;
 }
 
 .blessingItemContainer {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 16px;
     width: 100%;
     height: auto;
-    margin: 0.5rem 0;
+    margin: 8px 0;
     background-image: url('/images/wish/WishResult/blessingItemContainerBG.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
-    padding: 1rem;
+    padding: 16px;
+    opacity: 0;
+    animation: fadeIn 2.0s ease forwards 5.0s;
 }
 
 .blessingItemContainer img {
     width: 20.33%;
     height: auto;
     object-fit: contain;
-    margin-left: 1.0rem;
+    margin-left: 16px;
 }
 
 .blessingItemContainer>span {
     width: 66.67%;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 8px;
 }
 
 .blessingItemContentContainer {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 8px;
     width: 50%;
 }
 
 .blessingItemName {
     font-family: 'FSKim-Medium';
-    font-size: 1.3rem;
+    font-size: 21px;
     color: #FFF5CC;
     white-space: nowrap;
     overflow: hidden;
@@ -171,26 +151,39 @@
 
 .blessingItemDesc {
     font-family: 'FSKimTrial-Regular';
-    font-size: 1.0rem;
+    font-size: 16px;
     color: #F4C873;
     line-height: 1.4;
     word-wrap: break-word;
     text-align: center;
 }
 
+.wishPointsTitle {
+    text-align: left;
+    font-weight: 200;
+    font-family: 'Sling';
+    font-size: 16px;
+    color: #F4C873;
+    opacity: 0;
+    text-transform: uppercase;
+    animation: fadeIn 1.5s ease forwards 6.0s;
+}
+
 .wishPointsContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 16px;
     width: 100%;
     height: auto;
-    margin: 0.5rem 0;
+    margin: 8px 0;
     background-image: url('/images/wish/WishResult/wishPointsTitleConainerBG.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
-    padding: 1.5rem;
+    padding: 24px;
+    opacity: 0;
+    animation: fadeIn 2.0s ease forwards 7.0s;
 }
 
 .wishPointsTop {
@@ -204,7 +197,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: 8px;
 }
 
 .wishPointsColumn:first-child,
@@ -216,7 +209,7 @@
     width: 40%;
     flex-direction: row;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 8px;
     background-image: url('/images/wish/WishResult/wishPointsWheelBorder.png');
     background-repeat: no-repeat;
     background-position: center;
@@ -224,7 +217,7 @@
     aspect-ratio: 5/1.94;
 
     font-family: 'FSKim-Medium';
-    font-size: 1.6rem;
+    font-size: 26px;
     font-weight: 400;
     color: #FAE3A1;
     line-height: 1.4;
@@ -232,28 +225,16 @@
 }
 
 .wishPointsColumn img {
-    width: 5rem;
-    height: 5rem;
+    width: 80px;
+    height: 80px;
     object-fit: contain;
 }
 
 .wishPointsValue {
     font-family: 'FSKim-Medium';
-    font-size: 1.5rem;
+    font-size: 24px;
     color: #F4C873;
 }
-
-/* .wishPointsLabel {
-    font-family: 'FSKim-Medium';
-    font-size: 1.2rem;
-    color: #FFF5CC;
-}
-
-.wishPointsPercentage {
-    font-family: 'FSKim-Medium';
-    font-size: 1.2rem;
-    color: #F4C873;
-} */
 
 .wishPointsBottom {
     display: flex;
@@ -264,7 +245,7 @@
 
 .wishPointsTotal {
     font-family: 'FSKim-Medium';
-    font-size: 1.6rem;
+    font-size: 26px;
     font-weight: 400;
     color: #F4C873;
     line-height: 1.4;
@@ -275,25 +256,38 @@
 .wishPointsTotalValue {
     color: #FFF200;
     font-family: 'FSKim-Medium';
-    font-size: 1.7rem;
+    font-size: 27px;
     font-weight: 500;
     white-space: nowrap;
     text-transform: uppercase;
     text-shadow: 0 0 10px rgba(244, 200, 115, 0.5),
-                 0 0 20px rgba(244, 200, 115, 0.3),
-                 0 0 30px rgba(244, 200, 115, 0.2);
+        0 0 20px rgba(244, 200, 115, 0.3),
+        0 0 30px rgba(244, 200, 115, 0.2);
     animation: glow 2s ease-in-out infinite alternate;
 }
 
 @keyframes glow {
     from {
         text-shadow: 0 0 10px rgba(244, 200, 115, 0.5),
-                     0 0 20px rgba(244, 200, 115, 0.3),
-                     0 0 30px rgba(244, 200, 115, 0.2);
+            0 0 20px rgba(244, 200, 115, 0.3),
+            0 0 30px rgba(244, 200, 115, 0.2);
     }
+
     to {
         text-shadow: 0 0 15px rgba(244, 200, 115, 0.6),
-                     0 0 25px rgba(244, 200, 115, 0.4),
-                     0 0 35px rgba(244, 200, 115, 0.3);
+            0 0 25px rgba(244, 200, 115, 0.4),
+            0 0 35px rgba(244, 200, 115, 0.3);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
