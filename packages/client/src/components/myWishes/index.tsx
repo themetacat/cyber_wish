@@ -1,12 +1,15 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import styles from "./index.module.css";
 import { components } from "../../mud/recs";
 import { getComponentValue } from "@latticexyz/recs";
 import { encodeEntity, singletonEntity } from "@latticexyz/store-sync/recs";
-import { wishPool } from "../../utils/contants";
+import { WISH_POOL_ID } from "../../utils/contants";
 import { pad } from "viem";
 import { format } from "date-fns";
 import { propsData } from "../../utils/propsData";
+import { shortenAddress } from "../../utils/common";
+import MyFateGifts from "../Fate/myFateGifts";
+import { useAccount } from "wagmi";
 
 interface WishInfo {
   wisher: string;
@@ -15,10 +18,6 @@ interface WishInfo {
   propId: number;
 }
 
-type PropsItem = {
-  name: string;
-  imageUrl: string;
-};
 
 export default function MyWishes() {
   const [wishes, setWishes] = useState<WishInfo[]>([]);
@@ -27,7 +26,35 @@ export default function MyWishes() {
   const containerRef = useRef<HTMLDivElement>(null);
   const onceLoadWishesCount = 8;
   const noLoadCount = useRef<number>(0);
+  const [wishCount, setWishCount] = useState(0);
+  const [wishPoints, setWishPoints] = useState(0);
+  const { address: userAddress } = useAccount();
+  const [showMyFateGifts, setShowMyFateGifts] = useState(false);
   const Wishes = components.Wishes;
+  const Wisher = components.Wisher;
+
+  const wisherKey = useMemo(() => {
+    if (!userAddress || !WISH_POOL_ID) return null;
+    return encodeEntity(Wisher.metadata.keySchema, {
+      poolId: WISH_POOL_ID,
+      wisher: userAddress,
+    });
+  }, [userAddress, Wisher]);
+
+  const wisherData = useMemo(() => {
+    if (!wisherKey) return null;
+    return getComponentValue(Wisher, wisherKey);
+  }, [Wisher, wisherKey]);
+
+  useEffect(() => {
+    if (!wisherData) {
+      setWishCount(0);
+      setWishPoints(0);
+      return;
+    }
+    setWishCount(Number(wisherData.wishCount));
+    setWishPoints(Number(wisherData.points))
+  }, [wisherData])
 
   const loadWishes = async () => {
     if (loading || !hasMore) return;
@@ -59,44 +86,40 @@ export default function MyWishes() {
     if (noLoadCount.current) {
       return;
     }
-    noLoadCount.current = getWishCount();
+    // noLoadCount.current = getWishCount();
     loadWishes();
   }, []);
 
-  const getWishCount = () => {
-    const wishCountData = getComponentValue(
-      components.WishCount,
-      singletonEntity
-    );
-    if (!wishCountData || wishCountData.count <= 0n) {
-      return 0;
-    }
-    const wishCount = Number(wishCountData.count);
-    return wishCount;
-  };
+  // const getWishCount = () => {
+  //   const wishCountData = getComponentValue(
+  //     components.WishCount,
+  //     singletonEntity
+  //   );
+  //   if (!wishCountData || wishCountData.count <= 0n) {
+  //     return 0;
+  //   }
+  //   const wishCount = Number(wishCountData.count);
+  //   return wishCount;
+  // };
 
-  function shortenAddress(address: string) {
-    return `${address.slice(0, 5)}...${address.slice(-4)}`;
-  }
+  // const fetchOneWish = (wishIndex: number): WishInfo | undefined => {
+  //   const id = pad(`0x${wishIndex.toString(16)}`, { size: 32 });
+  //   const key = encodeEntity(Wishes.metadata.keySchema, {
+  //     poolId: wishPool,
+  //     id: id,
+  //   });
+  //   const wishData = getComponentValue(Wishes, key);
 
-  const fetchOneWish = (wishIndex: number): WishInfo | undefined => {
-    const id = pad(`0x${wishIndex.toString(16)}`, { size: 32 });
-    const key = encodeEntity(Wishes.metadata.keySchema, {
-      poolId: wishPool,
-      id: id,
-    });
-    const wishData = getComponentValue(Wishes, key);
+  //   if (!wishData) return;
+  //   const wishInfo = {
+  //     wisher: wishData.wisher,
+  //     wishContent: wishData.wishContent,
+  //     wishTime: Number(wishData.wishTime),
+  //     propId: Number(wishData.propId),
+  //   };
 
-    if (!wishData) return;
-    const wishInfo = {
-      wisher: wishData.wisher,
-      wishContent: wishData.wishContent,
-      wishTime: Number(wishData.wishTime),
-      propId: Number(wishData.propId),
-    };
-
-    return wishInfo;
-  };
+  //   return wishInfo;
+  // };
 
   useEffect(() => {
     const onScroll = () => {
@@ -115,11 +138,6 @@ export default function MyWishes() {
     return () => container?.removeEventListener("scroll", onScroll);
   }, []);
 
-  const MyWishSummary = {
-    totalWishes: 10,
-    totalPoints: 100,
-  };
-
   return (
     <div className={styles.page}>
       <h1 className={styles.title}>My Wishes</h1>
@@ -133,13 +151,13 @@ export default function MyWishes() {
 
         <div className={styles.wishSummary}>
           <div className={styles.wishSummaryItem}>
-            <span>{MyWishSummary.totalWishes} Wishes</span>
+            <span>{wishCount} Wishes</span>
           </div>
           <div className={styles.wishSummaryItem}>
-            <span>{MyWishSummary.totalPoints} Wish Points</span>
+            <span>{wishPoints} Wish Points</span>
           </div>
-          <div className={styles.myFatedGifts}>
-            <span>My Fated Gifts</span>
+          <div className={styles.myFatedGifts} onClick={() => setShowMyFateGifts(!showMyFateGifts)}>
+            <span>My Wish Rewards</span>
           </div>
         </div>
 
@@ -178,6 +196,7 @@ export default function MyWishes() {
           </div>
         )}
       </div>
+      {showMyFateGifts && <MyFateGifts onClose={() => setShowMyFateGifts(false)} />}
     </div>
   );
 }
