@@ -199,7 +199,7 @@ export default function WishesResult({ wishStatus }: Props) {
         setDisplayedTotalPoints((prev) => prev + lightPointsSwell);
         
         // Play receiveWP sound when first animation stops
-        if (receiveWPAudioRef.current) {
+        if (wishStatus && receiveWPAudioRef.current) {
           receiveWPAudioRef.current.currentTime = 0;
           receiveWPAudioRef.current.play();
         }
@@ -235,7 +235,7 @@ export default function WishesResult({ wishStatus }: Props) {
             setDisplayedTotalPoints((prev) => prev + blindBoxPointsSwell);
             
             // Play receiveWP sound when second animation stops
-            if (receiveWPAudioRef.current) {
+            if (wishStatus && receiveWPAudioRef.current) {
               receiveWPAudioRef.current.currentTime = 0;
               receiveWPAudioRef.current.play();
             }
