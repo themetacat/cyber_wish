@@ -262,8 +262,8 @@ export default function WishesResult({ wishStatus }: Props) {
                     </span>
                   </div>
                   <div className={styles.wishPointsColumn}>
-                    <span className={styles.wishPointsLabel}>WP:&nbsp;</span>
-                    <span className={styles.wishPointsPercentage}>
+                    <span>WP:&nbsp;</span>
+                    <span>
                       +{Math.floor(animatedPercentage)}%
                     </span>
                   </div>
