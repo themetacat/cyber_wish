@@ -6,7 +6,7 @@ export type PropsItem = {
 
 export const propsData: Record<number, PropsItem> = {
   // Pray Blessing props
-  1: { name: "NAMASKAR", desc: "Pray for a smooth and joyful life.", imageUrl: "images/wish/WishPanel/Props/NAMASKAR.png" },
+  1: { name: "Namaskar", desc: "Pray for a smooth and joyful life.", imageUrl: "images/wish/WishPanel/Props/NAMASKAR.png" },
 
   // Health Blessing Props
   2: { name: "Medicinal Herb Pouch", desc: "An embroidered pouch filled with protective herbs like mugwort, believed to purify and strengthen health.", imageUrl: "images/wish/WishPanel/Props/2.1.png" },
