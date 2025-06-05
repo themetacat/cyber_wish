@@ -61,6 +61,7 @@ export default function WishesResult({ wishStatus }: Props) {
 
   const openBlindBoxAudioRef = useRef<HTMLAudioElement | null>(null);
   const hasPlayedOpenBlindBoxAudio = useRef<boolean>(false);
+  const receiveWPAudioRef = useRef<HTMLAudioElement | null>(null);
 
   const fetchOneWish = (wishIndex: number): WishInfo | undefined => {
     const id = pad(`0x${wishIndex.toString(16)}`, { size: 32 });
@@ -152,8 +153,9 @@ export default function WishesResult({ wishStatus }: Props) {
   }, [wishCountData, userAddress, wishCount]);
 
   useEffect(() => {
-    // Create audio element
+    // Create audio elements
     openBlindBoxAudioRef.current = new Audio('/audio/openBlindBox.mp3');
+    receiveWPAudioRef.current = new Audio('/audio/receiveWP.mp3');
     hasPlayedOpenBlindBoxAudio.current = false;
   }, []);
 
@@ -187,6 +189,12 @@ export default function WishesResult({ wishStatus }: Props) {
         setAnimatedPercentage(lightPointsPercentage);
         setShowLightPointsSwell(true);
         setDisplayedTotalPoints((prev) => prev + lightPointsSwell);
+        
+        // Play receiveWP sound when first animation stops
+        if (receiveWPAudioRef.current) {
+          receiveWPAudioRef.current.currentTime = 0;
+          receiveWPAudioRef.current.play();
+        }
 
         // Phase 3: Show blindBoxPoints and start its animation
         timeout3Ref.current = setTimeout(() => {
@@ -217,6 +225,12 @@ export default function WishesResult({ wishStatus }: Props) {
             setAnimatedPercentage(blindBoxPointsPercentage);
             setShowBlindBoxPointsSwell(true);
             setDisplayedTotalPoints((prev) => prev + blindBoxPointsSwell);
+            
+            // Play receiveWP sound when second animation stops
+            if (receiveWPAudioRef.current) {
+              receiveWPAudioRef.current.currentTime = 0;
+              receiveWPAudioRef.current.play();
+            }
           }, 3000); // 3 seconds for the second animation
         }, 1000); // Short delay before starting second animation
       }, 3000); // 3 seconds for the first animation
@@ -232,6 +246,10 @@ export default function WishesResult({ wishStatus }: Props) {
       if (timeout2Ref.current) clearTimeout(timeout2Ref.current);
       if (timeout3Ref.current) clearTimeout(timeout3Ref.current);
       if (timeout4Ref.current) clearTimeout(timeout4Ref.current);
+      if (receiveWPAudioRef.current) {
+        receiveWPAudioRef.current.pause();
+        receiveWPAudioRef.current.currentTime = 0;
+      }
     };
   }, [
     showModal,
