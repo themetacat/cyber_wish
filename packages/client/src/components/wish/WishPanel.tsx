@@ -4,7 +4,7 @@ import carouselStyles from "./carousel.module.css";
 import { getComponentValue } from "@latticexyz/recs";
 import { components } from "../../mud/recs";
 import { encodeEntity } from "@latticexyz/store-sync/recs";
-import { wishPool } from "../../utils/contants";
+import { WISH_POOL_ID } from "../../utils/contants";
 import { formatEther, TransactionReceipt } from 'viem';
 import { useAccount } from "wagmi";
 import { useAccountModal } from "@latticexyz/entrykit/internal";
@@ -110,7 +110,7 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
 
   const setIncenseId = useCallback((id: number) => {
     setIncenseIdRaw(id);
-    const incenseData = getComponentValue(components.Incense, encodeEntity({ poolId: "bytes32", id: "uint256" }, { poolId: wishPool, id: BigInt(id) }));
+    const incenseData = getComponentValue(components.Incense, encodeEntity({ poolId: "bytes32", id: "uint256" }, { poolId: WISH_POOL_ID, id: BigInt(id) }));
     if (!incenseData || incenseData.amount == 0n) {
       setIncenseAmount(0n);
     } else {
@@ -120,7 +120,7 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
 
   const setBlindBoxId = useCallback((id: number) => {
     setBlindBoxIdRaw(id);
-    const blindBoxData = getComponentValue(components.PropBlindBox, encodeEntity({ poolId: "bytes32", id: "uint256" }, { poolId: wishPool, id: BigInt(id) }));
+    const blindBoxData = getComponentValue(components.PropBlindBox, encodeEntity({ poolId: "bytes32", id: "uint256" }, { poolId: WISH_POOL_ID, id: BigInt(id) }));
     if (!blindBoxData || blindBoxData.amount == 0n) {
       setBlindBoxAmount(0n);
     } else {
@@ -291,8 +291,8 @@ const Carousel = ({ images, onSelectId, type = 'incense' }: CarouselProps) => {
   useEffect(() => {
     onSelectId(images[currentIndex].id);
     const itemData = type === 'incense'
-      ? getComponentValue(components.Incense, encodeEntity({ poolId: "bytes32", id: "uint256" }, { poolId: wishPool, id: BigInt(images[currentIndex].id) }))
-      : getComponentValue(components.PropBlindBox, encodeEntity({ poolId: "bytes32", id: "uint256" }, { poolId: wishPool, id: BigInt(images[currentIndex].id) }));
+      ? getComponentValue(components.Incense, encodeEntity({ poolId: "bytes32", id: "uint256" }, { poolId: WISH_POOL_ID, id: BigInt(images[currentIndex].id) }))
+      : getComponentValue(components.PropBlindBox, encodeEntity({ poolId: "bytes32", id: "uint256" }, { poolId: WISH_POOL_ID, id: BigInt(images[currentIndex].id) }));
     
     if (itemData) {
       if (type === 'incense') {

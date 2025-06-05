@@ -3,7 +3,7 @@ import styles from "./index.module.css";
 import { components } from "../../mud/recs";
 import { getComponentValue } from "@latticexyz/recs";
 import { encodeEntity, singletonEntity } from "@latticexyz/store-sync/recs";
-import { wishPool } from "../../utils/contants";
+import { WISH_POOL_ID } from "../../utils/contants";
 import { pad } from "viem";
 import { format } from "date-fns";
 import { propsData } from "../../utils/propsData";
@@ -14,11 +14,6 @@ interface WishInfo {
   wishTime: number;
   propId: number;
 }
-
-type PropsItem = {
-  name: string;
-  imageUrl: string;
-};
 
 export default function WishingWall() {
   const [wishes, setWishes] = useState<WishInfo[]>([]);
@@ -80,7 +75,7 @@ export default function WishingWall() {
   const fetchOneWish = (wishIndex: number): WishInfo | undefined => {
 
     const id = pad(`0x${wishIndex.toString(16)}`, { size: 32 });
-    const key = encodeEntity(Wishes.metadata.keySchema, { poolId: wishPool, id: id });
+    const key = encodeEntity(Wishes.metadata.keySchema, { poolId: WISH_POOL_ID, id: id });
     const wishData = getComponentValue(Wishes, key);
 
     if (!wishData) return;
