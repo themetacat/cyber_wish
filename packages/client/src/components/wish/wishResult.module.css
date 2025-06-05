@@ -22,6 +22,8 @@
     gap: 6px;
     position: relative;
     margin: auto;
+    border-color: #6A879E;
+    border-width: 0.81px;
 }
 
 .closeButton {
@@ -179,7 +181,7 @@
     margin-top: 2px;
     opacity: 0;
     text-transform: uppercase;
-    animation: fadeIn 1.5s ease forwards 11.5s;
+    animation: fadeIn 1.5s ease forwards 13.0s;
 }
 
 .wishPointsContainer {
@@ -197,7 +199,7 @@
     padding: 24px;
     cursor: pointer;
     opacity: 0;
-    animation: fadeIn 2.0s ease forwards 12.0s;
+    animation: fadeIn 2.0s ease forwards 13.5s;
 }
 
 .wishPointsTop {
@@ -352,7 +354,7 @@
 }
 
 .blindBoxPropContainer {
-    width: 50%;
+    width: 40%;
     visibility: hidden;
     display: flex;
     flex-direction: column;
@@ -386,7 +388,7 @@
         transform: scale(0.8);
     }
     50% {
-        transform: scale(1.05);
+        transform: scale(1.02);
     }
     100% {
         transform: scale(0.8);

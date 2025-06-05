@@ -191,7 +191,7 @@ export default function WishesResult({ wishStatus }: Props) {
           }, 3000); // 3 seconds for the second animation
         }, 1000); // Short delay before starting second animation
       }, 3000); // 3 seconds for the first animation
-    }, 9050); // Start after wishPointsContainer CSS animation finishes (7s delay + 2s duration = 9s)
+    }, 13550); // Start after wishPointsContainer CSS animation finishes (13.5s delay + 0.05s buffer)
 
     // Cleanup function
     return () => {
