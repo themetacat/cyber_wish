@@ -138,11 +138,11 @@
     margin-bottom: 1px;
 }
 
-.boxButton:hover {
+.viewAllButton:hover {
     transform: scale(1.05);
 }
 
-.boxButton:active {
+.viewAllButton:active {
     transform: scale(1.02);
 }
 
@@ -178,7 +178,7 @@
     justify-content: flex-end;
     margin-bottom: 12px;
     margin-top: 10px;
-    margin-right: 12px;
+    margin-right: 15px;
 }
 
 .fatedGiftsBtn {
@@ -187,7 +187,7 @@
     font-size: clamp(13px, 1vw, 18px);
     border-radius: 10px;
     padding: 10px;
-    background: linear-gradient(2deg, #6F573F 14.6%, #ECDD8C 77.2%, #F1E2A0 100%);
+    background: linear-gradient(2deg, #6F573F 14.6%, #ECDD8C 77.2%, #F1E2A0 90%);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -196,11 +196,11 @@
 }
 
 .fatedGiftsBtn:hover {
-    transform: scale(1.03);
+    background: linear-gradient(2deg, #423427 15%, #95734C 50.2%, #C5A36A 80%);
 }
 
 .fatedGiftsBtn:active {
-    transform: scale(1);
+    transform: scale(0.97);
 }
 
 .fatedGiftsBtn span {
@@ -208,10 +208,12 @@
             #FCEBCA,
             #EDD39D,
             #D3A553);
-
-    -webkit-text-stroke: 1px #240800;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    filter: drop-shadow(1px 1px 0 #240800) 
+            drop-shadow(0 0 0 #240800) 
+            drop-shadow(0.1px -0.1px 0 #240800) 
+            drop-shadow(-0.1px 0px 0 #240800);
 }
 
 @media (max-width: 768px) {
