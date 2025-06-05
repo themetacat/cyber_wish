@@ -2,9 +2,8 @@ import { useEffect, useState, useRef, useMemo } from "react";
 import styles from "./index.module.css";
 import { components } from "../../mud/recs";
 import { getComponentValue } from "@latticexyz/recs";
-import { encodeEntity, singletonEntity } from "@latticexyz/store-sync/recs";
+import { encodeEntity } from "@latticexyz/store-sync/recs";
 import { WISH_POOL_ID } from "../../utils/contants";
-import { pad } from "viem";
 import { format } from "date-fns";
 import { propsData } from "../../utils/propsData";
 import { shortenAddress } from "../../utils/common";
@@ -17,7 +16,6 @@ interface WishInfo {
   wishTime: number;
   propId: number;
 }
-
 
 export default function MyWishes() {
   const [wishes, setWishes] = useState<WishInfo[]>([]);
