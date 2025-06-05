@@ -252,6 +252,11 @@
     color: #FAE3A1;
     line-height: 1.4;
     white-space: nowrap;
+    transition: transform 0.2s ease;
+}
+
+.wishPointsColumn:last-child:hover {
+    transform: scale(1.05);
 }
 
 .imageBorderWrapper {
