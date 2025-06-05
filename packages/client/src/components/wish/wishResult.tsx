@@ -9,6 +9,7 @@ import { pad } from "viem";
 import { useAccount } from "wagmi";
 import { propsData } from "../../utils/propsData";
 import { incenseData } from "../../utils/incenseData";
+import { blindBoxData } from "../../utils/blindBoxData";
 
 interface WishInfo {
   wisher: string;
@@ -31,6 +32,7 @@ export default function WishesResult({ wishStatus }: Props) {
   const { address: userAddress } = useAccount();
   const Wishes = components.Wishes;
   const [incenseId, setIncenseId] = useState<number>(0);
+  const [blindBoxId, setBlindBoxId] = useState<number>(0);
   const [propId, setPropId] = useState<number>(0);
   const [lightPoints, setLightPoints] = useState<number>(0);
   const [lightPointsSwell, setLightPointsSwell] = useState<number>(0);
@@ -45,7 +47,7 @@ export default function WishesResult({ wishStatus }: Props) {
   const [animatedPercentage, setAnimatedPercentage] = useState<number>(0);
 
   const [displayedTotalPoints, setDisplayedTotalPoints] = useState<number>(0);
-  
+
   const [wishCount, setWishCount] = useState<number>(0);
   const [showModal, setShowModal] = useState(true);
 
@@ -116,6 +118,7 @@ export default function WishesResult({ wishStatus }: Props) {
     }
     console.log(wishInfo);
     setIncenseId(wishInfo.incenseId);
+    setBlindBoxId(wishInfo.blindBoxId);
     setPropId(wishInfo.propId);
     setLightPoints(wishInfo.lightPoints);
     setLightPointsSwell(wishInfo.lightPointsSwell);
@@ -132,7 +135,7 @@ export default function WishesResult({ wishStatus }: Props) {
     timeout1Ref.current = setTimeout(() => {
       setAnimatedPercentage(0); // Start percentage from 0
       percentageInterval1Ref.current = setInterval(() => {
-        setAnimatedPercentage(prev => {
+        setAnimatedPercentage((prev) => {
           // Generate a random change (e.g., between -15 and 15)
           const randomChange = Math.random() * 30 - 15;
           const next = prev + randomChange;
@@ -148,17 +151,20 @@ export default function WishesResult({ wishStatus }: Props) {
       timeout2Ref.current = setTimeout(() => {
         clearInterval(percentageInterval1Ref.current!);
 
-        const lightPointsPercentage = lightPoints > 0 ? Math.round((lightPointsSwell / lightPoints) * 100) : 0;
-        
+        const lightPointsPercentage =
+          lightPoints > 0
+            ? Math.round((lightPointsSwell / lightPoints) * 100)
+            : 0;
+
         setAnimatedPercentage(lightPointsPercentage);
         setShowLightPointsSwell(true);
-        setDisplayedTotalPoints(prev => prev + lightPointsSwell);
+        setDisplayedTotalPoints((prev) => prev + lightPointsSwell);
 
         // Phase 3: Animate percentage for blindBoxPointsSwell
         timeout3Ref.current = setTimeout(() => {
           setAnimatedPercentage(0); // Start percentage from 0 again
           percentageInterval2Ref.current = setInterval(() => {
-            setAnimatedPercentage(prev => {
+            setAnimatedPercentage((prev) => {
               // Generate a random change (e.g., between -15 and 15)
               const randomChange = Math.random() * 30 - 15;
               const next = prev + randomChange;
@@ -174,11 +180,14 @@ export default function WishesResult({ wishStatus }: Props) {
           timeout4Ref.current = setTimeout(() => {
             clearInterval(percentageInterval2Ref.current!);
 
-            const blindBoxPointsPercentage = blindBoxPoints > 0 ? Math.round((blindBoxPointsSwell / blindBoxPoints) * 100) : 0;
-            
+            const blindBoxPointsPercentage =
+              blindBoxPoints > 0
+                ? Math.round((blindBoxPointsSwell / blindBoxPoints) * 100)
+                : 0;
+
             setAnimatedPercentage(blindBoxPointsPercentage);
             setShowBlindBoxPointsSwell(true);
-            setDisplayedTotalPoints(prev => prev + blindBoxPointsSwell);
+            setDisplayedTotalPoints((prev) => prev + blindBoxPointsSwell);
           }, 3000); // 3 seconds for the second animation
         }, 1000); // Short delay before starting second animation
       }, 3000); // 3 seconds for the first animation
@@ -195,7 +204,13 @@ export default function WishesResult({ wishStatus }: Props) {
       if (timeout3Ref.current) clearTimeout(timeout3Ref.current);
       if (timeout4Ref.current) clearTimeout(timeout4Ref.current);
     };
-  }, [showModal, lightPoints, blindBoxPoints, lightPointsSwell, blindBoxPointsSwell]);
+  }, [
+    showModal,
+    lightPoints,
+    blindBoxPoints,
+    lightPointsSwell,
+    blindBoxPointsSwell,
+  ]);
 
   return (
     <>
@@ -223,6 +238,29 @@ export default function WishesResult({ wishStatus }: Props) {
             <span className={styles.blessingItemTitle}>
               Your blessing item is:
             </span>
+            {propsData[propId] && (
+              <div className={styles.blindBoxContainer}>
+                <img
+                  className={styles.blindBoxImg}
+                  src={blindBoxData[blindBoxId - 1].img}
+                />
+              </div>
+            )}
+
+            {propsData[propId] && (
+              <div className={styles.blindBoxPropContainer}>
+                <img
+                  src={propsData[propId].imageUrl}
+                />
+                <span className={styles.blindBoxPropImgName}>
+                  {propsData[propId].name}
+                </span>
+                <span className={styles.blindBoxPropImgDesc}>
+                  {propsData[propId].desc}
+                </span>
+              </div>
+            )}
+
             {propsData[propId] && (
               <div className={styles.blessingItemContainer}>
                 <img src={propsData[propId].imageUrl} alt="blessing item img" />
@@ -265,16 +303,14 @@ export default function WishesResult({ wishStatus }: Props) {
                   </div>
                   <div className={styles.wishPointsColumn}>
                     <span>WP:&nbsp;</span>
-                    <span>
-                      +{Math.floor(animatedPercentage)}%
-                    </span>
+                    <span>+{Math.floor(animatedPercentage)}%</span>
                   </div>
                 </div>
                 <div className={styles.wishPointsBottom}>
                   <span className={styles.wishPointsTotal}>
                     Total:&nbsp;&nbsp;
                     <span className={styles.wishPointsTotalValue}>
-                        +{displayedTotalPoints} WP
+                      +{displayedTotalPoints} WP
                     </span>
                   </span>
                 </div>

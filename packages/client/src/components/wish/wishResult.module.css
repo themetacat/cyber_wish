@@ -336,6 +336,76 @@
     animation: glow 2s ease-in-out infinite alternate;
 }
 
+.blindBoxContainer {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    display: none;
+}
+
+.blindBoxPropContainer {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    text-overflow: ellipsis;
+    text-align: center;
+
+    font-family: 'FSKimTrial-Regular';
+    font-size: 16px;
+    color: #F4C873;
+    line-height: 1.4;
+    word-wrap: break-word;
+    text-align: center;
+    display: none;
+}
+
+.blindBoxPropContainer img {
+    height: auto;
+    object-fit: contain;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.8);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(0.8);
+    }
+}
+
+.blindBoxPropImgName {
+    font-family: 'FSKim-Medium';
+    font-size: 21px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+    color: #F7D891;
+}
+
+.blindBoxImg {
+    height: auto;
+    object-fit: contain;
+    animation: rotateY 2s linear infinite;
+}
+
+@keyframes rotateY {
+    from {
+        transform: rotateY(0deg);
+    }
+    to {
+        transform: rotateY(360deg);
+    }
+}
+
 @keyframes glow {
     from {
         text-shadow: 0 0 10px rgba(244, 200, 115, 0.5),
