@@ -142,7 +142,9 @@ export default function WishesResult({ wishStatus }: Props) {
               <div className={styles.wishPointsContainer}>
                 <div className={styles.wishPointsTop}>
                   <div className={styles.wishPointsColumn}>
-                    <img src={incenseData[incenseId - 1].img} alt="light points" />
+                    <div className={styles.imageBorderWrapper}>
+                      <img src={incenseData[incenseId - 1].img} alt="light points" />
+                    </div>
                     <span className={styles.wishPointsValue}>+{lightPoints}</span>
                   </div>
                   <div className={styles.wishPointsColumn}>

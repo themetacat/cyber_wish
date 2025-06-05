@@ -205,6 +205,14 @@
     width: 25%;
 }
 
+.wishPointsColumn:first-child img {
+    background-image: url('/images/wish/WishPanel/ItemBorder.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    aspect-ratio: auto;
+}
+
 .wishPointsColumn:last-child {
     width: 40%;
     flex-direction: row;
@@ -224,10 +232,39 @@
     white-space: nowrap;
 }
 
+.imageBorderWrapper {
+    background-image: url('/images/wish/WishPanel/ItemBorder.webp');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    aspect-ratio: auto;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.imageBorderWrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: url('/images/wish/WishPanel/ItemBorder.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+}
+
 .wishPointsColumn img {
     width: 80px;
     height: 80px;
     object-fit: contain;
+    position: relative;
+    z-index: 1;
 }
 
 .wishPointsValue {
