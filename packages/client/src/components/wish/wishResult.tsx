@@ -130,9 +130,15 @@ export default function WishesResult({ wishStatus }: Props) {
     timeout1Ref.current = setTimeout(() => {
       setAnimatedPercentage(0); // Start percentage from 0
       percentageInterval1Ref.current = setInterval(() => {
-        setAnimatedPercentage((prev) => {
-          const next = prev + 200 / 60; // Animate from 0 to 200 over 3 seconds (60 updates at 50ms interval)
-          return next <= 200 ? next : 200; // Cap at 200
+        setAnimatedPercentage(prev => {
+          // Generate a random change (e.g., between -15 and 15)
+          const randomChange = Math.random() * 30 - 15;
+          const next = prev + randomChange;
+
+          // Keep the value within a reasonable range during animation (e.g., 0 to 250)
+          const boundedNext = Math.max(0, Math.min(250, next));
+
+          return boundedNext;
         });
       }, 50);
 
@@ -150,9 +156,15 @@ export default function WishesResult({ wishStatus }: Props) {
         timeout3Ref.current = setTimeout(() => {
           setAnimatedPercentage(0); // Start percentage from 0 again
           percentageInterval2Ref.current = setInterval(() => {
-            setAnimatedPercentage((prev) => {
-              const next = prev + 200 / 60; // Animate from 0 to 200 over 3 seconds
-              return next <= 200 ? next : 200;
+            setAnimatedPercentage(prev => {
+              // Generate a random change (e.g., between -15 and 15)
+              const randomChange = Math.random() * 30 - 15;
+              const next = prev + randomChange;
+
+              // Keep the value within a reasonable range during animation (e.g., 0 to 250)
+              const boundedNext = Math.max(0, Math.min(250, next));
+
+              return boundedNext;
             });
           }, 50);
 
