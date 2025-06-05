@@ -84,7 +84,7 @@ export default function Main() {
         {location.pathname === "/" && <WishesPanel />}
         {location.pathname === "/wishing-wall" && <WishingWall />}
         {location.pathname === "/my-wishes" && <MyWishes />}
-        {location.pathname === "/fates-gifts" && <FateGifts/>}
+        {location.pathname === "/wishflow-fund" && <FateGifts/>}
         <WishResult wishStatus={wishStatus}/>
       </div>
     </>

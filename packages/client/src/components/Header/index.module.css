@@ -2,11 +2,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 2rem 3rem;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  z-index: 999;
 }
 
 .logo {
@@ -15,7 +16,7 @@
 }
 
 .logo:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .logo img {
@@ -30,7 +31,7 @@
 }
 
 .navItem {
-  width: 185px;
+  padding: 0 15px;
   height: 36px;
   font-family: 'Orbitron';
   font-weight: 400;
@@ -40,10 +41,9 @@
   text-transform: uppercase;
   transition: color 0.2s ease;
   border: none;
-  padding: 0;
   cursor: pointer;
   background-image: url('/images/Header/MenuBg.webp');
-  background-size: cover;
+  background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
   cursor: pointer;
@@ -65,5 +65,40 @@
 }
 
 .connectButton {
+  position: relative;
   margin-left: 1rem;
-} 
+  font-family: "Orbitron";
+  font-weight: 400;
+  font-size: 15px;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  display: none;
+  color: rgba(255, 255, 255, 1);
+  border: 1px solid #F8E49C;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  background-color: rgba(255, 245, 204, 0.2);
+  backdrop-filter: blur(2px);
+  overflow: hidden;
+}
+
+.dropdownItem {
+  padding: 8px 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 25px;
+}
+
+.dropdownItem:hover {
+  color: rgba(0, 0, 0, 1);
+  background-color: rgba(255, 245, 204, 0.8);
+}
+
+.connectButton:hover .dropdown {
+  display: block;
+}
