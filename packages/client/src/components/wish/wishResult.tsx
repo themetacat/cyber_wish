@@ -15,6 +15,7 @@ interface WishInfo {
   wishContent: string;
   wishTime: number;
   incenseId: number;
+  blindBoxId: number;
   propId: number;
   lightPoints: number;
   blindBoxPoints: number;
@@ -71,11 +72,12 @@ export default function WishesResult({ wishStatus }: Props) {
       wishContent: wishData.wishContent as string,
       wishTime: Number(wishData.wishTime),
       incenseId: Number(wishData.incenseId),
+      blindBoxId: Number(wishData.blindBoxId),
       propId: Number(wishData.propId),
       lightPoints: Number(wishData.pointsIncense),
-      lightPointsSwell: Number(wishData.pointsIncenseSwell || 0),
+      lightPointsSwell: Number(wishData.pointsIncenseEasterEgg || 0),
       blindBoxPoints: Number(wishData.pointsBlindBox),
-      blindBoxPointsSwell: Number(wishData.pointsBlindBoxSwell || 0),
+      blindBoxPointsSwell: Number(wishData.pointsBlindBoxEasterEgg || 0),
     };
     return wishInfo;
   };
