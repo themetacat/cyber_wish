@@ -11,7 +11,8 @@ import { formatEther } from 'viem';
 import { shortenAddress } from "../../utils/common";
 import Selected from "./selected";
 import { useAccount } from "wagmi";
-
+import MyFateGifts from "./myFateGifts";
+import { CURRENCY_SYMBOL } from "../../utils/contants"
 
 interface PoolData {
     title: string;
@@ -35,6 +36,7 @@ export default function FateGifts() {
     const BoostWisherRecords = components.BoostWisherRecords;
     const boostWisherRecordsData = useEntityQuery([Has(BoostWisherRecords)]);
     const { address: userAddress } = useAccount();
+    const [showMyFateGifts, setShowMyFateGifts] = useState(false);
 
     const data: TotalPoolData[] = useMemo(() => {
         return boostWisherRecordsData
@@ -52,13 +54,13 @@ export default function FateGifts() {
                     totalAmount: singleBoostWisherRecord.amount,
                     pools: [
                         {
-                            title: "Wish Points Pool",
+                            title: "Wish Points Fund",
                             amount: singleBoostWisherRecord.amountPoints,
                             selectedCount: singleBoostWisherRecord.boostedWisherByPoints.length,
                             wisherList: singleBoostWisherRecord.boostedWisherByPoints.slice(0, 3),
                         },
                         {
-                            title: "Wish Star Pool",
+                            title: "Fated Wish Fund",
                             amount: singleBoostWisherRecord.amountStar,
                             selectedCount: singleBoostWisherRecord.boostedWisherByStar.length,
                             wisherList: singleBoostWisherRecord.boostedWisherByStar.slice(0, 3),
@@ -121,15 +123,7 @@ export default function FateGifts() {
 
     return (
         <div className={commonStyle.page}>
-            <div className={commonStyle.secTitle}>
-                <span className={commonStyle.secTitleWishingWall}>
-                    WAIHING WALL
-                </span>
-                <span className={commonStyle.secTitleMyWishs}>
-                    MY WAIHS
-                </span>
-            </div>
-            <h1 className={commonStyle.title}>Fate's Gifts</h1>
+            <h1 className={commonStyle.title}>Wishflow Fund</h1>
             <div className={style.dataContainer}>
                 <div className={style.scrollableContent}>
                     {data.map((row) => {
@@ -186,7 +180,7 @@ export default function FateGifts() {
                                                                 isBoost
                                                                     ? formatEther(box.amount)
                                                                     : formatEther((row.totalAmount * BigInt(index === 0 ? 24 : 36)) / 100n)
-                                                            } ETH
+                                                            } {CURRENCY_SYMBOL}
                                                         </span>
                                                         <span style={{ marginLeft: "2vw" }}>
                                                             {isBoost ? `Selected: ${box.selectedCount}` : `Participants: ${participantCount}`}
@@ -195,7 +189,9 @@ export default function FateGifts() {
                                                     {box.wisherList.slice(0, showRows).map((item: string, i) => (
                                                         <div key={i} className={style.dataRow}>
                                                             <span>{item == userAddress ? "YOU" : shortenAddress(item)}</span>
-                                                            {index == 0 ? <span >{formatEther(getWisherCycleRecords(row.cycle, item)?.boostedPointsAmount ?? 0n)} ETH</span> : <span style={{ marginLeft: "20px" }}>{formatEther(getWisherCycleRecords(row.cycle, item)?.boostedStarAmount ?? 0n)} ETH</span>}
+                                                            <span>
+                                                                {index == 0 ? Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedPointsAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '') : Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedStarAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '')} {CURRENCY_SYMBOL}
+                                                            </span>
                                                         </div>
                                                     ))}
                                                     {box.wisherList.length < showRows &&
@@ -215,15 +211,12 @@ export default function FateGifts() {
                     })}
                 </div>
                 <div className={style.fatedGiftsBtnContainer}>
-                    <button className={style.fatedGiftsBtn}>
-                        <span>My Fated Gifts</span>
-                    </button>
-                    <button className={style.fatedGiftsBtn} style={{ marginLeft: "10px" }}>
-                        <span>My Fated Gifts</span>
+                    <button className={style.fatedGiftsBtn} onClick={() => setShowMyFateGifts(!showMyFateGifts)}>
+                        <span>My Wish Rewards</span>
                     </button>
                 </div>
             </div>
-
+            {showMyFateGifts && <MyFateGifts onClose={() => setShowMyFateGifts(false)} />}
             {selectedCycle && <Selected cycle={selectedCycle} onClose={() => setSelectedCycle(0)} />}
         </div>
     );
