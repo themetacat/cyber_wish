@@ -59,6 +59,9 @@ export default function WishesResult({ wishStatus }: Props) {
   const timeout3Ref = useRef<number | null>(null);
   const timeout4Ref = useRef<number | null>(null);
 
+  const openBlindBoxAudioRef = useRef<HTMLAudioElement | null>(null);
+  const hasPlayedOpenBlindBoxAudio = useRef<boolean>(false);
+
   const fetchOneWish = (wishIndex: number): WishInfo | undefined => {
     const id = pad(`0x${wishIndex.toString(16)}`, { size: 32 });
     const key = encodeEntity(Wishes.metadata.keySchema, {
@@ -94,6 +97,23 @@ export default function WishesResult({ wishStatus }: Props) {
       setShowBlindBoxPointsSwell(false);
       setShowBlindBoxPoints(false);
       setAnimatedPercentage(0);
+      hasPlayedOpenBlindBoxAudio.current = false;
+
+      // Play audio when blindBoxPropContainer appears
+      if (openBlindBoxAudioRef.current && !hasPlayedOpenBlindBoxAudio.current) {
+        const openBlindBoxTimer = setTimeout(() => {
+          openBlindBoxAudioRef.current?.play();
+          hasPlayedOpenBlindBoxAudio.current = true;
+        }, 8000); // 8s is when blindBoxPropContainer appears (5s + 3s)
+
+        return () => {
+          clearTimeout(openBlindBoxTimer);
+          if (openBlindBoxAudioRef.current) {
+            openBlindBoxAudioRef.current.pause();
+            openBlindBoxAudioRef.current.currentTime = 0;
+          }
+        };
+      }
     }
   }, [wishStatus]);
 
@@ -130,6 +150,12 @@ export default function WishesResult({ wishStatus }: Props) {
     // Initialize total points after base points are set
     setDisplayedTotalPoints(wishInfo.lightPoints + wishInfo.blindBoxPoints);
   }, [wishCountData, userAddress, wishCount]);
+
+  useEffect(() => {
+    // Create audio element
+    openBlindBoxAudioRef.current = new Audio('/audio/openBlindBox.mp3');
+    hasPlayedOpenBlindBoxAudio.current = false;
+  }, []);
 
   useEffect(() => {
     if (!showModal) return;
