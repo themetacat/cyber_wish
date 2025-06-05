@@ -18,6 +18,8 @@ interface WishInfo {
   propId: number;
   lightPoints: number;
   blindBoxPoints: number;
+  lightPointsSwell: number;
+  blindBoxPointsSwell: number;
 }
 
 export type Props = {
@@ -30,7 +32,9 @@ export default function WishesResult({ wishStatus }: Props) {
   const [incenseId, setIncenseId] = useState<number>(0);
   const [propId, setPropId] = useState<number>(0);
   const [lightPoints, setLightPoints] = useState<number>(0);
+  const [lightPointsSwell, setLightPointsSwell] = useState<number>(0);
   const [blindBoxPoints, setBlindBoxPoints] = useState<number>(0);
+  const [blindBoxPointsSwell, setBlindBoxPointsSwell] = useState<number>(0);
   const [wishCount, setWishCount] = useState<number>(0);
   const [showModal, setShowModal] = useState(true);
 
@@ -52,7 +56,9 @@ export default function WishesResult({ wishStatus }: Props) {
       incenseId: Number(wishData.incenseId),
       propId: Number(wishData.propId),
       lightPoints: Number(wishData.pointsIncense),
+      lightPointsSwell: Number(wishData.pointsIncenseSwell || 0),
       blindBoxPoints: Number(wishData.pointsBlindBox),
+      blindBoxPointsSwell: Number(wishData.pointsBlindBoxSwell || 0),
     };
     return wishInfo;
   };
@@ -74,10 +80,10 @@ export default function WishesResult({ wishStatus }: Props) {
       return;
     }
 
-    if (!wishCountData || wishCountData.count <= 0n) {
+    if (!wishCountData || (wishCountData as { count: bigint }).count <= 0n) {
       return;
     }
-    const totalWishCount = Number(wishCountData.count);
+    const totalWishCount = Number((wishCountData as { count: bigint }).count);
     const wishInfo = fetchOneWish(totalWishCount);
     if (!wishInfo) {
       return;
@@ -89,13 +95,11 @@ export default function WishesResult({ wishStatus }: Props) {
     setIncenseId(wishInfo.incenseId);
     setPropId(wishInfo.propId);
     setLightPoints(wishInfo.lightPoints);
+    setLightPointsSwell(wishInfo.lightPointsSwell);
     setBlindBoxPoints(wishInfo.blindBoxPoints);
+    setBlindBoxPointsSwell(wishInfo.blindBoxPointsSwell);
     setWishCount((prev) => prev - 1);
   }, [wishCountData, userAddress, wishCount]);
-
-  function shortenAddress(address: string) {
-    return `${address.slice(0, 5)}...${address.slice(-4)}`;
-  }
 
   return (
     <>
@@ -145,11 +149,11 @@ export default function WishesResult({ wishStatus }: Props) {
                     <div className={styles.imageBorderWrapper}>
                       <img src={incenseData[incenseId - 1].img} alt="light points" />
                     </div>
-                    <span className={styles.wishPointsValue}>+{lightPoints}</span>
+                    <span className={styles.wishPointsValue}>+{lightPoints} +{lightPointsSwell}</span>
                   </div>
                   <div className={styles.wishPointsColumn}>
                     <img src={propsData[propId].imageUrl} alt="blind box points" />
-                    <span className={styles.wishPointsValue}>+{blindBoxPoints}</span>
+                    <span className={styles.wishPointsValue}>+{blindBoxPoints} +{blindBoxPointsSwell}</span>
                   </div>
                   <div className={styles.wishPointsColumn}>
                     <span className={styles.wishPointsLabel}>WP:&nbsp;</span>

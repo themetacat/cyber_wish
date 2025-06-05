@@ -298,6 +298,7 @@
     font-family: 'FSKim-Medium';
     font-size: 24px;
     color: #F4C873;
+    white-space: nowrap;
 }
 
 .wishPointsBottom {
