@@ -1,0 +1,273 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99;
+}
+
+.modal {
+    background-image: url('../../../public/images/Fate/Selected/Bg.webp');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 700px;
+    height: 76vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    overflow: hidden;
+    transform: scale(0);
+    animation: scaleIn 0.1s ease-out forwards;
+}
+
+@keyframes scaleIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.header {
+    text-align: center;
+    /* font-size: clamp(32px, 4vw, 51px); */
+    font-size: 51px;
+    font-weight: bold;
+    margin-top: 19px;
+    color: rgba(233, 205, 144, 1);
+    font-family: "FSKim-Medium";
+}
+
+.divider {
+    height: 1px;
+    margin-left: 5%;
+    margin-top: 1%;
+    width: 90%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.05), rgba(242, 201, 109, 1), rgba(255, 255, 255, 0.05));
+    filter: blur(0px);
+    flex-shrink: 0;
+}
+
+.closeButton {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: transparent;
+    border: none;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+
+.closeButton:hover {
+    transform: scale(1.1);
+}
+
+.closeButton:active {
+    transform: scale(0.95);
+}
+
+.closeButton img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+.body {
+    width: 100%;
+    padding-left: 50px;
+    margin-top: 28px;
+    padding-right: 50px;
+}
+
+.totalInfo {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.totalInfoItem {
+    flex: 1;
+    text-align: center;
+    border: 1px solid #F8E49C;
+    padding: 8px;
+    border-radius: 6px;
+    background-color: rgba(255, 245, 204, 0.1);
+    border-radius: 20px;
+    width: 50%;
+}
+
+.totalInfoNumber {
+    font-family: "FSKim-Medium";
+    font-size: 55px;
+    color: rgba(244, 200, 116, 1);
+}
+
+.totalInfoNumber span {
+    font-size: 25px;
+}
+
+.totalInfoNumberType {
+    font-size: 21px;
+    color: rgba(255, 245, 204, 1);
+    font-family: "AlibabaPuHuiTi";
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.pTitle {
+    color: rgba(244, 200, 116, 1);
+    font-size: 17px;
+    line-height: 60px;
+    font-family: "FSKim-Medium";
+    letter-spacing: 0.05rem;
+}
+
+
+.tableWrapper {
+    width: 100%;
+    height: 39%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #F8E49C;
+    padding-right: 10px;
+    border-radius: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background-color: rgba(255, 245, 204, 0.1);
+    font-family: "AlibabaPuHuiTi";
+    font-weight: 500;
+}
+
+.tableHeader {
+    display: flex;
+    color: rgba(244, 200, 116, 1);
+    font-size: 16px;
+}
+
+.scrollbarSpacer {
+    width: 23px;
+}
+
+.scrollContainer {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+}
+
+.tableBodyWrapper {
+    height: 100%;
+    overflow-y: scroll;
+    padding-right: 10px;
+    box-sizing: content-box;
+    font-weight: 500;
+}
+
+.tableBodyWrapper::-webkit-scrollbar {
+    width: 13px;
+}
+
+.tableBodyWrapper::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.tableBodyWrapper::-webkit-scrollbar-thumb {
+    cursor: pointer;
+    background: linear-gradient(to bottom, #F5CB7A, #FBE6AF);
+    border-radius: 2px;
+    box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.6),
+        inset 0 -1px 1px rgba(188, 160, 105, 0.4),
+        0 0 1px rgba(188, 160, 105, 0.6);
+    border: 2px solid rgba(188, 160, 105, 0.3);
+}
+
+
+.tableBody {
+    display: flex;
+    flex-direction: column;
+    color: rgba(255, 245, 204, 1);
+    font-size: 13px;
+}
+
+.row {
+    display: flex;
+}
+
+.cell {
+    flex: 1;
+    padding: 7px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .modal {
+        width: 90vw;
+        height: 80vh;
+        padding: 10px;
+    }
+
+    .header {
+        font-size: 35px;
+    }
+
+    .scrollbarSpacer {
+    width: 6px;
+}
+
+    .body {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .tableWrapper {
+        padding-right: 7px;
+        padding-top: 8px;
+        padding-left: 7px;
+    }
+
+    .totalInfoNumber {
+        font-family: "FSKim-Medium";
+        font-size: 25px;
+        color: rgba(244, 200, 116, 1);
+    }
+
+    .totalInfoNumber span {
+        font-size: 15px;
+    }
+
+    .totalInfoNumberType {
+        font-size: 12px;
+    }
+    .tableBodyWrapper{
+        padding-right: 0px;
+    }
+
+    .tableBodyWrapper::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .tableHeader {
+        font-size: 15px;
+    }
+
+    .tableBody {
+        font-size: 12px;
+    }
+
+}

@@ -40,18 +40,18 @@ contract BoostWisherSystem is System {
     uint256[] memory boostAmount = getPointsBoostAmount(selectedWisher, totalBoostAmount);
     address[] memory selectedWisherAddr = new address[](selectedWisher.length);
     for (uint256 i = 0; i < selectedWisher.length; i++) {
-      selectedWisherAddr[i] = selectedWisher[i].wisher;
+      address wisher = selectedWisher[i].wisher;
+      selectedWisherAddr[i] = wisher;
       IWorld(_world()).transferBalanceToAddress(
         WorldResourceIdLib.encodeNamespace("cyberwish"),
-        selectedWisher[i].wisher,
+        wisher,
         boostAmount[i]
       );
-      Wisher.setBoostedPointsAmount(
-        poolId,
-        selectedWisher[i].wisher,
-        Wisher.getBoostedPointsAmount(poolId, selectedWisher[i].wisher) + boostAmount[i]
-      );
-      WisherCycleRecords.setBoostedPointsAmount(poolId, boostCycle, selectedWisher[i].wisher, boostAmount[i]);
+      WisherData memory wisherData = Wisher.get(poolId, wisher);
+      wisherData.boostedPointsAmount += boostAmount[i];
+      wisherData.timePointsSelected += 1;
+      Wisher.set(poolId, wisher, wisherData);
+      WisherCycleRecords.setBoostedPointsAmount(poolId, boostCycle, wisher, boostAmount[i]);
     }
     boostWisherRecordsData.boostedWisherByPoints = selectedWisherAddr;
     CycleInfo.setIsboost(poolId, boostCycle, 0, true);
@@ -89,7 +89,11 @@ contract BoostWisherSystem is System {
         wisher,
         boostedWisherAmount
       );
-      Wisher.setBoostedStarAmount(poolId, wisher, Wisher.getBoostedStarAmount(poolId, wisher) + boostedWisherAmount);
+
+      WisherData memory wisherData = Wisher.get(poolId, wisher);
+      wisherData.boostedStarAmount += boostedWisherAmount;
+      wisherData.timeStarSelected += 1;
+      Wisher.set(poolId, wisher, wisherData);
       WisherCycleRecords.setBoostedStarAmount(poolId, boostCycle, wisher, boostedWisherAmount);
     }
 

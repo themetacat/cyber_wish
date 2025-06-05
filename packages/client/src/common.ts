@@ -1,4 +1,3 @@
-import mudConfig from "contracts/mud.config";
 import { chains } from "./wagmiConfig";
 import { Chain, Hex } from "viem";
 
@@ -9,7 +8,6 @@ export const startBlock = BigInt(import.meta.env.START_BLOCK ?? 0n);
 export const url = new URL(window.location.href);
 
 export type Entity = Hex;
-export type Direction = (typeof mudConfig.enums.Direction)[number];
 
 export function getWorldAddress() {
   if (!worldAddress) {
@@ -20,7 +18,7 @@ export function getWorldAddress() {
 
 export function getChain(): Chain {
   const chain = chains.find((c) => c.id === chainId);
-  console.log(chain);
+  
   
   if (!chain) {
     throw new Error(`No chain configured for chain ID ${chainId}.`);

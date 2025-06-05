@@ -8,7 +8,7 @@ export default defineWorld({
   tables: {
     WishCount: { schema: { count: "uint256" }, key: [] },
     WishingPool: { schema: { id: "bytes32", creator: "address", amount: "uint256", startTime: "uint256", duration: "uint256", name: "string" }, key: ["id"] },
-    Wisher: { schema: { poolId: "bytes32", wisher: "address", points: "uint256", wishCount: "uint256", boostedPointsAmount: "uint256", boostedStarAmount: "uint256" }, key: ["poolId", "wisher"] },
+    Wisher: { schema: { poolId: "bytes32", wisher: "address", points: "uint256", wishCount: "uint256", timePointsSelected: "uint256", timeStarSelected: "uint256", boostedPointsAmount: "uint256", boostedStarAmount: "uint256" }, key: ["poolId", "wisher"] },
     WisherTemporaryRecords: { schema: { poolId: "bytes32", wisher: "address", pointsWishIndex: "uint256", starWishIndex: "uint256", pointsLastCycle: "uint256", starLastCycle: "uint256", wishCount: "uint256", points: "uint256", freeWishTime: "uint256" }, key: ["poolId", "wisher"] },
     Wishes: { schema: { poolId: "bytes32", id: "bytes32", wisher: "address", wishTime: "uint256", cycle: "uint256", incenseId: "uint256", blindBoxId: "uint256", pointsIncense: "uint256", pointsBlindBox: "uint256", pointsIncenseEasterEgg: "uint256", pointsBlindBoxEasterEgg: "uint256", propId: "uint256", isStar: "bool", wishContent: "string" }, key: ["poolId", "id"], type: "offchainTable" },
     BoostWisherRecords: { schema: { poolId: "bytes32", cycle: "uint256", amount: "uint256", amountPoints: "uint256", amountStar: "uint256", boostedWisherByPoints: "address[]", boostedWisherByStar: "address[]" }, key: ["poolId", "cycle"] },

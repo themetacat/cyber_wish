@@ -19,6 +19,8 @@ import { ResourceId } from "@latticexyz/store/src/ResourceId.sol";
 struct WisherData {
   uint256 points;
   uint256 wishCount;
+  uint256 timePointsSelected;
+  uint256 timeStarSelected;
   uint256 boostedPointsAmount;
   uint256 boostedStarAmount;
 }
@@ -28,12 +30,12 @@ library Wisher {
   ResourceId constant _tableId = ResourceId.wrap(0x7462637962657277697368000000000057697368657200000000000000000000);
 
   FieldLayout constant _fieldLayout =
-    FieldLayout.wrap(0x0080040020202020000000000000000000000000000000000000000000000000);
+    FieldLayout.wrap(0x00c0060020202020202000000000000000000000000000000000000000000000);
 
   // Hex-encoded key schema of (bytes32, address)
   Schema constant _keySchema = Schema.wrap(0x003402005f610000000000000000000000000000000000000000000000000000);
-  // Hex-encoded value schema of (uint256, uint256, uint256, uint256)
-  Schema constant _valueSchema = Schema.wrap(0x008004001f1f1f1f000000000000000000000000000000000000000000000000);
+  // Hex-encoded value schema of (uint256, uint256, uint256, uint256, uint256, uint256)
+  Schema constant _valueSchema = Schema.wrap(0x00c006001f1f1f1f1f1f00000000000000000000000000000000000000000000);
 
   /**
    * @notice Get the table's key field names.
@@ -50,11 +52,13 @@ library Wisher {
    * @return fieldNames An array of strings with the names of value fields.
    */
   function getFieldNames() internal pure returns (string[] memory fieldNames) {
-    fieldNames = new string[](4);
+    fieldNames = new string[](6);
     fieldNames[0] = "points";
     fieldNames[1] = "wishCount";
-    fieldNames[2] = "boostedPointsAmount";
-    fieldNames[3] = "boostedStarAmount";
+    fieldNames[2] = "timePointsSelected";
+    fieldNames[3] = "timeStarSelected";
+    fieldNames[4] = "boostedPointsAmount";
+    fieldNames[5] = "boostedStarAmount";
   }
 
   /**
@@ -164,6 +168,98 @@ library Wisher {
   }
 
   /**
+   * @notice Get timePointsSelected.
+   */
+  function getTimePointsSelected(bytes32 poolId, address wisher) internal view returns (uint256 timePointsSelected) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(uint160(wisher)));
+
+    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 2, _fieldLayout);
+    return (uint256(bytes32(_blob)));
+  }
+
+  /**
+   * @notice Get timePointsSelected.
+   */
+  function _getTimePointsSelected(bytes32 poolId, address wisher) internal view returns (uint256 timePointsSelected) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(uint160(wisher)));
+
+    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 2, _fieldLayout);
+    return (uint256(bytes32(_blob)));
+  }
+
+  /**
+   * @notice Set timePointsSelected.
+   */
+  function setTimePointsSelected(bytes32 poolId, address wisher, uint256 timePointsSelected) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(uint160(wisher)));
+
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((timePointsSelected)), _fieldLayout);
+  }
+
+  /**
+   * @notice Set timePointsSelected.
+   */
+  function _setTimePointsSelected(bytes32 poolId, address wisher, uint256 timePointsSelected) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(uint160(wisher)));
+
+    StoreCore.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((timePointsSelected)), _fieldLayout);
+  }
+
+  /**
+   * @notice Get timeStarSelected.
+   */
+  function getTimeStarSelected(bytes32 poolId, address wisher) internal view returns (uint256 timeStarSelected) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(uint160(wisher)));
+
+    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 3, _fieldLayout);
+    return (uint256(bytes32(_blob)));
+  }
+
+  /**
+   * @notice Get timeStarSelected.
+   */
+  function _getTimeStarSelected(bytes32 poolId, address wisher) internal view returns (uint256 timeStarSelected) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(uint160(wisher)));
+
+    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 3, _fieldLayout);
+    return (uint256(bytes32(_blob)));
+  }
+
+  /**
+   * @notice Set timeStarSelected.
+   */
+  function setTimeStarSelected(bytes32 poolId, address wisher, uint256 timeStarSelected) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(uint160(wisher)));
+
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 3, abi.encodePacked((timeStarSelected)), _fieldLayout);
+  }
+
+  /**
+   * @notice Set timeStarSelected.
+   */
+  function _setTimeStarSelected(bytes32 poolId, address wisher, uint256 timeStarSelected) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(uint160(wisher)));
+
+    StoreCore.setStaticField(_tableId, _keyTuple, 3, abi.encodePacked((timeStarSelected)), _fieldLayout);
+  }
+
+  /**
    * @notice Get boostedPointsAmount.
    */
   function getBoostedPointsAmount(bytes32 poolId, address wisher) internal view returns (uint256 boostedPointsAmount) {
@@ -171,7 +267,7 @@ library Wisher {
     _keyTuple[0] = poolId;
     _keyTuple[1] = bytes32(uint256(uint160(wisher)));
 
-    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 2, _fieldLayout);
+    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 4, _fieldLayout);
     return (uint256(bytes32(_blob)));
   }
 
@@ -183,7 +279,7 @@ library Wisher {
     _keyTuple[0] = poolId;
     _keyTuple[1] = bytes32(uint256(uint160(wisher)));
 
-    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 2, _fieldLayout);
+    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 4, _fieldLayout);
     return (uint256(bytes32(_blob)));
   }
 
@@ -195,7 +291,7 @@ library Wisher {
     _keyTuple[0] = poolId;
     _keyTuple[1] = bytes32(uint256(uint160(wisher)));
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((boostedPointsAmount)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 4, abi.encodePacked((boostedPointsAmount)), _fieldLayout);
   }
 
   /**
@@ -206,7 +302,7 @@ library Wisher {
     _keyTuple[0] = poolId;
     _keyTuple[1] = bytes32(uint256(uint160(wisher)));
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((boostedPointsAmount)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 4, abi.encodePacked((boostedPointsAmount)), _fieldLayout);
   }
 
   /**
@@ -217,7 +313,7 @@ library Wisher {
     _keyTuple[0] = poolId;
     _keyTuple[1] = bytes32(uint256(uint160(wisher)));
 
-    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 3, _fieldLayout);
+    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 5, _fieldLayout);
     return (uint256(bytes32(_blob)));
   }
 
@@ -229,7 +325,7 @@ library Wisher {
     _keyTuple[0] = poolId;
     _keyTuple[1] = bytes32(uint256(uint160(wisher)));
 
-    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 3, _fieldLayout);
+    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 5, _fieldLayout);
     return (uint256(bytes32(_blob)));
   }
 
@@ -241,7 +337,7 @@ library Wisher {
     _keyTuple[0] = poolId;
     _keyTuple[1] = bytes32(uint256(uint160(wisher)));
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 3, abi.encodePacked((boostedStarAmount)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 5, abi.encodePacked((boostedStarAmount)), _fieldLayout);
   }
 
   /**
@@ -252,7 +348,7 @@ library Wisher {
     _keyTuple[0] = poolId;
     _keyTuple[1] = bytes32(uint256(uint160(wisher)));
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 3, abi.encodePacked((boostedStarAmount)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 5, abi.encodePacked((boostedStarAmount)), _fieldLayout);
   }
 
   /**
@@ -295,10 +391,19 @@ library Wisher {
     address wisher,
     uint256 points,
     uint256 wishCount,
+    uint256 timePointsSelected,
+    uint256 timeStarSelected,
     uint256 boostedPointsAmount,
     uint256 boostedStarAmount
   ) internal {
-    bytes memory _staticData = encodeStatic(points, wishCount, boostedPointsAmount, boostedStarAmount);
+    bytes memory _staticData = encodeStatic(
+      points,
+      wishCount,
+      timePointsSelected,
+      timeStarSelected,
+      boostedPointsAmount,
+      boostedStarAmount
+    );
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -318,10 +423,19 @@ library Wisher {
     address wisher,
     uint256 points,
     uint256 wishCount,
+    uint256 timePointsSelected,
+    uint256 timeStarSelected,
     uint256 boostedPointsAmount,
     uint256 boostedStarAmount
   ) internal {
-    bytes memory _staticData = encodeStatic(points, wishCount, boostedPointsAmount, boostedStarAmount);
+    bytes memory _staticData = encodeStatic(
+      points,
+      wishCount,
+      timePointsSelected,
+      timeStarSelected,
+      boostedPointsAmount,
+      boostedStarAmount
+    );
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -340,6 +454,8 @@ library Wisher {
     bytes memory _staticData = encodeStatic(
       _table.points,
       _table.wishCount,
+      _table.timePointsSelected,
+      _table.timeStarSelected,
       _table.boostedPointsAmount,
       _table.boostedStarAmount
     );
@@ -361,6 +477,8 @@ library Wisher {
     bytes memory _staticData = encodeStatic(
       _table.points,
       _table.wishCount,
+      _table.timePointsSelected,
+      _table.timeStarSelected,
       _table.boostedPointsAmount,
       _table.boostedStarAmount
     );
@@ -380,14 +498,29 @@ library Wisher {
    */
   function decodeStatic(
     bytes memory _blob
-  ) internal pure returns (uint256 points, uint256 wishCount, uint256 boostedPointsAmount, uint256 boostedStarAmount) {
+  )
+    internal
+    pure
+    returns (
+      uint256 points,
+      uint256 wishCount,
+      uint256 timePointsSelected,
+      uint256 timeStarSelected,
+      uint256 boostedPointsAmount,
+      uint256 boostedStarAmount
+    )
+  {
     points = (uint256(Bytes.getBytes32(_blob, 0)));
 
     wishCount = (uint256(Bytes.getBytes32(_blob, 32)));
 
-    boostedPointsAmount = (uint256(Bytes.getBytes32(_blob, 64)));
+    timePointsSelected = (uint256(Bytes.getBytes32(_blob, 64)));
 
-    boostedStarAmount = (uint256(Bytes.getBytes32(_blob, 96)));
+    timeStarSelected = (uint256(Bytes.getBytes32(_blob, 96)));
+
+    boostedPointsAmount = (uint256(Bytes.getBytes32(_blob, 128)));
+
+    boostedStarAmount = (uint256(Bytes.getBytes32(_blob, 160)));
   }
 
   /**
@@ -401,7 +534,14 @@ library Wisher {
     EncodedLengths,
     bytes memory
   ) internal pure returns (WisherData memory _table) {
-    (_table.points, _table.wishCount, _table.boostedPointsAmount, _table.boostedStarAmount) = decodeStatic(_staticData);
+    (
+      _table.points,
+      _table.wishCount,
+      _table.timePointsSelected,
+      _table.timeStarSelected,
+      _table.boostedPointsAmount,
+      _table.boostedStarAmount
+    ) = decodeStatic(_staticData);
   }
 
   /**
@@ -433,10 +573,13 @@ library Wisher {
   function encodeStatic(
     uint256 points,
     uint256 wishCount,
+    uint256 timePointsSelected,
+    uint256 timeStarSelected,
     uint256 boostedPointsAmount,
     uint256 boostedStarAmount
   ) internal pure returns (bytes memory) {
-    return abi.encodePacked(points, wishCount, boostedPointsAmount, boostedStarAmount);
+    return
+      abi.encodePacked(points, wishCount, timePointsSelected, timeStarSelected, boostedPointsAmount, boostedStarAmount);
   }
 
   /**
@@ -448,10 +591,19 @@ library Wisher {
   function encode(
     uint256 points,
     uint256 wishCount,
+    uint256 timePointsSelected,
+    uint256 timeStarSelected,
     uint256 boostedPointsAmount,
     uint256 boostedStarAmount
   ) internal pure returns (bytes memory, EncodedLengths, bytes memory) {
-    bytes memory _staticData = encodeStatic(points, wishCount, boostedPointsAmount, boostedStarAmount);
+    bytes memory _staticData = encodeStatic(
+      points,
+      wishCount,
+      timePointsSelected,
+      timeStarSelected,
+      boostedPointsAmount,
+      boostedStarAmount
+    );
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
