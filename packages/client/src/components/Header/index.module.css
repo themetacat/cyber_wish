@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem 3rem;
+  padding: 16px 16px;
   position: fixed;
   top: 0;
   left: 0;
@@ -28,7 +28,7 @@
 .nav {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 20px;
 }
 
 .navItem {
@@ -68,7 +68,7 @@
 
 .connectButton {
   position: relative;
-  margin-left: 1rem;
+  margin-left: 16px;
   font-family: "Orbitron";
   font-weight: 400;
   font-size: 15px;
@@ -103,4 +103,25 @@
 
 .connectButton:hover .dropdown {
   display: block;
+}
+
+.bgmButton {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 0.1px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.bgmButton:hover {
+  transform: scale(1.1);
+}
+
+.bgmButton img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
