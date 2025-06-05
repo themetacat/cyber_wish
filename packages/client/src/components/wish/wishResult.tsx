@@ -43,6 +43,7 @@ export default function WishesResult({ wishStatus }: Props) {
     useState<boolean>(false);
   const [showBlindBoxPointsSwell, setShowBlindBoxPointsSwell] =
     useState<boolean>(false);
+  const [showBlindBoxPoints, setShowBlindBoxPoints] = useState<boolean>(false);
 
   const [animatedPercentage, setAnimatedPercentage] = useState<number>(0);
 
@@ -91,6 +92,7 @@ export default function WishesResult({ wishStatus }: Props) {
       setShowModal(true);
       setShowLightPointsSwell(false);
       setShowBlindBoxPointsSwell(false);
+      setShowBlindBoxPoints(false);
       setAnimatedPercentage(0);
     }
   }, [wishStatus]);
@@ -160,8 +162,9 @@ export default function WishesResult({ wishStatus }: Props) {
         setShowLightPointsSwell(true);
         setDisplayedTotalPoints((prev) => prev + lightPointsSwell);
 
-        // Phase 3: Animate percentage for blindBoxPointsSwell
+        // Phase 3: Show blindBoxPoints and start its animation
         timeout3Ref.current = setTimeout(() => {
+          setShowBlindBoxPoints(true);
           setAnimatedPercentage(0); // Start percentage from 0 again
           percentageInterval2Ref.current = setInterval(() => {
             setAnimatedPercentage((prev) => {
@@ -292,12 +295,14 @@ export default function WishesResult({ wishStatus }: Props) {
                     </span>
                   </div>
                   <div className={styles.wishPointsColumn}>
-                    <img
-                      src={propsData[propId].imageUrl}
-                      alt="blind box points"
-                    />
+                    {showBlindBoxPoints && (
+                      <img
+                        src={propsData[propId].imageUrl}
+                        alt="blind box points"
+                      />
+                    )}
                     <span className={styles.wishPointsValue}>
-                      +{blindBoxPoints}
+                      {showBlindBoxPoints && `+${blindBoxPoints}`}
                       {showBlindBoxPointsSwell && ` +${blindBoxPointsSwell}`}
                     </span>
                   </div>
