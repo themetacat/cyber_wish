@@ -62,6 +62,7 @@ export default function WishesResult({ wishStatus }: Props) {
   const openBlindBoxAudioRef = useRef<HTMLAudioElement | null>(null);
   const hasPlayedOpenBlindBoxAudio = useRef<boolean>(false);
   const receiveWPAudioRef = useRef<HTMLAudioElement | null>(null);
+  const wishSentAudioRef = useRef<HTMLAudioElement | null>(null);
 
   const fetchOneWish = (wishIndex: number): WishInfo | undefined => {
     const id = pad(`0x${wishIndex.toString(16)}`, { size: 32 });
@@ -156,11 +157,18 @@ export default function WishesResult({ wishStatus }: Props) {
     // Create audio elements
     openBlindBoxAudioRef.current = new Audio('/audio/openBlindBox.mp3');
     receiveWPAudioRef.current = new Audio('/audio/receiveWP.mp3');
+    wishSentAudioRef.current = new Audio('/audio/wishSent.mp3');
     hasPlayedOpenBlindBoxAudio.current = false;
   }, []);
 
   useEffect(() => {
     if (!showModal) return;
+
+    // Play wishSent sound when animation starts
+    if (wishSentAudioRef.current) {
+      wishSentAudioRef.current.currentTime = 0;
+      wishSentAudioRef.current.play();
+    }
 
     timeout1Ref.current = setTimeout(() => {
       setAnimatedPercentage(0); // Start percentage from 0
