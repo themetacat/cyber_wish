@@ -43,7 +43,7 @@ const Selected = ({ cycle, onClose }: Props) => {
         rewards: Number(formatEther(boostedAmountData.boostedPointsAmount))
       });
     }
-    setData(tempData);
+    setData(tempData.sort((a, b) => b.rewards - a.rewards));
   }, [cycle])
 
   return (
