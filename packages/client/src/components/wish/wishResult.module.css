@@ -115,6 +115,7 @@
     background-position: center;
     padding: 16px;
     opacity: 0;
+    cursor: pointer;
     animation: fadeIn 2.0s ease forwards 5.0s;
 }
 
@@ -123,6 +124,11 @@
     height: auto;
     object-fit: contain;
     margin-left: 16px;
+    transition: transform 0.2s ease;
+}
+
+.blessingItemContainer:hover img {
+    transform: scale(1.15);
 }
 
 .blessingItemContainer>span {
@@ -137,6 +143,12 @@
     flex-direction: column;
     gap: 8px;
     width: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.blessingItemContentContainer:hover {
+    transform: scale(1.05);
 }
 
 .blessingItemName {
@@ -183,6 +195,7 @@
     background-repeat: no-repeat;
     background-position: center;
     padding: 24px;
+    cursor: pointer;
     opacity: 0;
     animation: fadeIn 2.0s ease forwards 7.0s;
 }
@@ -204,6 +217,14 @@
 .wishPointsColumn:first-child,
 .wishPointsColumn:nth-child(2) {
     width: 25%;
+}
+
+.wishPointsColumn:nth-child(2) img {
+    transition: transform 0.2s ease;
+}
+
+.wishPointsColumn:nth-child(2) img:hover {
+    transform: scale(1.25);
 }
 
 .wishPointsColumn:first-child img {
@@ -244,6 +265,7 @@
     justify-content: center;
     align-items: center;
     position: relative;
+    transition: transform 0.2s ease;
 }
 
 .imageBorderWrapper::before {
@@ -258,6 +280,10 @@
     background-position: center;
     background-repeat: no-repeat;
     z-index: -1;
+}
+
+.imageBorderWrapper:hover {
+    transform: scale(1.15);
 }
 
 .wishPointsColumn img {
