@@ -16,10 +16,12 @@ import FateGifts from "./Fate/fateGifts";
 import Header from "./Header";
 import { useLocation } from "react-router-dom";
 import { WISH_POOL_ID } from "../utils/contants";
+import { useAccount } from 'wagmi';
 
 export default function Main() {
   const [wishStatus, setWishStatus] = useState(false);
   const location = useLocation();
+  const { address } = useAccount(); // Get the connected address
 
   const sync = useSync();
   const worldContract = useWorldContract();
@@ -84,7 +86,7 @@ export default function Main() {
         <button onClick={() => boostByPoints()}>boost points</button> */}
         <WishPanel wish={wish} setWishStatus={setWishStatus} />
         {location.pathname === "/" && <WishesPanel />}
-        {location.pathname === "/" && <MyIncenseCarousel />}
+        {location.pathname === "/" && address && <MyIncenseCarousel />}
         {location.pathname === "/wishing-wall" && <WishingWall />}
         {location.pathname === "/my-wishes" && <MyWishes />}
         {location.pathname === "/wishflow-fund" && <FateGifts/>}
