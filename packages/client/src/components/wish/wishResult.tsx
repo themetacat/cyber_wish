@@ -157,7 +157,7 @@ export default function WishesResult({ wishStatus }: Props) {
     setIsStar(wishInfo.isStar);
     setWishCount((prev) => prev - 1);
     // Initialize total points after base points are set
-    setDisplayedTotalPoints(wishInfo.lightPoints + wishInfo.blindBoxPoints);
+    setDisplayedTotalPoints(wishInfo.lightPoints);
   }, [wishCountData, userAddress, wishCount]);
 
   useEffect(() => {
@@ -203,7 +203,7 @@ export default function WishesResult({ wishStatus }: Props) {
 
         setAnimatedPercentage(lightPointsPercentage);
         setShowLightPointsSwell(true);
-        setDisplayedTotalPoints((prev) => prev + lightPointsSwell);
+        setDisplayedTotalPoints(lightPoints + lightPointsSwell);
 
         // Trigger light points animation
         setAnimateLightPoints(false);
@@ -224,6 +224,7 @@ export default function WishesResult({ wishStatus }: Props) {
         // Phase 3: Show blindBoxPoints and start its animation
         timeout3Ref.current = setTimeout(() => {
           setShowBlindBoxPoints(true);
+          setDisplayedTotalPoints(lightPoints + lightPointsSwell + blindBoxPoints);
           setAnimatedPercentage(0); // Start percentage from 0 again
           percentageInterval2Ref.current = setInterval(() => {
             setAnimatedPercentage((prev) => {
@@ -249,7 +250,7 @@ export default function WishesResult({ wishStatus }: Props) {
 
             setAnimatedPercentage(blindBoxPointsPercentage);
             setShowBlindBoxPointsSwell(true);
-            setDisplayedTotalPoints((prev) => prev + blindBoxPointsSwell);
+            setDisplayedTotalPoints(lightPoints + lightPointsSwell + blindBoxPoints + blindBoxPointsSwell);
 
             // Trigger blind box points animation
             setAnimateBlindBoxPoints(false);
