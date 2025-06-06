@@ -14,22 +14,38 @@
   border-radius: 12px;
   font-size: 16px;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(244, 200, 115, 0.2);
   background-image: url('/images/wish/WishPanel/MakeAWishBtnBg.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transition: transform 0.2s ease;
+  transition: all 0.3s ease;
+  animation: breathe 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes breathe {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .mainButton:hover {
-  transform: scale(1.03);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(244, 200, 115, 0.4);
+  animation-play-state: paused;
 }
 
-.mainButton:active {
+/* .mainButton:active {
   transform: scale(0.98);
   z-index: 1;
-}
+  animation-play-state: paused;
+} */
 
 .mainButtonText {
   font-family: 'Orbitron';
