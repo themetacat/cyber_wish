@@ -5,14 +5,20 @@ import { getComponentValue } from "@latticexyz/recs";
 import { components } from "../../mud/recs";
 import { encodeEntity } from "@latticexyz/store-sync/recs";
 import { WISH_POOL_ID } from "../../utils/contants";
-import { formatEther, TransactionReceipt } from 'viem';
+import { formatEther, TransactionReceipt } from "viem";
 import { useAccount } from "wagmi";
 import { useAccountModal } from "@latticexyz/entrykit/internal";
 import { incenseData } from "../../utils/incenseData";
 import { blindBoxData } from "../../utils/blindBoxData";
+import { ErrorToast } from "../common/ErrorToast";
 
 export type Props = {
-  readonly wish?: (incenseId: number, blindBoxId: number, wishContent: string, value: number) => Promise<TransactionReceipt>;
+  readonly wish?: (
+    incenseId: number,
+    blindBoxId: number,
+    wishContent: string,
+    value: number
+  ) => Promise<TransactionReceipt>;
   setWishStatus: (status: boolean) => void;
 };
 
@@ -23,6 +29,7 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { address } = useAccount();
   const { openAccountModal } = useAccountModal();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (showModal && textareaRef.current) {
@@ -39,7 +46,13 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
 
   const setIncenseId = useCallback((id: number) => {
     setIncenseIdRaw(id);
-    const incenseData = getComponentValue(components.Incense, encodeEntity({ poolId: "bytes32", id: "uint256" }, { poolId: WISH_POOL_ID, id: BigInt(id) }));
+    const incenseData = getComponentValue(
+      components.Incense,
+      encodeEntity(
+        { poolId: "bytes32", id: "uint256" },
+        { poolId: WISH_POOL_ID, id: BigInt(id) }
+      )
+    );
     if (!incenseData || incenseData.amount == 0n) {
       setIncenseAmount(0n);
     } else {
@@ -49,7 +62,13 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
 
   const setBlindBoxId = useCallback((id: number) => {
     setBlindBoxIdRaw(id);
-    const blindBoxData = getComponentValue(components.PropBlindBox, encodeEntity({ poolId: "bytes32", id: "uint256" }, { poolId: WISH_POOL_ID, id: BigInt(id) }));
+    const blindBoxData = getComponentValue(
+      components.PropBlindBox,
+      encodeEntity(
+        { poolId: "bytes32", id: "uint256" },
+        { poolId: WISH_POOL_ID, id: BigInt(id) }
+      )
+    );
     if (!blindBoxData || blindBoxData.amount == 0n) {
       setBlindBoxAmount(0n);
     } else {
@@ -79,36 +98,51 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
         }
         setIsSubmitting(true);
         setWishStatus(false);
-        const res = await wish(incenseId, blindBoxId, wishContent, Number(formatEther(totalAmount)));
+        const res = await wish(
+          incenseId,
+          blindBoxId,
+          wishContent,
+          Number(formatEther(totalAmount))
+        );
         console.log("res: ", res);
         if (res && res.status == "success") {
           console.log("wish success");
           setWishStatus(true);
           setShowModal(false);
+          setWishContent("");
+          setIncenseIdRaw(null);
+          setBlindBoxIdRaw(null);
         } else {
           console.log("wish faild");
+          setErrorMessage("Failed to make a wish. Please try again.");
         }
       } catch (error) {
         console.error("wish error:", error);
-        alert("Please retry");
-        return;
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
+
+        if (errorMessage.includes("Insufficient balance")) {
+          setErrorMessage("Insufficient balance.");
+        } else if (errorMessage.includes("Free times limit reached.")) {
+          setErrorMessage("Free times limit reached.");
+        } else {
+          setErrorMessage("Failed to make a wish. Please try again.");
+        }
       } finally {
         setIsSubmitting(false);
       }
     } else {
       console.warn("no wish fn");
     }
-
-    setShowModal(false);
-    setIncenseIdRaw(null);
-    setBlindBoxIdRaw(null);
-    setWishContent("");
   };
 
   return (
     <>
       <div className={styles.buttonContainer}>
-        <button className={styles.mainButton} onClick={() => setShowModal(true)}>
+        <button
+          className={styles.mainButton}
+          onClick={() => setShowModal(true)}
+        >
           <span className={styles.mainButtonText}>Make a wish</span>
         </button>
       </div>
@@ -118,7 +152,10 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
           <div className={styles.modalContent}>
             <h1>MAKE A WISH</h1>
             <span className={styles.dividingLine}>
-              <img src="/images/wish/WishPanel/DividingLine.webp" alt="dividing line" />
+              <img
+                src="/images/wish/WishPanel/DividingLine.webp"
+                alt="dividing line"
+              />
             </span>
 
             <span className={styles.itemTitle}>WISH</span>
@@ -143,10 +180,7 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
 
             <div>
               <span className={styles.itemTitle}>CHOOSE YOUR LIGHT</span>
-              <Carousel
-                images={incenseData}
-                onSelectId={setIncenseId}
-              />
+              <Carousel images={incenseData} onSelectId={setIncenseId} />
             </div>
 
             <div>
@@ -160,8 +194,8 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
             <p className={styles.totalEth}>
               Total: {formatEther(totalAmount)} ETH
             </p>
-            <button 
-              className={styles.sendButton} 
+            <button
+              className={styles.sendButton}
               onClick={() => handleSubmit()}
               disabled={isSubmitting}
             >
@@ -169,11 +203,20 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
                 {isSubmitting ? "Loading..." : "Send the wish"}
               </span>
             </button>
-            <button className={styles.closeButton} onClick={() => setShowModal(false)}>
+            <button
+              className={styles.closeButton}
+              onClick={() => setShowModal(false)}
+            >
               <img src="/images/wish/WishPanel/Close.webp" alt="Close" />
             </button>
           </div>
         </div>
+      )}
+      {errorMessage && (
+        <ErrorToast
+          message={errorMessage}
+          onClose={() => setErrorMessage(null)}
+        />
       )}
     </>
   );
@@ -184,7 +227,7 @@ export default WishPanel;
 type CarouselProps = {
   images: ImageItem[];
   onSelectId: (id: number) => void;
-  type?: 'incense' | 'blindBox';
+  type?: "incense" | "blindBox";
 };
 
 type IncenseData = {
@@ -205,10 +248,12 @@ const formatDuration = (seconds: bigint): string => {
   return `For ${hours} hours`;
 };
 
-const Carousel = ({ images, onSelectId, type = 'incense' }: CarouselProps) => {
+const Carousel = ({ images, onSelectId, type = "incense" }: CarouselProps) => {
   const total = images.length;
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentItemData, setCurrentItemData] = useState<IncenseData | BlindBoxData | null>(null);
+  const [currentItemData, setCurrentItemData] = useState<
+    IncenseData | BlindBoxData | null
+  >(null);
 
   const goPrev = () => {
     setCurrentIndex((prev) => (prev - 1 + total) % total);
@@ -220,22 +265,35 @@ const Carousel = ({ images, onSelectId, type = 'incense' }: CarouselProps) => {
 
   useEffect(() => {
     onSelectId(images[currentIndex].id);
-    const itemData = type === 'incense'
-      ? getComponentValue(components.Incense, encodeEntity({ poolId: "bytes32", id: "uint256" }, { poolId: WISH_POOL_ID, id: BigInt(images[currentIndex].id) }))
-      : getComponentValue(components.PropBlindBox, encodeEntity({ poolId: "bytes32", id: "uint256" }, { poolId: WISH_POOL_ID, id: BigInt(images[currentIndex].id) }));
-    
+    const itemData =
+      type === "incense"
+        ? getComponentValue(
+            components.Incense,
+            encodeEntity(
+              { poolId: "bytes32", id: "uint256" },
+              { poolId: WISH_POOL_ID, id: BigInt(images[currentIndex].id) }
+            )
+          )
+        : getComponentValue(
+            components.PropBlindBox,
+            encodeEntity(
+              { poolId: "bytes32", id: "uint256" },
+              { poolId: WISH_POOL_ID, id: BigInt(images[currentIndex].id) }
+            )
+          );
+
     if (itemData) {
-      if (type === 'incense') {
+      if (type === "incense") {
         setCurrentItemData({
           ...itemData,
           name: images[currentIndex].name,
-          desc: images[currentIndex].desc
+          desc: images[currentIndex].desc,
         } as IncenseData);
       } else {
         setCurrentItemData({
           ...itemData,
           name: images[currentIndex].name,
-          desc: images[currentIndex].desc
+          desc: images[currentIndex].desc,
         } as BlindBoxData);
       }
     }
@@ -251,14 +309,17 @@ const Carousel = ({ images, onSelectId, type = 'incense' }: CarouselProps) => {
           {images.map((item, i) => {
             const offset = (i - currentIndex + total) % total;
             let className = carouselStyles.card;
-            if (type === 'incense') {
-                className += ` ${carouselStyles.incense}`;
+            if (type === "incense") {
+              className += ` ${carouselStyles.incense}`;
             }
 
             if (offset === 0) className += ` ${carouselStyles.active}`;
             else if (offset === 1 || (currentIndex === total - 1 && i === 0))
               className += ` ${carouselStyles.right}`;
-            else if (offset === total - 1 || (currentIndex === 0 && i === total - 1))
+            else if (
+              offset === total - 1 ||
+              (currentIndex === 0 && i === total - 1)
+            )
               className += ` ${carouselStyles.left}`;
 
             return (
@@ -267,10 +328,7 @@ const Carousel = ({ images, onSelectId, type = 'incense' }: CarouselProps) => {
                 className={className}
                 onClick={() => setCurrentIndex(i)}
               >
-                <img
-                  src={item.img}
-                  className={carouselStyles.cardImage}
-                />
+                <img src={item.img} className={carouselStyles.cardImage} />
               </div>
             );
           })}
@@ -281,16 +339,26 @@ const Carousel = ({ images, onSelectId, type = 'incense' }: CarouselProps) => {
       </div>
 
       <div className={carouselStyles.carouselText}>
-        <div className={carouselStyles.title}>{currentItemData?.name || "Loading..."}</div>
+        <div className={carouselStyles.title}>
+          {currentItemData?.name || "Loading..."}
+        </div>
         <div className={carouselStyles.sub}>
-          <span className={carouselStyles.price}>{currentItemData?.amount ? `${formatEther(currentItemData.amount)} ETH` : "Free"}</span>
-          {type === 'incense' && (
+          <span className={carouselStyles.price}>
+            {currentItemData?.amount
+              ? `${formatEther(currentItemData.amount)} ETH`
+              : "Free"}
+          </span>
+          {type === "incense" && (
             <span className={carouselStyles.time}>
-              {(currentItemData as IncenseData)?.duration ? formatDuration((currentItemData as IncenseData).duration) : ""}
+              {(currentItemData as IncenseData)?.duration
+                ? formatDuration((currentItemData as IncenseData).duration)
+                : ""}
             </span>
           )}
         </div>
-        <div className={carouselStyles.desc}>{currentItemData?.desc || "No description available"}</div>
+        <div className={carouselStyles.desc}>
+          {currentItemData?.desc || "No description available"}
+        </div>
       </div>
     </div>
   );

@@ -34,7 +34,10 @@ export default function Main() {
             , BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: BigInt((value * 1e18).toFixed(0)) });
           console.log("tx", tx);
           const res = await sync.data.waitForTransaction(tx);
-          worldContract.simulate.cyberwish__wish([WISH_POOL_ID, BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: BigInt(Math.floor(value * 1e18)) });
+          if (res && res.status != "success") {
+            await worldContract.simulate.cyberwish__wish([WISH_POOL_ID, BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: BigInt(Math.floor(value * 1e18)) });
+          }
+          
           return res;
         }
         : undefined,
