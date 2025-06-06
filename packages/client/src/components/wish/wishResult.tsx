@@ -262,9 +262,9 @@ export default function WishesResult({ wishStatus }: Props) {
               receiveWPAudioRef.current.play();
             }
           }, 3000); // 3 seconds for the second animation
-        }, 1000); // Short delay before starting second animation
+        }, 2000); // 2 seconds delay before showing blind box points
       }, 3000); // 3 seconds for the first animation
-    }, 13550); // Start after wishPointsContainer CSS animation finishes (13.5s delay + 0.05s buffer)
+    }, 15550); // Start after wishPointsContainer CSS animation finishes (13.5s delay + 2s additional delay)
 
     // Cleanup function
     return () => {
