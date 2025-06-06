@@ -10,7 +10,6 @@
   background-repeat: no-repeat;
 }
 
-/* 设置滚动条样式 */
 ::-webkit-scrollbar {
   width: 0;
   height: 0;
@@ -40,7 +39,7 @@
 }
 
 .content {
-  height: 68vh;
+  height: 69vh;
   width: 100%;
   max-width: 800px;
   overflow-y: auto;
@@ -217,4 +216,10 @@
   font-family: 'Sling';
   font-size: 18px;
   font-weight: 200;
+}
+
+@media (max-height: 743px) {
+  .content{
+    height: 62vh;
+  }
 }

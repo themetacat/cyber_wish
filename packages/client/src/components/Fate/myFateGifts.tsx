@@ -83,7 +83,7 @@ const MyFateGifts = ({ onClose }: Props) => {
               <div className={styles.scrollContainer}>
                 <div className={styles.tableBodyWrapper}>
                   <div className={styles.tableBody}>
-                    {[...Array(20)].map((_, i) => (
+                    {/* {[...Array(20)].map((_, i) => (
                       <div key={i} className={styles.row}>
 
                         <div className={styles.cell}>
@@ -92,7 +92,7 @@ const MyFateGifts = ({ onClose }: Props) => {
                         <div className={styles.cell}>Type {i + 1}</div>
                         <div className={styles.cell}>0.003 ETH</div>
                       </div>
-                    ))}
+                    ))} */}
                   </div>
                 </div>
               </div>
