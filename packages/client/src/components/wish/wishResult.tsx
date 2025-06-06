@@ -155,9 +155,9 @@ export default function WishesResult({ wishStatus }: Props) {
 
   useEffect(() => {
     // Create audio elements
-    openBlindBoxAudioRef.current = new Audio('/audio/openBlindBox.mp3');
-    receiveWPAudioRef.current = new Audio('/audio/receiveWP.mp3');
-    wishSentAudioRef.current = new Audio('/audio/wishSent.mp3');
+    openBlindBoxAudioRef.current = new Audio("/audio/openBlindBox.mp3");
+    receiveWPAudioRef.current = new Audio("/audio/receiveWP.mp3");
+    wishSentAudioRef.current = new Audio("/audio/wishSent.mp3");
     hasPlayedOpenBlindBoxAudio.current = false;
   }, []);
 
@@ -183,7 +183,7 @@ export default function WishesResult({ wishStatus }: Props) {
 
           return boundedNext;
         });
-      }, 50);
+      }, 100);
 
       // Stop animation, set to calculated %, show lightPointsSwell after 3 seconds
       timeout2Ref.current = setTimeout(() => {
@@ -197,7 +197,7 @@ export default function WishesResult({ wishStatus }: Props) {
         setAnimatedPercentage(lightPointsPercentage);
         setShowLightPointsSwell(true);
         setDisplayedTotalPoints((prev) => prev + lightPointsSwell);
-        
+
         // Play receiveWP sound when first animation stops
         if (wishStatus && receiveWPAudioRef.current) {
           receiveWPAudioRef.current.currentTime = 0;
@@ -219,7 +219,7 @@ export default function WishesResult({ wishStatus }: Props) {
 
               return boundedNext;
             });
-          }, 50);
+          }, 100);
 
           // Stop animation, set to calculated %, show blindBoxPointsSwell after 3 seconds
           timeout4Ref.current = setTimeout(() => {
@@ -233,7 +233,7 @@ export default function WishesResult({ wishStatus }: Props) {
             setAnimatedPercentage(blindBoxPointsPercentage);
             setShowBlindBoxPointsSwell(true);
             setDisplayedTotalPoints((prev) => prev + blindBoxPointsSwell);
-            
+
             // Play receiveWP sound when second animation stops
             if (wishStatus && receiveWPAudioRef.current) {
               receiveWPAudioRef.current.currentTime = 0;
@@ -304,9 +304,7 @@ export default function WishesResult({ wishStatus }: Props) {
 
             {propsData[propId] && (
               <div className={styles.blindBoxPropContainer}>
-                <img
-                  src={propsData[propId].imageUrl}
-                />
+                <img src={propsData[propId].imageUrl} />
                 <span className={styles.blindBoxPropImgName}>
                   {propsData[propId].name}
                 </span>
@@ -343,7 +341,9 @@ export default function WishesResult({ wishStatus }: Props) {
                     </div>
                     <span className={styles.wishPointsValue}>
                       +{lightPoints}
-                      {showLightPointsSwell && ` +${lightPointsSwell}`}
+                      <span className={styles.wishPointsSwellValue}>
+                        {showLightPointsSwell && ` +${lightPointsSwell}`}
+                      </span>
                     </span>
                   </div>
                   <div className={styles.wishPointsColumn}>
@@ -355,7 +355,9 @@ export default function WishesResult({ wishStatus }: Props) {
                     )}
                     <span className={styles.wishPointsValue}>
                       {showBlindBoxPoints && `+${blindBoxPoints}`}
-                      {showBlindBoxPointsSwell && ` +${blindBoxPointsSwell}`}
+                      <span className={styles.wishPointsSwellValue}>
+                        {showBlindBoxPointsSwell && ` +${blindBoxPointsSwell}`}
+                      </span>
                     </span>
                   </div>
                   <div className={styles.wishPointsColumn}>

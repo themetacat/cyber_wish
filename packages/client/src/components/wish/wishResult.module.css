@@ -308,6 +308,13 @@
     white-space: nowrap;
 }
 
+.wishPointsSwellValue {
+    font-family: 'FSKim-Medium';
+    font-size: 25px;
+    color: #FAE3A1;
+    white-space: nowrap;
+}
+
 .wishPointsBottom {
     display: flex;
     justify-content: center;
