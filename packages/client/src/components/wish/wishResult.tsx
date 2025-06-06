@@ -46,6 +46,8 @@ export default function WishesResult({ wishStatus }: Props) {
   const [showBlindBoxPoints, setShowBlindBoxPoints] = useState<boolean>(false);
 
   const [animatedPercentage, setAnimatedPercentage] = useState<number>(0);
+  const [animateLightPoints, setAnimateLightPoints] = useState<boolean>(false);
+  const [animateBlindBoxPoints, setAnimateBlindBoxPoints] = useState<boolean>(false);
 
   const [displayedTotalPoints, setDisplayedTotalPoints] = useState<number>(0);
 
@@ -197,6 +199,16 @@ export default function WishesResult({ wishStatus }: Props) {
         setAnimatedPercentage(lightPointsPercentage);
         setShowLightPointsSwell(true);
         setDisplayedTotalPoints((prev) => prev + lightPointsSwell);
+        
+        // Trigger light points animation
+        setAnimateLightPoints(false);
+        setTimeout(() => {
+          setAnimateLightPoints(true);
+          // Reset animation state after animation completes
+          setTimeout(() => {
+            setAnimateLightPoints(false);
+          }, 1000);
+        }, 50);
 
         // Play receiveWP sound when first animation stops
         if (wishStatus && receiveWPAudioRef.current) {
@@ -233,6 +245,16 @@ export default function WishesResult({ wishStatus }: Props) {
             setAnimatedPercentage(blindBoxPointsPercentage);
             setShowBlindBoxPointsSwell(true);
             setDisplayedTotalPoints((prev) => prev + blindBoxPointsSwell);
+            
+            // Trigger blind box points animation
+            setAnimateBlindBoxPoints(false);
+            setTimeout(() => {
+              setAnimateBlindBoxPoints(true);
+              // Reset animation state after animation completes
+              setTimeout(() => {
+                setAnimateBlindBoxPoints(false);
+              }, 1000);
+            }, 50);
 
             // Play receiveWP sound when second animation stops
             if (wishStatus && receiveWPAudioRef.current) {
@@ -341,7 +363,7 @@ export default function WishesResult({ wishStatus }: Props) {
                     </div>
                     <span className={styles.wishPointsValue}>
                       +{lightPoints}
-                      <span className={styles.wishPointsSwellValue}>
+                      <span className={`${styles.wishPointsSwellValue} ${animateLightPoints ? styles.animate : ''}`}>
                         {showLightPointsSwell && ` +${lightPointsSwell}`}
                       </span>
                     </span>
@@ -355,7 +377,7 @@ export default function WishesResult({ wishStatus }: Props) {
                     )}
                     <span className={styles.wishPointsValue}>
                       {showBlindBoxPoints && `+${blindBoxPoints}`}
-                      <span className={styles.wishPointsSwellValue}>
+                      <span className={`${styles.wishPointsSwellValue} ${animateBlindBoxPoints ? styles.animate : ''}`}>
                         {showBlindBoxPointsSwell && ` +${blindBoxPointsSwell}`}
                       </span>
                     </span>
@@ -368,7 +390,7 @@ export default function WishesResult({ wishStatus }: Props) {
                 <div className={styles.wishPointsBottom}>
                   <span className={styles.wishPointsTotal}>
                     Total:&nbsp;&nbsp;
-                    <span className={styles.wishPointsTotalValue}>
+                    <span className={`${styles.wishPointsTotalValue} ${(animateLightPoints || animateBlindBoxPoints) ? styles.animate : ''}`}>
                       +{displayedTotalPoints} WP
                     </span>
                   </span>
