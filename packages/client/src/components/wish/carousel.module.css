@@ -143,6 +143,17 @@
     }
 }
 
+.cardImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: all 0.3s ease;
+}
+
+.card.active .cardImage {
+    filter: drop-shadow(0 0 8px rgba(244, 200, 115, 0.6));
+}
+
 @media (max-width: 768px) {
     .card {
         width: 3.125rem;
