@@ -40,7 +40,8 @@
 .header {
     text-align: center;
     /* font-size: clamp(32px, 4vw, 51px); */
-    font-size: 51px;
+    /* font-size: 51px; */
+    font-size: clamp(40px, 6vh, 51px);
     font-weight: bold;
     margin-top: 19px;
     color: rgba(233, 205, 144, 1);
@@ -99,6 +100,8 @@
     display: flex;
     justify-content: space-between;
     gap: 16px;
+    height: 14vh;
+    min-height: 110px;
 }
 
 .totalInfoItem {
@@ -114,7 +117,7 @@
 
 .totalInfoNumber {
     font-family: "FSKim-Medium";
-    font-size: 55px;
+    font-size: clamp(35px, 5.5vh, 55px);
     color: rgba(244, 200, 116, 1);
 }
 
@@ -141,7 +144,7 @@
 
 .tableWrapper {
     width: 100%;
-    height: 39%;
+    height: calc(40vh + (40vh - 420px) * 0.65);
     display: flex;
     flex-direction: column;
     border: 1px solid #F8E49C;
@@ -227,8 +230,8 @@
     }
 
     .scrollbarSpacer {
-    width: 6px;
-}
+        width: 6px;
+    }
 
     .body {
         padding-left: 10px;
@@ -239,6 +242,12 @@
         padding-right: 7px;
         padding-top: 8px;
         padding-left: 7px;
+        height: calc(40vh + (40vh - 280px) * 0.9);
+    }
+
+    .totalInfo {
+        min-height: 70px;
+        max-height: 80px;
     }
 
     .totalInfoNumber {
@@ -254,7 +263,8 @@
     .totalInfoNumberType {
         font-size: 12px;
     }
-    .tableBodyWrapper{
+
+    .tableBodyWrapper {
         padding-right: 0px;
     }
 
@@ -269,5 +279,4 @@
     .tableBody {
         font-size: 12px;
     }
-
 }
