@@ -1,0 +1,56 @@
+.errorToast {
+  position: fixed;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: #F4C873;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-family: 'FSKim-Medium', sans-serif;
+  font-size: 21px;
+  z-index: 1000;
+  opacity: 0;
+  transition: all 0.3s ease;
+  text-align: center;
+  min-width: 200px;
+  box-shadow: 0 4px 12px rgba(244, 200, 115, 0.2);
+  border: 2px solid #F4C873;
+  animation: floatUp 2s ease-out forwards;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.warningIcon {
+  color: #F4C873;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -200%);
+  }
+}
+
+.visible {
+  opacity: 1;
+}
+
+.hidden {
+  opacity: 0;
+} 

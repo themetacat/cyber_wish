@@ -11,14 +11,17 @@ import WishesPanel from "./wish/wishesPanel";
 import WishingWall from "./wishWall";
 import MyWishes from "./MyWishes";
 import WishResult from "./wish/wishResult";
+import { MyIncenseCarousel } from './wish/myIncenseCarousel';
 import FateGifts from "./Fate/fateGifts";
 import Header from "./Header";
 import { useLocation } from "react-router-dom";
 import { WISH_POOL_ID } from "../utils/contants";
+import { useAccount } from 'wagmi';
 
 export default function Main() {
   const [wishStatus, setWishStatus] = useState(false);
   const location = useLocation();
+  const { address } = useAccount(); // Get the connected address
 
   const sync = useSync();
   const worldContract = useWorldContract();
@@ -34,7 +37,10 @@ export default function Main() {
             , BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: BigInt((value * 1e18).toFixed(0)) });
           console.log("tx", tx);
           const res = await sync.data.waitForTransaction(tx);
-          worldContract.simulate.cyberwish__wish([WISH_POOL_ID, BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: BigInt(Math.floor(value * 1e18)) });
+          if (res && res.status != "success") {
+            await worldContract.simulate.cyberwish__wish([WISH_POOL_ID, BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: BigInt(Math.floor(value * 1e18)) });
+          }
+          
           return res;
         }
         : undefined,
@@ -79,9 +85,8 @@ export default function Main() {
         <br />
         <button onClick={() => boostByPoints()}>boost points</button> */}
         <WishPanel wish={wish} setWishStatus={setWishStatus} />
-        {/* <WishesPanel /> */}
-        {/* <WishingWall /> */}
         {location.pathname === "/" && <WishesPanel />}
+        {location.pathname === "/" && address && <MyIncenseCarousel />}
         {location.pathname === "/wishing-wall" && <WishingWall />}
         {location.pathname === "/my-wishes" && <MyWishes />}
         {location.pathname === "/wishflow-fund" && <FateGifts/>}
