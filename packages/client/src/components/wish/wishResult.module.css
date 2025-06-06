@@ -523,5 +523,16 @@
     margin-top: auto;
     padding-bottom: 20px;
     opacity: 0;
-    animation: fadeIn 1.5s ease forwards 22.5s;
+    animation: fadeIn 1.5s ease forwards 24.0s;
+}
+
+.congratulationContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.congratulationImage {
+    height: 32px;
 }

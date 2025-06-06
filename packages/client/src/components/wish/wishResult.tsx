@@ -409,7 +409,14 @@ export default function WishesResult({ wishStatus }: Props) {
               </div>
             )}
             <span className={styles.congratulationText}>
-              Fated Wish Fund: {isStar ? "Selected" : "Missed"}
+              <div className={styles.congratulationContainer}>
+                <span>Fated Wish Fund:</span>
+                <img 
+                  src={isStar ? "/images/wish/WishResult/Qualified.webp" : "/images/wish/WishResult/Missed.webp"} 
+                  alt={isStar ? "Qualified" : "Missed"}
+                  className={styles.congratulationImage}
+                />
+              </div>
             </span>
           </div>
         </div>
