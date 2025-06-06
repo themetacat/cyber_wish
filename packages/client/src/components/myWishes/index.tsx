@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useMemo } from "react";
+import { useEffect, useState, useRef, useMemo, useCallback } from "react";
 import styles from "./index.module.css";
 import { components } from "../../mud/recs";
 import { getComponentValue } from "@latticexyz/recs";
@@ -10,26 +10,34 @@ import { shortenAddress } from "../../utils/common";
 import MyFateGifts from "../Fate/myFateGifts";
 import { useAccount } from "wagmi";
 
-interface WishInfo {
+interface WishData {
   wisher: string;
   wishContent: string;
   wishTime: number;
   propId: number;
 }
 
+interface ApiWishData {
+  wisher: string;
+  wish_content: string;
+  wish_time: number;
+  prop_id: number;
+}
+
+
 export default function MyWishes() {
-  const [wishes, setWishes] = useState<WishInfo[]>([]);
+  const [wishes, setWishes] = useState<WishData[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
-  const onceLoadWishesCount = 8;
-  const noLoadCount = useRef<number>(0);
   const [wishCount, setWishCount] = useState(0);
+  const firstFetch = useRef(false);
   const [wishPoints, setWishPoints] = useState(0);
   const { address: userAddress } = useAccount();
   const [showMyFateGifts, setShowMyFateGifts] = useState(false);
-  const Wishes = components.Wishes;
   const Wisher = components.Wisher;
+  const loadPage = useRef<number>(1);
+  const pageSize = 5;
 
   const wisherKey = useMemo(() => {
     if (!userAddress || !WISH_POOL_ID) return null;
@@ -48,76 +56,54 @@ export default function MyWishes() {
     if (!wisherData) {
       setWishCount(0);
       setWishPoints(0);
+      setWishes([]);
       return;
     }
     setWishCount(Number(wisherData.wishCount));
     setWishPoints(Number(wisherData.points))
   }, [wisherData])
 
-  const loadWishes = async () => {
-    if (loading || !hasMore) return;
+  const loadWishes =  useCallback(async () => {
+    if (loading || !hasMore || !userAddress) return;
 
     setLoading(true);
-    const newWishes: WishInfo[] = [];
-
-    for (
-      let i = noLoadCount.current;
-      i > noLoadCount.current - onceLoadWishesCount && i > 0;
-      i--
-    ) {
-      const wish = fetchOneWish(i);
-      if (wish) {
-        newWishes.push(wish);
+    try {
+      const params = new URLSearchParams({
+        wisher: userAddress ?? '',
+        page: String(loadPage.current ?? 1),
+        pageSize: String(pageSize ?? 20),
+      });
+      const res = await fetch('/api/get_my_wishes?' + params)
+      const jsonRes = await res.json();
+      if (jsonRes.success) {
+        const totalData = jsonRes.data;
+        if (totalData.length < pageSize) {
+          setHasMore(false);
+        }else{
+          loadPage.current += 1;
+        }
+        const newWishes: WishData[] = totalData.map((data: ApiWishData) => ({
+          wisher: data.wisher,
+          wishContent: data.wish_content,
+          wishTime: data.wish_time,
+          propId: data.prop_id
+        }));
+        setWishes((prev) => [...prev, ...newWishes]);
+      } else {
+        console.error('API Error:', jsonRes.error);
       }
+    } catch (err) {
+      console.error('error:', err);
+    } finally {
+      setLoading(false);
     }
-
-    noLoadCount.current -= onceLoadWishesCount;
-    if (noLoadCount.current <= 0) {
-      setHasMore(false);
-    }
-
-    setWishes((prev) => [...prev, ...newWishes]);
-    setLoading(false);
-  };
+  }, [userAddress, pageSize, hasMore, loading]);
 
   useEffect(() => {
-    if (noLoadCount.current) {
-      return;
-    }
-    // noLoadCount.current = getWishCount();
+    if (firstFetch.current) return;
     loadWishes();
-  }, []);
-
-  // const getWishCount = () => {
-  //   const wishCountData = getComponentValue(
-  //     components.WishCount,
-  //     singletonEntity
-  //   );
-  //   if (!wishCountData || wishCountData.count <= 0n) {
-  //     return 0;
-  //   }
-  //   const wishCount = Number(wishCountData.count);
-  //   return wishCount;
-  // };
-
-  // const fetchOneWish = (wishIndex: number): WishInfo | undefined => {
-  //   const id = pad(`0x${wishIndex.toString(16)}`, { size: 32 });
-  //   const key = encodeEntity(Wishes.metadata.keySchema, {
-  //     poolId: wishPool,
-  //     id: id,
-  //   });
-  //   const wishData = getComponentValue(Wishes, key);
-
-  //   if (!wishData) return;
-  //   const wishInfo = {
-  //     wisher: wishData.wisher,
-  //     wishContent: wishData.wishContent,
-  //     wishTime: Number(wishData.wishTime),
-  //     propId: Number(wishData.propId),
-  //   };
-
-  //   return wishInfo;
-  // };
+    firstFetch.current = true;
+  }, [loadWishes]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -134,7 +120,7 @@ export default function MyWishes() {
     const container = containerRef.current;
     container?.addEventListener("scroll", onScroll);
     return () => container?.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [loadWishes]);
 
   return (
     <div className={styles.page}>
