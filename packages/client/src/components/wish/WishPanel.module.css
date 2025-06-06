@@ -41,12 +41,6 @@
   animation-play-state: paused;
 }
 
-/* .mainButton:active {
-  transform: scale(0.98);
-  z-index: 1;
-  animation-play-state: paused;
-} */
-
 .mainButtonText {
   font-family: 'Orbitron';
   font-weight: 700;
