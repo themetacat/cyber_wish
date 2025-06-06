@@ -173,4 +173,15 @@
   .title {
     font-size: 50px;
   }
+
+}
+
+@media (max-height: 800px) {
+  .title {
+    font-size: 62px;
+  }
+
+  .content{
+    height: 62vh;
+  }
 }
