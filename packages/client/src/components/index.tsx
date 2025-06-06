@@ -11,6 +11,7 @@ import WishesPanel from "./wish/wishesPanel";
 import WishingWall from "./wishWall";
 import MyWishes from "./MyWishes";
 import WishResult from "./wish/wishResult";
+import { MyIncenseCarousel } from './wish/myIncenseCarousel';
 import FateGifts from "./Fate/fateGifts";
 import Header from "./Header";
 import { useLocation } from "react-router-dom";
@@ -82,9 +83,8 @@ export default function Main() {
         <br />
         <button onClick={() => boostByPoints()}>boost points</button> */}
         <WishPanel wish={wish} setWishStatus={setWishStatus} />
-        {/* <WishesPanel /> */}
-        {/* <WishingWall /> */}
         {location.pathname === "/" && <WishesPanel />}
+        {location.pathname === "/" && <MyIncenseCarousel />}
         {location.pathname === "/wishing-wall" && <WishingWall />}
         {location.pathname === "/my-wishes" && <MyWishes />}
         {location.pathname === "/wishflow-fund" && <FateGifts/>}
