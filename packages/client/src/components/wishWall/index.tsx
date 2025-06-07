@@ -13,6 +13,10 @@ interface WishInfo {
   wishContent: string;
   wishTime: number;
   propId: number;
+  pointsIncense: number;
+  pointsBlindBox: number;
+  pointsIncenseEasterEgg: number;
+  pointsBlindBoxEasterEgg: number;
 }
 
 export default function WishingWall() {
@@ -83,7 +87,11 @@ export default function WishingWall() {
       wisher: wishData.wisher,
       wishContent: wishData.wishContent,
       wishTime: Number(wishData.wishTime),
-      propId: Number(wishData.propId)
+      propId: Number(wishData.propId),
+      pointsIncense: Number(wishData.pointsIncense),
+      pointsBlindBox: Number(wishData.pointsBlindBox),
+      pointsIncenseEasterEgg: Number(wishData.pointsIncenseEasterEgg),
+      pointsBlindBoxEasterEgg: Number(wishData.pointsBlindBoxEasterEgg),
     }
 
     return wishInfo;
@@ -123,6 +131,12 @@ export default function WishingWall() {
                 <span className={styles.metaTime}>
                   {format(new Date(item.wishTime * 1000), "h:mma·MMM d,yyyy")}
                 </span>
+              </div>
+
+              <div className={styles.wishInteractData}>
+                <div><img src="/images/wishWall/Worship.webp" alt="Worship" /></div>
+                <div><img src="/images/wishWall/Msg.webp" alt="Message" /></div>
+                <div><img src="/images/wishWall/Points.webp" alt="Points" />{item.pointsIncense +  item.pointsBlindBox +  item.pointsIncenseEasterEgg +  item.pointsBlindBoxEasterEgg}</div>
               </div>
             </div>
 

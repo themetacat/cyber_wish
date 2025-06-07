@@ -72,11 +72,11 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  gap: 3px;
 }
 
 .wishContent {
   width: 570px;
-  height: 62px;
   font-family: '155-SSZhongZhengSongTi';
   font-weight: 400;
   font-size: 15px;
@@ -85,11 +85,15 @@
   word-break: break-word;
   display: flex;
   align-items: center;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis; 
 }
 
 .wishMeta {
+  height: 20px;
   display: flex;
-  margin-top: 1px;
   flex-wrap: wrap;
   gap: 30px;
 
@@ -100,6 +104,33 @@
   color: #FFF6D9;
   display: flex;
   align-items: center;
+}
+
+.wishInteractData {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 30px;
+  justify-content: flex-start;
+  margin-top: 3px;
+
+  & > div {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Orbitron;
+    font-weight: 500;
+    font-size: 14px;
+    color: #FFF6D9;
+    line-height: 1;
+
+    img {
+      height: 16px;
+      width: auto;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+  }
 }
 
 .image {
@@ -167,7 +198,6 @@
   align-items: center;
   box-sizing: border-box;
 }
-
 
 @media (max-width: 768px) {
   .title {
