@@ -16,6 +16,10 @@ interface WishData {
   wishContent: string;
   wishTime: number;
   propId: number;
+  pointsIncense: number;
+  pointsBlindBox: number;
+  pointsIncenseEasterEgg: number;
+  pointsBlindBoxEasterEgg: number;
 }
 
 interface ApiWishData {
@@ -23,6 +27,10 @@ interface ApiWishData {
   wish_content: string;
   wish_time: number;
   prop_id: number;
+  pointsIncense: number;
+  pointsBlindBox: number;
+  pointsIncenseEasterEgg: number;
+  pointsBlindBoxEasterEgg: number;
 }
 
 
@@ -99,7 +107,11 @@ export default function MyWishes() {
           wisher: data.wisher,
           wishContent: data.wish_content,
           wishTime: data.wish_time,
-          propId: data.prop_id
+          propId: data.prop_id,
+          pointsIncense: data.points_incense,
+          pointsBlindBox: data.points_blind_box,
+          pointsIncenseEasterEgg: data.points_incense_easter_egg,
+          pointsBlindBoxEasterEgg: data.points_blind_box_easter_egg
         }));
         setWishes((prev) => [...prev, ...newWishes]);
       } else {
@@ -169,6 +181,15 @@ export default function MyWishes() {
                   {format(new Date(item.wishTime * 1000), "h:mma·MMM d,yyyy")}
                 </span>
               </div>
+
+              <div className={styles.wishInteractData}>
+                <div data-tooltip="Coming Soon"><img src="/images/wishWall/Worship.webp" alt="Worship" /></div>
+                <div data-tooltip="Coming Soon"><img src="/images/wishWall/Msg.webp" alt="Message" /></div>
+                <div data-tooltip="Wish Point(WP)">
+                  <img src="/images/wishWall/Points.webp" alt="Points" />
+                  {item.pointsIncense +  item.pointsBlindBox +  item.pointsIncenseEasterEgg +  item.pointsBlindBoxEasterEgg}
+                </div>
+              </div>
             </div>
 
             <img
@@ -176,6 +197,17 @@ export default function MyWishes() {
               className={styles.image}
               alt="blessing item"
             />
+            <div className={styles.blessingItemContainer}>
+              <img src={propsData[item.propId].imageUrl} alt="blessing item img" />
+              <span className={styles.blessingItemContentContainer}>
+                <span className={styles.blessingItemName}>
+                  {propsData[item.propId].name}
+                </span>
+                <span className={styles.blessingItemDesc}>
+                  {propsData[item.propId].desc}
+                </span>
+              </span>
+            </div>
           </div>
         ))}
         {loading && (

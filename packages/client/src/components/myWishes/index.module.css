@@ -62,10 +62,6 @@
   cursor: pointer;
 }
 
-.infoBox:hover {
-  transform: scale(1.01);
-}
-
 .textContent {
   display: flex;
   flex-direction: column;
@@ -98,6 +94,60 @@
   color: #FFF6D9;
   display: flex;
   align-items: center;
+}
+
+.wishInteractData {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 30px;
+  justify-content: flex-start;
+  margin-top: 3px;
+
+  &>div {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Orbitron;
+    font-weight: 500;
+    font-size: 14px;
+    color: #FFF6D9;
+    line-height: 1;
+    position: relative;
+    transition: all 0.2s ease;
+    opacity: 0.7;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: -13px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.85);
+      color: #FFD700;
+      padding: 4px 8px;
+      border: 1px solid #FFD700;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    img {
+      height: 16px;
+      width: auto;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+  }
+
+  &>div:nth-child(1),
+  &>div:nth-child(2) {
+    cursor: not-allowed;
+  }
 }
 
 .image {
@@ -215,6 +265,65 @@
   font-family: 'Sling';
   font-size: 18px;
   font-weight: 200;
+}
+
+.blessingItemContainer {
+  height: 85%;
+  display: none;
+  position: absolute;
+  right: 140px;
+  transform: translateY(-50%);
+  border: 1px solid #F8E49C;
+  border-radius: 20px;
+  background-color: #000;
+  padding: 6px;
+  width: 400px;
+  pointer-events: none;
+  z-index: 10000;
+}
+
+.blessingItemContainer img {
+  width: 30.33%;
+  height: 80px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.blessingItemContentContainer {
+  width: 66.67%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  transition: transform 0.2s ease;
+}
+
+.blessingItemName {
+  font-family: 'FSKim-Medium';
+  font-size: 18px;
+  color: #FFF5CC;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.blessingItemDesc {
+  font-family: 'FSKimTrial-Regular';
+  font-size: 12px;
+  color: #F4C873;
+  line-height: 1.4;
+  word-wrap: break-word;
+  text-align: center;
+}
+
+.image:hover + .blessingItemContainer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: auto;
+  transform: scale(1.1);
 }
 
 @media (max-height: 743px) {
