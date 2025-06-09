@@ -74,6 +74,8 @@ export default function FateGifts() {
     }, [boostWisherRecordsData, BoostWisherRecords]);
 
     useEffect(() => {
+        expandedId == null && data.length > 0 && setExpandedId(data.length - 1);
+
         const poolInfo = getWishPoolInfo();
         if (!poolInfo || poolInfo.startTime === 0n) return;
 
@@ -124,6 +126,11 @@ export default function FateGifts() {
     return (
         <div className={commonStyle.page}>
             <h1 className={commonStyle.title}>Wishflow Fund</h1>
+            <div className={style.fatedGiftsBtnContainer}>
+                <button className={style.fatedGiftsBtn} onClick={() => setShowMyFateGifts(!showMyFateGifts)}>
+                    <span>My Wish Rewards</span>
+                </button>
+            </div>
             <div className={style.dataContainer}>
                 <div className={style.scrollableContent}>
                     {data.map((row) => {
@@ -210,11 +217,7 @@ export default function FateGifts() {
                         );
                     })}
                 </div>
-                <div className={style.fatedGiftsBtnContainer}>
-                    <button className={style.fatedGiftsBtn} onClick={() => setShowMyFateGifts(!showMyFateGifts)}>
-                        <span>My Wish Rewards</span>
-                    </button>
-                </div>
+                
             </div>
             {showMyFateGifts && <MyFateGifts onClose={() => setShowMyFateGifts(false)} />}
             {selectedCycle && <Selected cycle={selectedCycle} onClose={() => setSelectedCycle(0)} />}
