@@ -122,28 +122,33 @@ export default function WishingWall() {
         {wishes.map((item, index) => (
           <div key={index} className={styles.infoBox}>
             <div className={styles.textContent}>
-              <div className={styles.wishContent}>
-                {item.wishContent}
-              </div>
-
+              <div className={styles.wishContent}>{item.wishContent}</div>
               <div className={styles.wishMeta}>
-                By {shortenAddress(item.wisher)}
-                <span className={styles.metaTime}>
-                  {format(new Date(item.wishTime * 1000), "h:mma·MMM d,yyyy")}
-                </span>
+                <span>{shortenAddress(item.wisher)}</span>
+                <span>{format(new Date(item.wishTime * 1000), "h:mma·MMM d,yyyy")}</span>
               </div>
-
               <div className={styles.wishInteractData}>
                 <div data-tooltip="Coming Soon"><img src="/images/wishWall/Worship.webp" alt="Worship" /></div>
                 <div data-tooltip="Coming Soon"><img src="/images/wishWall/Msg.webp" alt="Message" /></div>
                 <div data-tooltip="Wish Point(WP)">
-                ⭐️&nbsp;
+                  <img src="/images/wishWall/Points.webp" alt="Points" />
                   {item.pointsIncense +  item.pointsBlindBox +  item.pointsIncenseEasterEgg +  item.pointsBlindBoxEasterEgg}
                 </div>
               </div>
             </div>
 
             <img src={propsData[item.propId].imageUrl} className={styles.image} alt="blessing item" />
+            <div className={styles.blessingItemContainer}>
+              <img src={propsData[item.propId].imageUrl} alt="blessing item img" />
+              <span className={styles.blessingItemContentContainer}>
+                <span className={styles.blessingItemName}>
+                  {propsData[item.propId].name}
+                </span>
+                <span className={styles.blessingItemDesc}>
+                  {propsData[item.propId].desc}
+                </span>
+              </span>
+            </div>
           </div>
         ))}
         {loading &&
@@ -158,7 +163,7 @@ export default function WishingWall() {
               <img src="/images/wishWall/NotHasMore.svg" alt="notHasMore" />
             </span>
             <span>
-              You've reached the end!
+              You&apos;ve reached the end!
             </span>
           </div>
         }

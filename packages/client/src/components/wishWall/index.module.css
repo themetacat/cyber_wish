@@ -59,33 +59,29 @@
   backdrop-filter: blur(1px);
   padding: 0 30px;
   cursor: pointer;
-}
-
-.infoBox:hover {
-  transform: scale(1.01);
+  position: relative;
 }
 
 .textContent {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  width: calc(100% - 160px);
   gap: 3px;
 }
 
 .wishContent {
-  width: 570px;
   font-family: '155-SSZhongZhengSongTi';
   font-weight: 400;
   font-size: 15px;
   color: #FFF5CC;
   line-height: 31px;
   word-break: break-word;
-  display: flex;
   align-items: center;
 
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  display: block;
 }
 
 .wishMeta {
@@ -162,6 +158,71 @@
   height: 80px;
   object-fit: cover;
   margin-left: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.image:hover {
+  transform: scale(1.1);
+}
+
+.blessingItemContainer {
+  height: 85%;
+  display: none;
+  position: absolute;
+  right: 140px;
+  transform: translateY(-50%);
+  border: 1px solid #F8E49C;
+  border-radius: 20px;
+  background-color: #000;
+  padding: 6px;
+  width: 400px;
+  pointer-events: none;
+  z-index: 10000;
+}
+
+.blessingItemContainer img {
+  width: 30.33%;
+  height: 80px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.blessingItemContentContainer {
+  width: 66.67%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  transition: transform 0.2s ease;
+}
+
+.blessingItemName {
+  font-family: 'FSKim-Medium';
+  font-size: 18px;
+  color: #FFF5CC;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.blessingItemDesc {
+  font-family: 'FSKimTrial-Regular';
+  font-size: 12px;
+  color: #F4C873;
+  line-height: 1.4;
+  word-wrap: break-word;
+  text-align: center;
+}
+
+.image:hover + .blessingItemContainer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: auto;
+  transform: scale(1.1);
 }
 
 @keyframes rotate {
