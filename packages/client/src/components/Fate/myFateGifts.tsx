@@ -61,7 +61,7 @@ const MyFateGifts = ({ onClose }: Props) => {
         wisher: userAddress
       });
 
-      const res = await fetch(`/api/get_selection_history?${params}`);
+      const res = await fetch(`/api/get_selection_history_by_wisher?${params}`);
 
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
