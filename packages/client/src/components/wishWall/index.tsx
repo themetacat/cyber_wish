@@ -134,9 +134,12 @@ export default function WishingWall() {
               </div>
 
               <div className={styles.wishInteractData}>
-                <div><img src="/images/wishWall/Worship.webp" alt="Worship" /></div>
-                <div><img src="/images/wishWall/Msg.webp" alt="Message" /></div>
-                <div><img src="/images/wishWall/Points.webp" alt="Points" />{item.pointsIncense +  item.pointsBlindBox +  item.pointsIncenseEasterEgg +  item.pointsBlindBoxEasterEgg}</div>
+                <div data-tooltip="Coming Soon"><img src="/images/wishWall/Worship.webp" alt="Worship" /></div>
+                <div data-tooltip="Coming Soon"><img src="/images/wishWall/Msg.webp" alt="Message" /></div>
+                <div data-tooltip="Wish Point(WP)">
+                ⭐️&nbsp;
+                  {item.pointsIncense +  item.pointsBlindBox +  item.pointsIncenseEasterEgg +  item.pointsBlindBoxEasterEgg}
+                </div>
               </div>
             </div>
 
