@@ -9,6 +9,7 @@ import { propsData } from "../../utils/propsData";
 import { shortenAddress } from "../../utils/common";
 import MyFateGifts from "../Fate/myFateGifts";
 import { useAccount } from "wagmi";
+import { useAccountModal } from "@latticexyz/entrykit/internal";
 
 interface WishData {
   wisher: string;
@@ -35,17 +36,25 @@ export default function MyWishes() {
   const [wishPoints, setWishPoints] = useState(0);
   const { address: userAddress } = useAccount();
   const [showMyFateGifts, setShowMyFateGifts] = useState(false);
+  const { openAccountModal } = useAccountModal();
   const Wisher = components.Wisher;
   const loadPage = useRef<number>(1);
   const pageSize = 5;
 
   const wisherKey = useMemo(() => {
-    if (!userAddress || !WISH_POOL_ID) return null;
+    if (!WISH_POOL_ID) return null;
+
+    if (!userAddress) {
+      setWishes([]);
+      openAccountModal();
+      return;
+    }
+
     return encodeEntity(Wisher.metadata.keySchema, {
       poolId: WISH_POOL_ID,
       wisher: userAddress,
     });
-  }, [userAddress, Wisher]);
+  }, [userAddress, Wisher, openAccountModal]);
 
   const wisherData = useMemo(() => {
     if (!wisherKey) return null;
@@ -63,7 +72,8 @@ export default function MyWishes() {
     setWishPoints(Number(wisherData.points))
   }, [wisherData])
 
-  const loadWishes =  useCallback(async () => {
+  const loadWishes = useCallback(async () => {
+
     if (loading || !hasMore || !userAddress) return;
 
     setLoading(true);
@@ -74,12 +84,15 @@ export default function MyWishes() {
         pageSize: String(pageSize ?? 20),
       });
       const res = await fetch('/api/get_my_wishes?' + params)
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
       const jsonRes = await res.json();
       if (jsonRes.success) {
         const totalData = jsonRes.data;
         if (totalData.length < pageSize) {
           setHasMore(false);
-        }else{
+        } else {
           loadPage.current += 1;
         }
         const newWishes: WishData[] = totalData.map((data: ApiWishData) => ({

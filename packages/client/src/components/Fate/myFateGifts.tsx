@@ -41,6 +41,7 @@ const MyFateGifts = ({ onClose }: Props) => {
   const wisherKey = useMemo(() => {
 
     if (!userAddress) {
+      setAllRewardsData([]);
       openAccountModal()
       onClose();
     } else {
@@ -90,7 +91,6 @@ const MyFateGifts = ({ onClose }: Props) => {
       setAllRewardsData(rewardsData);
     } catch (err) {
       console.error('Failed to load wish rewards:', err);
-      setAllRewardsData([]);
     } finally {
       setLoading(false);
     }
