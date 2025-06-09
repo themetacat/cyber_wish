@@ -18,8 +18,9 @@ import { ResourceId } from "@latticexyz/store/src/ResourceId.sol";
 
 struct WishesData {
   address wisher;
-  uint256 wishTime;
   uint256 cycle;
+  uint256 wishTime;
+  uint256 incenseExpireTime;
   uint256 incenseId;
   uint256 blindBoxId;
   uint256 pointsIncense;
@@ -36,12 +37,12 @@ library Wishes {
   ResourceId constant _tableId = ResourceId.wrap(0x6f74637962657277697368000000000057697368657300000000000000000000);
 
   FieldLayout constant _fieldLayout =
-    FieldLayout.wrap(0x01350b0114202020202020202020010000000000000000000000000000000000);
+    FieldLayout.wrap(0x01550c0114202020202020202020200100000000000000000000000000000000);
 
   // Hex-encoded key schema of (bytes32, bytes32)
   Schema constant _keySchema = Schema.wrap(0x004002005f5f0000000000000000000000000000000000000000000000000000);
-  // Hex-encoded value schema of (address, uint256, uint256, uint256, uint256, uint256, uint256, uint256, uint256, uint256, bool, string)
-  Schema constant _valueSchema = Schema.wrap(0x01350b01611f1f1f1f1f1f1f1f1f60c500000000000000000000000000000000);
+  // Hex-encoded value schema of (address, uint256, uint256, uint256, uint256, uint256, uint256, uint256, uint256, uint256, uint256, bool, string)
+  Schema constant _valueSchema = Schema.wrap(0x01550c01611f1f1f1f1f1f1f1f1f1f60c5000000000000000000000000000000);
 
   /**
    * @notice Get the table's key field names.
@@ -58,19 +59,20 @@ library Wishes {
    * @return fieldNames An array of strings with the names of value fields.
    */
   function getFieldNames() internal pure returns (string[] memory fieldNames) {
-    fieldNames = new string[](12);
+    fieldNames = new string[](13);
     fieldNames[0] = "wisher";
-    fieldNames[1] = "wishTime";
-    fieldNames[2] = "cycle";
-    fieldNames[3] = "incenseId";
-    fieldNames[4] = "blindBoxId";
-    fieldNames[5] = "pointsIncense";
-    fieldNames[6] = "pointsBlindBox";
-    fieldNames[7] = "pointsIncenseEasterEgg";
-    fieldNames[8] = "pointsBlindBoxEasterEgg";
-    fieldNames[9] = "propId";
-    fieldNames[10] = "isStar";
-    fieldNames[11] = "wishContent";
+    fieldNames[1] = "cycle";
+    fieldNames[2] = "wishTime";
+    fieldNames[3] = "incenseExpireTime";
+    fieldNames[4] = "incenseId";
+    fieldNames[5] = "blindBoxId";
+    fieldNames[6] = "pointsIncense";
+    fieldNames[7] = "pointsBlindBox";
+    fieldNames[8] = "pointsIncenseEasterEgg";
+    fieldNames[9] = "pointsBlindBoxEasterEgg";
+    fieldNames[10] = "propId";
+    fieldNames[11] = "isStar";
+    fieldNames[12] = "wishContent";
   }
 
   /**
@@ -110,28 +112,6 @@ library Wishes {
   }
 
   /**
-   * @notice Set wishTime.
-   */
-  function setWishTime(bytes32 poolId, bytes32 id, uint256 wishTime) internal {
-    bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = poolId;
-    _keyTuple[1] = id;
-
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((wishTime)), _fieldLayout);
-  }
-
-  /**
-   * @notice Set wishTime.
-   */
-  function _setWishTime(bytes32 poolId, bytes32 id, uint256 wishTime) internal {
-    bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = poolId;
-    _keyTuple[1] = id;
-
-    StoreCore.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((wishTime)), _fieldLayout);
-  }
-
-  /**
    * @notice Set cycle.
    */
   function setCycle(bytes32 poolId, bytes32 id, uint256 cycle) internal {
@@ -139,7 +119,7 @@ library Wishes {
     _keyTuple[0] = poolId;
     _keyTuple[1] = id;
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((cycle)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((cycle)), _fieldLayout);
   }
 
   /**
@@ -150,7 +130,51 @@ library Wishes {
     _keyTuple[0] = poolId;
     _keyTuple[1] = id;
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((cycle)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((cycle)), _fieldLayout);
+  }
+
+  /**
+   * @notice Set wishTime.
+   */
+  function setWishTime(bytes32 poolId, bytes32 id, uint256 wishTime) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = id;
+
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((wishTime)), _fieldLayout);
+  }
+
+  /**
+   * @notice Set wishTime.
+   */
+  function _setWishTime(bytes32 poolId, bytes32 id, uint256 wishTime) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = id;
+
+    StoreCore.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((wishTime)), _fieldLayout);
+  }
+
+  /**
+   * @notice Set incenseExpireTime.
+   */
+  function setIncenseExpireTime(bytes32 poolId, bytes32 id, uint256 incenseExpireTime) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = id;
+
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 3, abi.encodePacked((incenseExpireTime)), _fieldLayout);
+  }
+
+  /**
+   * @notice Set incenseExpireTime.
+   */
+  function _setIncenseExpireTime(bytes32 poolId, bytes32 id, uint256 incenseExpireTime) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = id;
+
+    StoreCore.setStaticField(_tableId, _keyTuple, 3, abi.encodePacked((incenseExpireTime)), _fieldLayout);
   }
 
   /**
@@ -161,7 +185,7 @@ library Wishes {
     _keyTuple[0] = poolId;
     _keyTuple[1] = id;
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 3, abi.encodePacked((incenseId)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 4, abi.encodePacked((incenseId)), _fieldLayout);
   }
 
   /**
@@ -172,7 +196,7 @@ library Wishes {
     _keyTuple[0] = poolId;
     _keyTuple[1] = id;
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 3, abi.encodePacked((incenseId)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 4, abi.encodePacked((incenseId)), _fieldLayout);
   }
 
   /**
@@ -183,7 +207,7 @@ library Wishes {
     _keyTuple[0] = poolId;
     _keyTuple[1] = id;
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 4, abi.encodePacked((blindBoxId)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 5, abi.encodePacked((blindBoxId)), _fieldLayout);
   }
 
   /**
@@ -194,7 +218,7 @@ library Wishes {
     _keyTuple[0] = poolId;
     _keyTuple[1] = id;
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 4, abi.encodePacked((blindBoxId)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 5, abi.encodePacked((blindBoxId)), _fieldLayout);
   }
 
   /**
@@ -205,7 +229,7 @@ library Wishes {
     _keyTuple[0] = poolId;
     _keyTuple[1] = id;
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 5, abi.encodePacked((pointsIncense)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 6, abi.encodePacked((pointsIncense)), _fieldLayout);
   }
 
   /**
@@ -216,7 +240,7 @@ library Wishes {
     _keyTuple[0] = poolId;
     _keyTuple[1] = id;
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 5, abi.encodePacked((pointsIncense)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 6, abi.encodePacked((pointsIncense)), _fieldLayout);
   }
 
   /**
@@ -227,7 +251,7 @@ library Wishes {
     _keyTuple[0] = poolId;
     _keyTuple[1] = id;
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 6, abi.encodePacked((pointsBlindBox)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 7, abi.encodePacked((pointsBlindBox)), _fieldLayout);
   }
 
   /**
@@ -238,7 +262,7 @@ library Wishes {
     _keyTuple[0] = poolId;
     _keyTuple[1] = id;
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 6, abi.encodePacked((pointsBlindBox)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 7, abi.encodePacked((pointsBlindBox)), _fieldLayout);
   }
 
   /**
@@ -249,7 +273,7 @@ library Wishes {
     _keyTuple[0] = poolId;
     _keyTuple[1] = id;
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 7, abi.encodePacked((pointsIncenseEasterEgg)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 8, abi.encodePacked((pointsIncenseEasterEgg)), _fieldLayout);
   }
 
   /**
@@ -260,7 +284,7 @@ library Wishes {
     _keyTuple[0] = poolId;
     _keyTuple[1] = id;
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 7, abi.encodePacked((pointsIncenseEasterEgg)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 8, abi.encodePacked((pointsIncenseEasterEgg)), _fieldLayout);
   }
 
   /**
@@ -271,7 +295,7 @@ library Wishes {
     _keyTuple[0] = poolId;
     _keyTuple[1] = id;
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 8, abi.encodePacked((pointsBlindBoxEasterEgg)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 9, abi.encodePacked((pointsBlindBoxEasterEgg)), _fieldLayout);
   }
 
   /**
@@ -282,7 +306,7 @@ library Wishes {
     _keyTuple[0] = poolId;
     _keyTuple[1] = id;
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 8, abi.encodePacked((pointsBlindBoxEasterEgg)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 9, abi.encodePacked((pointsBlindBoxEasterEgg)), _fieldLayout);
   }
 
   /**
@@ -293,7 +317,7 @@ library Wishes {
     _keyTuple[0] = poolId;
     _keyTuple[1] = id;
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 9, abi.encodePacked((propId)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 10, abi.encodePacked((propId)), _fieldLayout);
   }
 
   /**
@@ -304,7 +328,7 @@ library Wishes {
     _keyTuple[0] = poolId;
     _keyTuple[1] = id;
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 9, abi.encodePacked((propId)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 10, abi.encodePacked((propId)), _fieldLayout);
   }
 
   /**
@@ -315,7 +339,7 @@ library Wishes {
     _keyTuple[0] = poolId;
     _keyTuple[1] = id;
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 10, abi.encodePacked((isStar)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 11, abi.encodePacked((isStar)), _fieldLayout);
   }
 
   /**
@@ -326,7 +350,7 @@ library Wishes {
     _keyTuple[0] = poolId;
     _keyTuple[1] = id;
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 10, abi.encodePacked((isStar)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 11, abi.encodePacked((isStar)), _fieldLayout);
   }
 
   /**
@@ -336,8 +360,9 @@ library Wishes {
     bytes32 poolId,
     bytes32 id,
     address wisher,
-    uint256 wishTime,
     uint256 cycle,
+    uint256 wishTime,
+    uint256 incenseExpireTime,
     uint256 incenseId,
     uint256 blindBoxId,
     uint256 pointsIncense,
@@ -350,8 +375,9 @@ library Wishes {
   ) internal {
     bytes memory _staticData = encodeStatic(
       wisher,
-      wishTime,
       cycle,
+      wishTime,
+      incenseExpireTime,
       incenseId,
       blindBoxId,
       pointsIncense,
@@ -379,8 +405,9 @@ library Wishes {
     bytes32 poolId,
     bytes32 id,
     address wisher,
-    uint256 wishTime,
     uint256 cycle,
+    uint256 wishTime,
+    uint256 incenseExpireTime,
     uint256 incenseId,
     uint256 blindBoxId,
     uint256 pointsIncense,
@@ -393,8 +420,9 @@ library Wishes {
   ) internal {
     bytes memory _staticData = encodeStatic(
       wisher,
-      wishTime,
       cycle,
+      wishTime,
+      incenseExpireTime,
       incenseId,
       blindBoxId,
       pointsIncense,
@@ -421,8 +449,9 @@ library Wishes {
   function set(bytes32 poolId, bytes32 id, WishesData memory _table) internal {
     bytes memory _staticData = encodeStatic(
       _table.wisher,
-      _table.wishTime,
       _table.cycle,
+      _table.wishTime,
+      _table.incenseExpireTime,
       _table.incenseId,
       _table.blindBoxId,
       _table.pointsIncense,
@@ -449,8 +478,9 @@ library Wishes {
   function _set(bytes32 poolId, bytes32 id, WishesData memory _table) internal {
     bytes memory _staticData = encodeStatic(
       _table.wisher,
-      _table.wishTime,
       _table.cycle,
+      _table.wishTime,
+      _table.incenseExpireTime,
       _table.incenseId,
       _table.blindBoxId,
       _table.pointsIncense,
@@ -481,8 +511,9 @@ library Wishes {
     pure
     returns (
       address wisher,
-      uint256 wishTime,
       uint256 cycle,
+      uint256 wishTime,
+      uint256 incenseExpireTime,
       uint256 incenseId,
       uint256 blindBoxId,
       uint256 pointsIncense,
@@ -495,25 +526,27 @@ library Wishes {
   {
     wisher = (address(Bytes.getBytes20(_blob, 0)));
 
-    wishTime = (uint256(Bytes.getBytes32(_blob, 20)));
+    cycle = (uint256(Bytes.getBytes32(_blob, 20)));
 
-    cycle = (uint256(Bytes.getBytes32(_blob, 52)));
+    wishTime = (uint256(Bytes.getBytes32(_blob, 52)));
 
-    incenseId = (uint256(Bytes.getBytes32(_blob, 84)));
+    incenseExpireTime = (uint256(Bytes.getBytes32(_blob, 84)));
 
-    blindBoxId = (uint256(Bytes.getBytes32(_blob, 116)));
+    incenseId = (uint256(Bytes.getBytes32(_blob, 116)));
 
-    pointsIncense = (uint256(Bytes.getBytes32(_blob, 148)));
+    blindBoxId = (uint256(Bytes.getBytes32(_blob, 148)));
 
-    pointsBlindBox = (uint256(Bytes.getBytes32(_blob, 180)));
+    pointsIncense = (uint256(Bytes.getBytes32(_blob, 180)));
 
-    pointsIncenseEasterEgg = (uint256(Bytes.getBytes32(_blob, 212)));
+    pointsBlindBox = (uint256(Bytes.getBytes32(_blob, 212)));
 
-    pointsBlindBoxEasterEgg = (uint256(Bytes.getBytes32(_blob, 244)));
+    pointsIncenseEasterEgg = (uint256(Bytes.getBytes32(_blob, 244)));
 
-    propId = (uint256(Bytes.getBytes32(_blob, 276)));
+    pointsBlindBoxEasterEgg = (uint256(Bytes.getBytes32(_blob, 276)));
 
-    isStar = (_toBool(uint8(Bytes.getBytes1(_blob, 308))));
+    propId = (uint256(Bytes.getBytes32(_blob, 308)));
+
+    isStar = (_toBool(uint8(Bytes.getBytes1(_blob, 340))));
   }
 
   /**
@@ -544,8 +577,9 @@ library Wishes {
   ) internal pure returns (WishesData memory _table) {
     (
       _table.wisher,
-      _table.wishTime,
       _table.cycle,
+      _table.wishTime,
+      _table.incenseExpireTime,
       _table.incenseId,
       _table.blindBoxId,
       _table.pointsIncense,
@@ -587,8 +621,9 @@ library Wishes {
    */
   function encodeStatic(
     address wisher,
-    uint256 wishTime,
     uint256 cycle,
+    uint256 wishTime,
+    uint256 incenseExpireTime,
     uint256 incenseId,
     uint256 blindBoxId,
     uint256 pointsIncense,
@@ -601,8 +636,9 @@ library Wishes {
     return
       abi.encodePacked(
         wisher,
-        wishTime,
         cycle,
+        wishTime,
+        incenseExpireTime,
         incenseId,
         blindBoxId,
         pointsIncense,
@@ -641,8 +677,9 @@ library Wishes {
    */
   function encode(
     address wisher,
-    uint256 wishTime,
     uint256 cycle,
+    uint256 wishTime,
+    uint256 incenseExpireTime,
     uint256 incenseId,
     uint256 blindBoxId,
     uint256 pointsIncense,
@@ -655,8 +692,9 @@ library Wishes {
   ) internal pure returns (bytes memory, EncodedLengths, bytes memory) {
     bytes memory _staticData = encodeStatic(
       wisher,
-      wishTime,
       cycle,
+      wishTime,
+      incenseExpireTime,
       incenseId,
       blindBoxId,
       pointsIncense,

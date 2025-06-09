@@ -26,6 +26,7 @@ contract WishSystem is System {
 
   function wish(bytes32 poolId, uint256 incenseId, uint256 blindBoxId, string memory wishContent) public payable {
     address wisher = _msgSender();
+    uint256 timestamp = block.timestamp;
 
     _validatePool(poolId);
 
@@ -79,8 +80,9 @@ contract WishSystem is System {
       poolId,
       uuid(),
       wisher,
-      block.timestamp,
       currentCycle,
+      timestamp,
+      timestamp + Incense.getDuration(poolId, incenseId),
       incenseId,
       blindBoxId,
       pointsData.wishPropsResultIncense.points,
@@ -152,10 +154,6 @@ contract WishSystem is System {
     require(_msgValue() >= amount, "Insufficient balance");
 
     uint256 random = isIncense ? 1 : 0;
-    // if (isIncense) {
-    //   // uint256 duration = 1;
-    //   random = 1;
-    // }
     result.points = getPoints(pointsMin, pointsMax, random);
     result.joinWishStar = eligibilityWishStar(starProbability, random);
 
