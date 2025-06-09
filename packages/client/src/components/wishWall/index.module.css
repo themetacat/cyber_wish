@@ -41,8 +41,7 @@
 
 .content {
   height: 68vh;
-  width: 100%;
-  max-width: 800px;
+  width: 65%;
   overflow-y: auto;
   padding: 0 20px;
   box-sizing: border-box;
@@ -53,13 +52,11 @@
   justify-content: space-between;
   align-items: center;
   height: 116px;
-  border-radius: 10px;
+  border: 2px solid #F8E49C;
+  border-radius: 20px;
   margin-bottom: 10px;
-  background-image: url('/images/wishWall/WishContentBg.webp');
-  box-sizing: border-box;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-color: rgba(255, 245, 204, 0.1);
+  backdrop-filter: blur(1px);
   padding: 0 30px;
   cursor: pointer;
 }
@@ -88,7 +85,7 @@
 
   overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis; 
+  text-overflow: ellipsis;
 }
 
 .wishMeta {
@@ -114,7 +111,7 @@
   justify-content: flex-start;
   margin-top: 3px;
 
-  & > div {
+  &>div {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -123,6 +120,28 @@
     font-size: 14px;
     color: #FFF6D9;
     line-height: 1;
+    position: relative;
+    transition: all 0.2s ease;
+    opacity: 0.7;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.85);
+      color: #FFD700;
+      padding: 4px 8px;
+      border: 1px solid #FFD700;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
 
     img {
       height: 16px;
@@ -130,6 +149,11 @@
       margin-right: 6px;
       vertical-align: middle;
     }
+  }
+
+  &>div:nth-child(1),
+  &>div:nth-child(2) {
+    cursor: not-allowed;
   }
 }
 
@@ -211,7 +235,7 @@
     font-size: 62px;
   }
 
-  .content{
+  .content {
     height: 62vh;
   }
 }
