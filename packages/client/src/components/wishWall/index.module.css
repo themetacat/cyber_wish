@@ -284,12 +284,6 @@
   box-sizing: border-box;
 }
 
-@media (max-width: 768px) {
-  .title {
-    font-size: 50px;
-  }
-
-}
 
 @media (max-height: 800px) {
   .title {
@@ -299,4 +293,11 @@
   .content {
     height: 62vh;
   }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 50px;
+  }
+
 }

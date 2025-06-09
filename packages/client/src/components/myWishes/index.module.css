@@ -52,13 +52,12 @@
   justify-content: space-between;
   align-items: center;
   height: 116px;
-  border-radius: 10px;
   margin-bottom: 10px;
-  background-image: url('/images/wishWall/WishContentBg.webp');
   box-sizing: border-box;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
+  border: 2px solid #F8E49C;
+  border-radius: 20px;
+  background-color: rgba(255, 245, 204, 0.1);
+  backdrop-filter: blur(1px);
   padding: 0 30px;
   cursor: pointer;
 }

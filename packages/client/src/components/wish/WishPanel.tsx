@@ -132,6 +132,7 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
         setIsSubmitting(false);
       }
     } else {
+      setErrorMessage("Failed to make a wish. Please try again.");
       console.warn("no wish fn");
     }
   };

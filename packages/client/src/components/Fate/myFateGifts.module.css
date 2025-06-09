@@ -155,6 +155,7 @@
     background-color: rgba(255, 245, 204, 0.1);
     font-family: "AlibabaPuHuiTi";
     font-weight: 500;
+    letter-spacing: 1px;
 }
 
 .tableHeader {
@@ -210,12 +211,41 @@
 
 .row {
     display: flex;
+    align-items: center;
 }
 
 .cell {
     flex: 1;
     padding: 7px;
     text-align: center;
+}
+
+.loading {
+  width: 87px;
+  height: 87px;
+  text-align: center;
+  color: #888;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.loading img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  animation: rotate 1s linear infinite;
+}
+
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 768px) {
@@ -278,5 +308,11 @@
 
     .tableBody {
         font-size: 12px;
+    }
+
+    
+    .loading{
+        width: 60px;
+        height: 60px;
     }
 }
