@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import styles from './myFateGifts.module.css';
 import { useAccount } from 'wagmi';
 import { formatEther } from 'viem';
@@ -7,20 +7,39 @@ import { getComponentValue } from "@latticexyz/recs";
 import { encodeEntity } from '@latticexyz/store-sync/recs';
 import { WISH_POOL_ID } from '../../utils/contants';
 import { useAccountModal } from '@latticexyz/entrykit/internal';
+import { getTimeStampByCycle, getWisherCycleRecords } from '../common';
+import { formatInTimeZone } from 'date-fns-tz';
+
 
 interface Props {
   onClose: () => void;
 }
 
+
+interface RewardsData {
+  wishTime: number;
+  type: string;
+  reward: bigint
+}
+
+
+interface ApiRewardsData {
+  cycle: number;
+  boosted_type: [string, string];
+}
+
+
 const MyFateGifts = ({ onClose }: Props) => {
   const { address: userAddress } = useAccount();
   const [timeSelected, setTimeSelected] = useState(0);
+  const [allRewardsData, setAllRewardsData] = useState<RewardsData[]>([]);
   const [totalReceived, setTotalReceived] = useState<bigint>(0n);
   const { openAccountModal } = useAccountModal();
+  const [loading, setLoading] = useState(false);
   const Wisher = components.Wisher;
 
   const wisherKey = useMemo(() => {
-    
+
     if (!userAddress) {
       openAccountModal()
       onClose();
@@ -30,8 +49,56 @@ const MyFateGifts = ({ onClose }: Props) => {
         wisher: userAddress,
       });
     }
-
   }, [userAddress, Wisher, openAccountModal]);
+
+  const loadWishRewards = useCallback(async () => {
+    if (!userAddress) return;
+
+    setLoading(true);
+    try {
+      const params = new URLSearchParams({
+        wisher: userAddress
+      });
+
+      const res = await fetch(`/api/get_selection_history?${params}`);
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      const jsonRes = await res.json();
+      if (!jsonRes.success) {
+        throw new Error(jsonRes.error || 'API request failed');
+      }
+
+      const rewardsData: RewardsData[] = jsonRes.data.flatMap((data: ApiRewardsData) => {
+        const wishTime = getTimeStampByCycle(data.cycle);
+        const wisherCycleRecords = getWisherCycleRecords(data.cycle, userAddress);
+
+        return data.boosted_type.map((boostedType) => {
+          const isPointsType = boostedType === "boosted_wisher_by_points";
+
+          return {
+            wishTime,
+            type: isPointsType ? "Wish Points Fund" : "Fated Wish Fund",
+            reward: isPointsType
+              ? wisherCycleRecords?.boostedPointsAmount ?? 0n
+              : wisherCycleRecords?.boostedStarAmount ?? 0n,
+          };
+        });
+      });
+
+      setAllRewardsData(rewardsData);
+    } catch (err) {
+      console.error('Failed to load wish rewards:', err);
+      setAllRewardsData([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [userAddress]);
+
+  useEffect(() => {
+    loadWishRewards();
+  }, [loadWishRewards]);
 
   const wisherData = useMemo(() => {
     if (!wisherKey) return null;
@@ -83,23 +150,31 @@ const MyFateGifts = ({ onClose }: Props) => {
               <div className={styles.scrollContainer}>
                 <div className={styles.tableBodyWrapper}>
                   <div className={styles.tableBody}>
-                    {/* {[...Array(20)].map((_, i) => (
+                    {allRewardsData.map((data, i) => (
                       <div key={i} className={styles.row}>
-
                         <div className={styles.cell}>
-                          2025-06-05
+                          {
+                            formatInTimeZone(
+                              new Date(data.wishTime * 1000),
+                              'Asia/Shanghai',
+                              'yyyy.MM.dd'
+                            )
+                          }
                         </div>
-                        <div className={styles.cell}>Type {i + 1}</div>
-                        <div className={styles.cell}>0.003 ETH</div>
+                        <div className={styles.cell}>{data.type}</div>
+                        <div className={styles.cell}>{formatEther(data.reward)} ETH</div>
                       </div>
-                    ))} */}
+                    ))}
                   </div>
+                  {loading && (
+                    <div className={styles.loading}>
+                      <img src="/images/wishWall/Loading.webp" alt="Loading..." />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </div>
-
-
           <button className={styles.closeButton} onClick={() => onClose()}>
             <img src="/images/wish/WishPanel/Close.webp" alt="Close" />
           </button>
