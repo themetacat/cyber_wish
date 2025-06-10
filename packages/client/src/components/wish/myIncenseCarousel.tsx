@@ -23,7 +23,7 @@ function getLatestExpiredIncenseIndex(
     return null;
   }
 
-  let latestIndex = 0; // Assume the first element has the latest expiredOn initially
+  let latestIndex = 1; // Assume the first element has the latest expiredOn initially
 
   for (let i = 1; i < incenseData.length; i++) {
     if (incenseData[i].expiredOn > incenseData[latestIndex].expiredOn) {
