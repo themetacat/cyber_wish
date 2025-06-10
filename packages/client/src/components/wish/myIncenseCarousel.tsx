@@ -1,11 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styles from "./myIncenseCarousel.module.css";
-import { incenseData } from "../../utils/incenseData";
+import { ImageItem, incenseData } from "../../utils/incenseData";
+import { useAccount } from "wagmi";
 
 interface IncenseItemWithPurchaseInfo {
   id: number;
   expiredOn: number; // Timestamp in seconds
 }
+
+
+interface ApiMyIncenseData {
+  incense_id: number;
+  expire_time: number
+}
+
 
 // Function to get the index of the element with the latest expiredOn
 function getLatestExpiredIncenseIndex(
@@ -54,84 +62,90 @@ function formatTimeDifference(seconds: number): string {
 const LOCAL_STORAGE_KEY = 'lastIncenseIndex'; // Key for localStorage
 
 export const MyIncenseCarousel = () => {
-  const myIncenseData: IncenseItemWithPurchaseInfo[] = [
-    {
-      id: 1,
-      expiredOn: 1754044800, // 2025-07-31 00:00:00
-    },
-    {
-      id: 3,
-      expiredOn: 1754726400, // 2025-08-08 00:00:00
-    },
-    {
-      id: 5,
-      expiredOn: 1755302400, // 2025-08-15 00:00:00
-    },
-  ];
-
-  const total = myIncenseData.length;
-
-  // Determine the initial index
-  const initialIndex = (() => {
-    try {
-      const storedIndex = localStorage.getItem(LOCAL_STORAGE_KEY);
-      if (storedIndex !== null) {
-        const parsedIndex = parseInt(storedIndex, 10);
-        // Check if the parsed index is a valid number and within the bounds of the data array
-        if (!isNaN(parsedIndex) && parsedIndex >= 0 && parsedIndex < total) {
-          console.log("Using stored index:", parsedIndex);
-          return parsedIndex;
-        } else {
-          console.log("Stored index is invalid, using latest expired.");
-          // Clear invalid storage if necessary
-           localStorage.removeItem(LOCAL_STORAGE_KEY);
-        }
-      }
-      console.log("No stored index found, using latest expired.");
-    } catch (e) {
-      console.error("Could not read from localStorage", e);
-      // Fallback in case localStorage is not available or error occurs
-      console.log("Error reading localStorage, using latest expired.");
-    }
-
-    // Fallback: get the index of the latest expired incense if no valid stored index
-    const latestExpiredIndex = getLatestExpiredIncenseIndex(myIncenseData);
-    return latestExpiredIndex !== null ? latestExpiredIndex : 0; // Default to 0 if data is empty
-  })();
-
-
-  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+   const { address: userAddress } = useAccount();
+  const [myIncenseData, setMyIncenseData] = useState<IncenseItemWithPurchaseInfo[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentLocalIncense, setCurrentLocalIncense] = useState<IncenseItemWithPurchaseInfo>();
+  const [fullIncenseDetails, setFullIncenseDetails] = useState<ImageItem>();
   const [countdownDisplay, setCountdownDisplay] = useState("");
 
+  const totalLength = myIncenseData.length;
 
-  // Effect to update localStorage when currentIndex changes
-  useEffect(() => {
+  const loadMyIncense = useCallback(async () => {
+    if (!userAddress) return;
     try {
-      localStorage.setItem(LOCAL_STORAGE_KEY, String(currentIndex));
-      console.log("Saved index", currentIndex, "to localStorage");
+      const params = new URLSearchParams({ wisher: userAddress });
+      const res = await fetch(`/api/get_incense_by_wisher?${params}`);
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const jsonRes = await res.json();
+      if (!jsonRes.success) throw new Error(jsonRes.error || 'API request failed');
+
+      const incenseList = jsonRes.data.map((data: ApiMyIncenseData) => ({
+        id: data.incense_id,
+        expiredOn: data.expire_time
+      }));
+      setMyIncenseData(incenseList);
+    } catch (err) {
+      console.error('Failed to load incense data:', err);
+    }
+  }, [userAddress]);
+
+  const initIndex = useCallback(() => {
+    if (!userAddress || totalLength === 0) return;
+    try {
+      const storedIndex = parseInt(localStorage.getItem(LOCAL_STORAGE_KEY) ?? '', 10);
+      if (!isNaN(storedIndex) && storedIndex > 0 && storedIndex <= totalLength) {
+        setCurrentIndex(storedIndex);
+        return;
+      }
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
     } catch (e) {
-       console.error("Could not write to localStorage", e);
+      console.error("localStorage read error", e);
+    }
+    const fallbackIndex = getLatestExpiredIncenseIndex(myIncenseData);
+    setCurrentIndex(fallbackIndex ?? 1);
+  }, [myIncenseData, totalLength, userAddress]);
+
+  useEffect(() => {
+    loadMyIncense();
+  }, [loadMyIncense]);
+
+  useEffect(() => {
+    initIndex();
+  }, [initIndex]);
+
+  useEffect(() => {
+    if (currentIndex === 0) return;
+    try {
+      const existing = parseInt(localStorage.getItem(LOCAL_STORAGE_KEY) ?? '0');
+      if (currentIndex !== existing) {
+        localStorage.setItem(LOCAL_STORAGE_KEY, String(currentIndex));
+      }
+    } catch (e) {
+      console.error("localStorage write error", e);
     }
   }, [currentIndex]);
 
+  useEffect(() => {
+    if (currentIndex > 0 && currentIndex <= totalLength) {
+      setCurrentLocalIncense(myIncenseData[currentIndex - 1]);
+    }
+  }, [currentIndex, myIncenseData]);
 
   const goPrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + total) % total);
-    // The useEffect above will handle saving the new index to localStorage
+    setCurrentIndex((prev) => ((prev - 2 + totalLength) % totalLength) + 1);
   };
 
   const goNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % total);
-    // The useEffect above will handle saving the new index to localStorage
+    setCurrentIndex((prev) => (prev % totalLength) + 1);
   };
 
-  const currentLocalIncense = myIncenseData[currentIndex];
-
-  const fullIncenseDetails = incenseData.find(
-    (item) => item.id === currentLocalIncense.id
-  );
-
   useEffect(() => {
+    if (!currentLocalIncense) return;
+    setFullIncenseDetails(
+      incenseData.find((item) => item.id === currentLocalIncense.id)
+    );
+
     const calculateCountdown = () => {
       const currentTime = Math.floor(Date.now() / 1000);
       const timeRemaining = currentLocalIncense.expiredOn - currentTime;
@@ -139,36 +153,37 @@ export const MyIncenseCarousel = () => {
     };
 
     calculateCountdown();
-
     const timerId = setInterval(calculateCountdown, 1000);
-
     return () => clearInterval(timerId);
-  }, [currentLocalIncense.expiredOn, currentIndex]); // Added currentIndex dependency
-
+  }, [currentLocalIncense]);
 
   const imgSrc = fullIncenseDetails?.img || "";
-  const imgAlt = fullIncenseDetails?.name || currentLocalIncense.id.toString();
+  const imgAlt = fullIncenseDetails?.name || `Current Incense: ${currentLocalIncense?.id ?? "0"}`;
 
   return (
-    <div className={styles.myIncenseCarouselContainer}>
-      <div className={styles.carouselContent}>
-        <button className={styles.navButton} onClick={goPrev}>
-          <img
-            src="/images/wish/WishPanel/ArrowLeft.webp"
-            alt="Previous Incense"
-          />
-        </button>
-        <div className={styles.incenseImageContainer}>
-          <img src={imgSrc} alt={imgAlt} className={styles.incenseImage} />
+    <>
+      {
+        totalLength > 0  && currentIndex > 0 && <div className={styles.myIncenseCarouselContainer}>
+          <div className={styles.carouselContent}>
+            <button className={styles.navButton} onClick={goPrev}>
+              <img
+                src="/images/wish/WishPanel/ArrowLeft.webp"
+                alt="Previous Incense"
+              />
+            </button>
+            <div className={styles.incenseImageContainer}>
+              <img src={imgSrc} alt={imgAlt} className={styles.incenseImage} />
+            </div>
+            <button className={styles.navButton} onClick={goNext}>
+              <img
+                src="/images/wish/WishPanel/ArrowRight.webp"
+                alt="Next Incense"
+              />
+            </button>
+          </div>
+          <div className={styles.countdownTimer}>{countdownDisplay}</div>
         </div>
-        <button className={styles.navButton} onClick={goNext}>
-          <img
-            src="/images/wish/WishPanel/ArrowRight.webp"
-            alt="Next Incense"
-          />
-        </button>
-      </div>
-      <div className={styles.countdownTimer}>{countdownDisplay}</div>
-    </div>
+      }
+    </>
   );
 };
