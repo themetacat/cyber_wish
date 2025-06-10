@@ -65,7 +65,7 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.logo} onClick={() => navigate("/")}>
-        <img src="/images/Header/Logo.webp" alt="Cyber Wish" />
+        <img src="/images/Header/logo.png" alt="Cyber Wish" />
       </div>
       <nav className={styles.nav}>
         <button
@@ -80,6 +80,12 @@ export default function Header() {
         >
           Wishflow Fund
         </button>
+        <button
+          onClick={() => navigate("/about")}
+          className={`${styles.navItem} ${location.pathname === "/about" ? styles.selected : ""}`}
+        >
+          About
+        </button>
         <div className={styles.connectButton}>
           <AccountButton />
           {
@@ -92,7 +98,7 @@ export default function Header() {
         </div>
         <button className={styles.bgmButton} onClick={toggleBGM}>
           <img 
-            src={isBGMPlaying ? "/images/BGMOn.webp" : "/images/BGMOff.webp"} 
+            src={isBGMPlaying ? "/images/BGMOn.png" : "/images/BGMOff.png"} 
             alt={isBGMPlaying ? "Turn off BGM" : "Turn on BGM"} 
           />
         </button>

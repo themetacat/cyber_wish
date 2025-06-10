@@ -1,0 +1,66 @@
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url('/images/wishWall/BG.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.imgScrollContainer {
+  box-sizing: border-box;
+  width: 98vw;
+  height: 95vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 80px;
+  padding-left: 60px;
+  padding-right: 60px;
+}
+
+.imgScrollContainer img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.socialIcons {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  padding: 82px 0;
+  position: sticky;
+  bottom: 0;
+  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.socialIcons.visible {
+  opacity: 1;
+}
+
+.socialIcons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.socialIcons img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.socialIcons img:hover {
+  transform: scale(1.2);
+}
