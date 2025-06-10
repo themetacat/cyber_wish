@@ -60,11 +60,11 @@
   padding: 0 30px;
   cursor: pointer;
   position: relative;
-  transition: background-color 0.3s ease;
 }
 
 .infoBox:hover {
   background-color: rgba(255, 245, 204, 0.2);
+  backdrop-filter: blur(3px);
 }
 
 .textContent {
