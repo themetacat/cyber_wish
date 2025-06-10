@@ -272,9 +272,10 @@
 
 .notHasMore span:last-child {
   color: #F4C873;
-  font-size: 20px;
-  font-family: 'FSKim-Medium';
+  font-size: 16px;
+  font-family: 'FSKim-Regular';
   font-weight: 400;
+  padding-bottom: 8px;
 }
 
 .footer {
