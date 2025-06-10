@@ -4,6 +4,7 @@ import { shortenAddress } from '../../utils/common';
 import { useAccount } from 'wagmi';
 import { getBoostWisherRecords, getWisherCycleRecords } from '../common';
 import { formatEther } from 'viem';
+import { CURRENCY_SYMBOL } from "../../utils/contants"
 
 interface Props {
   cycle: number,
@@ -70,9 +71,9 @@ const Selected = ({ cycle, onClose }: Props) => {
             <div className={`${styles.cell} ${styles.colNum}`}>Num</div>
             <div className={`${styles.cell} ${styles.colAddress}`}>Address</div>
             <div className={`${styles.cell} ${styles.colWishPoints}`}>Wish Points</div>
-            <div className={`${styles.cell} ${styles.colWishPointsPool}`}>Wish Points Pool ETH</div>
+            <div className={`${styles.cell} ${styles.colWishPointsPool}`}>Wish Points Pool {CURRENCY_SYMBOL}</div>
             <div className={`${styles.cell} ${styles.colFatedPoolQualified}`}>Fated Pool Qualified</div>
-            <div className={`${styles.cell} ${styles.colFatedPool}`}>Fated Pool ETH</div>
+            <div className={`${styles.cell} ${styles.colFatedPool}`}>Fated Pool {CURRENCY_SYMBOL}</div>
           </div>
           <div className={styles.scrollContainer}>
             <div className={styles.tableBodyWrapper}>
@@ -85,9 +86,9 @@ const Selected = ({ cycle, onClose }: Props) => {
                       {userAddress == (row.wisher) ? <span style={{ color: "rgba(244, 200, 116, 1)" }}> (you)</span> : ""}
                     </div>
                     <div className={`${styles.cell} ${styles.colWishPoints}`}>{row.wp} WP</div>
-                    <div className={`${styles.cell} ${styles.colWishPointsPool}`}>{row.wp_pool_rewards} ETH</div>
+                    <div className={`${styles.cell} ${styles.colWishPointsPool}`}>{row.wp_pool_rewards} {CURRENCY_SYMBOL}</div>
                     <div className={`${styles.cell} ${styles.colFatedPoolQualified}`}>{row.wp_pool_rewards ? 'Yes' : 'No'}</div>
-                    <div className={`${styles.cell} ${styles.colFatedPool}`}>{row.fated_pool_rewards} ETH</div>
+                    <div className={`${styles.cell} ${styles.colFatedPool}`}>{row.fated_pool_rewards} {CURRENCY_SYMBOL}</div>
                   </div>
                 ))}
               </div>
