@@ -11,6 +11,7 @@ import { useAccountModal } from "@latticexyz/entrykit/internal";
 import { incenseData } from "../../utils/incenseData";
 import { blindBoxData } from "../../utils/blindBoxData";
 import { ErrorToast } from "../common/ErrorToast";
+import { useLocation } from "react-router-dom";
 
 export type Props = {
   readonly wish?: (
@@ -30,6 +31,7 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
   const { address } = useAccount();
   const { openAccountModal } = useAccountModal();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const location = useLocation();
 
   useEffect(() => {
     if (showModal && textareaRef.current) {
@@ -139,14 +141,16 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
 
   return (
     <>
-      <div className={styles.buttonContainer}>
-        <button
-          className={styles.mainButton}
-          onClick={() => setShowModal(true)}
-        >
-          <span className={styles.mainButtonText}>Make a wish</span>
-        </button>
-      </div>
+      {location.pathname !== "/about" && (
+        <div className={styles.buttonContainer}>
+          <button
+            className={styles.mainButton}
+            onClick={() => setShowModal(true)}
+          >
+            <span className={styles.mainButtonText}>Make a wish</span>
+          </button>
+        </div>
+      )}
 
       {showModal && (
         <div className={styles.modalOverlay}>
