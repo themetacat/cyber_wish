@@ -37,7 +37,7 @@
 
 .rowHeader {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
     width: 100%;
     color: rgba(255, 245, 204, 1);
     font-size: 20px;
@@ -45,12 +45,37 @@
     user-select: none;
     justify-items: center;
     align-items: center;
+    white-space: nowrap;
 }
 
 .rowHeader span {
     display: flex;
-    justify-items: center;
     align-items: center;
+}
+
+.rowHeader span:nth-child(2) {
+    margin-left: 40px;
+}
+  
+.rowHeader span:nth-child(3) {
+    margin-left: auto;
+    margin-right: 40px;
+}
+
+.cycleStatus, .cycleStatus1 {
+    font-family: "Orbitron";
+    font-weight: 400;
+    font-size: clamp(9px, 1.1vw, 20px);
+    color: rgba(255, 245, 204, 1);
+    border-radius: 10px;
+    padding: 5px 18px;
+    background-color: rgba(255, 245, 204, 0.08);
+    letter-spacing: 1.8px;
+}
+
+.cycleStatus1 {
+    color: rgba(0, 0, 0, 1);
+    background-color: rgba(255, 245, 204, 0.8);
 }
 
 .expanded {
@@ -122,13 +147,11 @@
 }
 
 .viewAllButton {
-    position: absolute;
-    right: 0;
-    top: 0;
+    margin-left: 390px;
     cursor: pointer;
     font-family: "Orbitron";
     font-weight: 700;
-    font-size: clamp(7px, 1vw, 16px);
+    font-size: clamp(9px, 1.1vw, 20px);
     color: rgba(255, 169, 20, 0.35);
 
     background: linear-gradient(2deg, #BF904C 14.6484375%, #FFEEDB 77.2216796875%, #FFEEDB 100%);
@@ -136,7 +159,6 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
-
 
 .viewAllButton::after {
     content: '';
@@ -183,11 +205,11 @@
     margin: auto;
     align-items: center;
     gap: 10px;
+    white-space: nowrap;
 }
 
 .dataRow, .dataRow1 span {
     flex: 1;
-    color: #FDCE32;
     text-align: left;
 }
 
@@ -195,8 +217,13 @@
     color: #7E4806;
 }
 
-.dataRow1 span {
+/* .dataRow1 span {
     color: #371508;
+} */
+
+.dataRowYouColor {
+    color: #FDCE32;
+    font-weight: 700;
 }
 
 .fatedGiftsBtnContainer {
