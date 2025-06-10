@@ -176,12 +176,12 @@ export default function FateGifts() {
                                             const isBoost = cycleInfo?.isboost;
                                             const participantCount = cycleInfo?.wisherCount ?? 0;
                                             return (
-                                                <div key={index} className={style.box}>
+                                                <div key={index} className={index === 1 ? style.box1 : style.box}>
                                                     <div className={style.boxHeader}>
-                                                        <span className={style.boxHeaderTitle}>{box.title}</span>
+                                                        <span className={index === 1 ? style.boxHeaderTitle1 : style.boxHeaderTitle}>{box.title}</span>
                                                         {(index == 0 && isBoost) && <span className={style.viewAllButton} onClick={() => setSelectedCycle(row.cycle)}>View All</span>}
                                                     </div>
-                                                    <div className={style.boxSubtitle}>
+                                                    <div className={index === 1 ? style.boxSubtitle1 : style.boxSubtitle}>
                                                         <span>
                                                             Pool: {
                                                                 isBoost
@@ -194,7 +194,7 @@ export default function FateGifts() {
                                                         </span>
                                                     </div>
                                                     {box.wisherList.slice(0, showRows).map((item: string, i) => (
-                                                        <div key={i} className={style.dataRow}>
+                                                        <div key={i} className={index === 1 ? style.dataRow1 : style.dataRow}>
                                                             <span>{item == userAddress ? "YOU" : shortenAddress(item)}</span>
                                                             <span>
                                                                 {index == 0 ? Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedPointsAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '') : Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedStarAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '')} {CURRENCY_SYMBOL}

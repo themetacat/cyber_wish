@@ -68,7 +68,7 @@
     gap: 20px;
 }
 
-.box {
+.box, .box1 {
     width: 40%;
     flex: 1;
     border: 2px solid #F8E49C;
@@ -80,6 +80,10 @@
     margin-top: 5px;
     background: linear-gradient(to bottom, #D4BF8A, #B49F73, #8E7958, #715C43);
     font-family: "155-SSZhongZhengSongTi";
+}
+
+.box1 {
+    background: linear-gradient(to bottom right, #F7E6B4, #B58540);
 }
 
 .boxHeader {
@@ -98,14 +102,23 @@
     transform: scale(1);
 }
 
-.boxHeaderTitle {
-    color: rgba(52, 52, 52, 1);
+.boxHeaderTitle, .boxHeaderTitle1 {
+    color: #FFF9E5;
     text-shadow:
-        1px 1px 0 white,
-        -1px 1px 0 white,
-        1px -1px 0 white,
-        -1px -1px 0 white;
+        0.1px 0.1px 0 white,
+        -0.1px 0.1px 0 white,
+        0.1px -0.1px 0 white,
+        -0.1px -0.1px 0 white;
     font-size: clamp(10px, 1.2vw, 20px);
+}
+
+.boxHeaderTitle1 {
+    color: #371508;
+    text-shadow:
+        0.1px 0.1px 0 #7E4806,
+        -0.1px 0.1px 0 #7E4806,
+        0.1px -0.1px 0 #7E4806,
+        -0.1px -0.1px 0 #7E4806;
 }
 
 .viewAllButton {
@@ -146,18 +159,22 @@
     transform: scale(1.02);
 }
 
-.boxSubtitle {
+.boxSubtitle, .boxSubtitle1 {
     font-size: clamp(9px, 1.2vw, 20px);
     margin: 8px 0;
     text-align: center;
     align-items: center;
     justify-content: center;
-    color: #fff;
+    color: #E2D7BA;
     display: flex;
     flex-wrap: wrap;
 }
 
-.dataRow {
+.boxSubtitle1 {
+    color: #7e4806;
+}
+
+.dataRow, .dataRow1 {
     font-size: clamp(7px, 0.8vw, 14px);
     padding: 4px 0;
     color: rgba(255, 245, 204, 1);
@@ -168,9 +185,18 @@
     gap: 10px;
 }
 
-.dataRow span {
+.dataRow, .dataRow1 span {
     flex: 1;
+    color: #FDCE32;
     text-align: left;
+}
+
+.dataRow1 {
+    color: #7E4806;
+}
+
+.dataRow1 span {
+    color: #371508;
 }
 
 .fatedGiftsBtnContainer {
