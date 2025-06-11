@@ -21,7 +21,7 @@ export default function About() {
   return (
     <div className={styles.pageContainer}>
       <div className={styles.imgScrollContainer}>
-        <img src="/images/About/Main.webp" alt="About page main image" />
+        <img src="/images/About/Main.png" alt="About page main image" />
       </div>
       <div className={`${styles.socialIcons} ${showSocialIcons ? styles.visible : ''}`}>
         <a href="https://t.me/+5h_pImEEEmU3NTRl" target="_blank" rel="noopener noreferrer">

@@ -11,7 +11,7 @@
 
 .imgScrollContainer {
   box-sizing: border-box;
-  width: 98vw;
+  width: 75vw;
   height: 95vh;
   overflow-y: auto;
   overflow-x: hidden;
