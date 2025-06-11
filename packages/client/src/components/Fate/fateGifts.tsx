@@ -61,13 +61,13 @@ export default function FateGifts() {
                     totalAmount: singleBoostWisherRecord.amount,
                     pools: [
                         {
-                            title: "Wish Points Fund",
+                            title: "Wish Points Rewards",
                             amount: singleBoostWisherRecord.amountPoints,
                             selectedCount: singleBoostWisherRecord.boostedWisherByPoints.length,
                             wisherList: singleBoostWisherRecord.boostedWisherByPoints.slice(0, 3),
                         },
                         {
-                            title: "Fated Wish Fund",
+                            title: "Fated FunRewardsd",
                             amount: singleBoostWisherRecord.amountStar,
                             selectedCount: singleBoostWisherRecord.boostedWisherByStar.length,
                             wisherList: singleBoostWisherRecord.boostedWisherByStar.slice(0, 3),

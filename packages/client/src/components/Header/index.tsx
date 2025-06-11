@@ -75,10 +75,10 @@ export default function Header() {
           Wishing Wall
         </button>
         <button
-          onClick={() => navigate("/wishflow-fund")}
-          className={`${styles.navItem} ${location.pathname === "/wishflow-fund" ? styles.selected : ""}`}
+          onClick={() => navigate("/wishflow-rewards")}
+          className={`${styles.navItem} ${location.pathname === "/wishflow-rewards" ? styles.selected : ""}`}
         >
-          Wishflow Fund
+          Wishflow Rewards
         </button>
         <button
           onClick={() => navigate("/about")}

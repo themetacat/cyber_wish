@@ -90,7 +90,7 @@ export default function Main() {
         {location.pathname === "/" && address && <MyIncenseCarousel />}
         {location.pathname === "/wishing-wall" && <WishingWall />}
         {location.pathname === "/my-wishes" && <MyWishes />}
-        {location.pathname === "/wishflow-fund" && <FateGifts/>}
+        {location.pathname === "/wishflow-rewards" && <FateGifts/>}
         {location.pathname === "/about" && <About />}
         <WishResult wishStatus={wishStatus}/>
       </div>
