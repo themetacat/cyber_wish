@@ -67,7 +67,7 @@ export default function FateGifts() {
                             wisherList: singleBoostWisherRecord.boostedWisherByPoints.slice(0, 3),
                         },
                         {
-                            title: "Fated FunRewardsd",
+                            title: "Fated Rewards",
                             amount: singleBoostWisherRecord.amountStar,
                             selectedCount: singleBoostWisherRecord.boostedWisherByStar.length,
                             wisherList: singleBoostWisherRecord.boostedWisherByStar.slice(0, 3),
