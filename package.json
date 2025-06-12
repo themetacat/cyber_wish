@@ -1,6 +1,7 @@
 {
   "name": "mud-template-react",
   "private": true,
+  "packageManager": "pnpm@9.x",
   "scripts": {
     "build": "pnpm recursive run build",
     "dev": "mprocs",
