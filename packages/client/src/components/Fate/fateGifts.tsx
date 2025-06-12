@@ -132,7 +132,7 @@ export default function FateGifts() {
 
     return (
         <div className={commonStyle.page}>
-            <h1 className={commonStyle.title}>Wishflow Fund</h1>
+            <h1 className={commonStyle.title}>Wishflow Rewards</h1>
             <div className={style.fatedGiftsBtnContainer}>
                 <button className={style.fatedGiftsBtn} onClick={() => setShowMyFateGifts(!showMyFateGifts)}>
                     <span>My Wish Rewards</span>
