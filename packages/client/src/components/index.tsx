@@ -14,6 +14,7 @@ import WishResult from "./wish/wishResult";
 import { MyIncenseCarousel } from './wish/myIncenseCarousel';
 import FateGifts from "./Fate/fateGifts";
 import Header from "./Header";
+import About from "./About";
 import { useLocation } from "react-router-dom";
 import { WISH_POOL_ID } from "../utils/contants";
 import { useAccount } from 'wagmi';
@@ -89,7 +90,8 @@ export default function Main() {
         {location.pathname === "/" && address && <MyIncenseCarousel />}
         {location.pathname === "/wishing-wall" && <WishingWall />}
         {location.pathname === "/my-wishes" && <MyWishes />}
-        {location.pathname === "/wishflow-fund" && <FateGifts/>}
+        {location.pathname === "/wishflow-rewards" && <FateGifts/>}
+        {location.pathname === "/about" && <About />}
         <WishResult wishStatus={wishStatus}/>
       </div>
     </>

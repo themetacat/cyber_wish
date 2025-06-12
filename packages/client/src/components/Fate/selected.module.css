@@ -13,8 +13,7 @@
     background-size: 100% 100%; 
     background-position: center;
     background-repeat: no-repeat;
-    width: 36vw;
-    width: 700px;
+    width: fit-content;
     height: 76vh;
     display: flex;
     flex-direction: column;
@@ -25,6 +24,7 @@
     overflow: hidden;
     transform: scale(0);
     animation: scaleIn 0.1s ease-out forwards;
+    align-items: center;
 }
 
 @keyframes scaleIn {
@@ -63,7 +63,7 @@
     height: 72.9%;
     display: flex;
     flex-direction: column;
-    margin-left: 5%;
+    /* margin-left: 5%; */
     margin-top: 8%;
 }
 
@@ -71,6 +71,10 @@
     display: flex;
     color: rgba(255, 209, 98, 1);
     font-size: 17px;
+}
+
+.tableHeader div {
+    border: 1px solid rgba(255, 209, 98, 1);
 }
 
 .scrollbarSpacer {
@@ -126,12 +130,37 @@
 }
 
 .cell {
-    flex: 1;
     padding: 9px;
     border-right: 1px solid rgba(255, 209, 98, 1);
     box-sizing: border-box;
     text-align: center;
     word-break: break-word;
+    align-items: center;
+}
+
+/* Column width classes */
+.colNum {
+    flex: 0 0 60px;
+}
+
+.colAddress {
+    flex: 0 0 180px;
+}
+
+.colWishPoints {
+    flex: 0 0 120px;
+}
+
+.colWishPointsPool {
+    flex: 0 0 150px;
+}
+
+.colFatedPoolQualified {
+    flex: 0 0 150px;
+}
+
+.colFatedPool {
+    flex: 0 0 150px;
 }
 
 .closeButton {

@@ -23,20 +23,23 @@ interface PoolData {
 
 interface TotalPoolData {
     id: number;
-    cycle: number,
-    totalAmount: bigint,
+    isBoost: boolean;
+    cycle: number;
+    totalAmount: bigint;
     timeStamp: number;
     pools: PoolData[];
 }
 
 export default function FateGifts() {
-    const [expandedId, setExpandedId] = useState<number | null>(null);
+    const [expandedId, setExpandedId] = useState<number | null>(0);
     const [countdown, setCountdown] = useState(0);
     const [selectedCycle, setSelectedCycle] = useState(0);
     const BoostWisherRecords = components.BoostWisherRecords;
     const boostWisherRecordsData = useEntityQuery([Has(BoostWisherRecords)]);
     const { address: userAddress } = useAccount();
     const [showMyFateGifts, setShowMyFateGifts] = useState(false);
+
+    const BOOST_TYLE_STAR = 1;
 
     const data: TotalPoolData[] = useMemo(() => {
         return boostWisherRecordsData
@@ -47,20 +50,24 @@ export default function FateGifts() {
                     return;
                 }
                 const cycle = Number(decodeKey.cycle);
+                const cycleInfo = getCycleInfo(cycle, BOOST_TYLE_STAR);
+                const isBoost = Boolean(cycleInfo?.isboost);
+
                 const res: TotalPoolData = {
                     id: index,
+                    isBoost: isBoost,
                     timeStamp: getTimeStampByCycle(cycle),
                     cycle: cycle,
                     totalAmount: singleBoostWisherRecord.amount,
                     pools: [
                         {
-                            title: "Wish Points Fund",
+                            title: "Wish Points Rewards",
                             amount: singleBoostWisherRecord.amountPoints,
                             selectedCount: singleBoostWisherRecord.boostedWisherByPoints.length,
                             wisherList: singleBoostWisherRecord.boostedWisherByPoints.slice(0, 3),
                         },
                         {
-                            title: "Fated Wish Fund",
+                            title: "Fated Rewards",
                             amount: singleBoostWisherRecord.amountStar,
                             selectedCount: singleBoostWisherRecord.boostedWisherByStar.length,
                             wisherList: singleBoostWisherRecord.boostedWisherByStar.slice(0, 3),
@@ -74,7 +81,7 @@ export default function FateGifts() {
     }, [boostWisherRecordsData, BoostWisherRecords]);
 
     useEffect(() => {
-        expandedId == null && data.length > 0 && setExpandedId(data.length - 1);
+        // expandedId == null && data.length > 0 && setExpandedId(0);
 
         const poolInfo = getWishPoolInfo();
         if (!poolInfo || poolInfo.startTime === 0n) return;
@@ -125,7 +132,7 @@ export default function FateGifts() {
 
     return (
         <div className={commonStyle.page}>
-            <h1 className={commonStyle.title}>Wishflow Fund</h1>
+            <h1 className={commonStyle.title}>Wishflow Rewards</h1>
             <div className={style.fatedGiftsBtnContainer}>
                 <button className={style.fatedGiftsBtn} onClick={() => setShowMyFateGifts(!showMyFateGifts)}>
                     <span>My Wish Rewards</span>
@@ -164,7 +171,15 @@ export default function FateGifts() {
                                             )
                                         )}
                                     </span>
-                                    <img src="/images/Fate/Dropdown.webp" alt="" className={`${style.dropdown} ${isExpanded ? style.dropdownSelected : ''}`} />
+                                    <span className={row.isBoost ? style.cycleStatus1 : style.cycleStatus}>
+                                        {row.isBoost ? "Ended" : "Ongoing"}
+                                    </span>
+                                    <span className={style.viewAllButton} onClick={() => setSelectedCycle(row.cycle)}>
+                                        {isExpanded ? "Cycle Details" : ""}
+                                    </span>
+                                    <span>
+                                        <img src="/images/Fate/Dropdown.webp" alt="" className={`${style.dropdown} ${isExpanded ? style.dropdownSelected : ''}`} />
+                                    </span>
                                 </div>
 
                                 {isExpanded && (
@@ -173,30 +188,30 @@ export default function FateGifts() {
                                     }}>
                                         {[boostByPointsInfo, boostByStarInfo].map((box, index) => {
                                             const cycleInfo = getCycleInfo(row.cycle, index);
-                                            const isBoost = cycleInfo?.isboost;
                                             const participantCount = cycleInfo?.wisherCount ?? 0;
                                             return (
-                                                <div key={index} className={index === 1 ? style.box1 : style.box}>
+                                                <div key={index} className={index === BOOST_TYLE_STAR ? style.box1 : style.box}>
                                                     <div className={style.boxHeader}>
-                                                        <span className={index === 1 ? style.boxHeaderTitle1 : style.boxHeaderTitle}>{box.title}</span>
-                                                        {(index == 0 && isBoost) && <span className={style.viewAllButton} onClick={() => setSelectedCycle(row.cycle)}>View All</span>}
+                                                        <span className={index === BOOST_TYLE_STAR ? style.boxHeaderTitle1 : style.boxHeaderTitle}>{box.title}</span>
                                                     </div>
-                                                    <div className={index === 1 ? style.boxSubtitle1 : style.boxSubtitle}>
+                                                    <div className={index === BOOST_TYLE_STAR ? style.boxSubtitle1 : style.boxSubtitle}>
                                                         <span>
                                                             Pool: {
-                                                                isBoost
+                                                                row.isBoost
                                                                     ? formatEther(box.amount)
                                                                     : formatEther((row.totalAmount * BigInt(index === 0 ? 24 : 36)) / 100n)
                                                             } {CURRENCY_SYMBOL}
                                                         </span>
                                                         <span style={{ marginLeft: "2vw" }}>
-                                                            {isBoost ? `Selected: ${box.selectedCount}` : `Participants: ${participantCount}`}
+                                                            {row.isBoost ? `Selected: ${box.selectedCount}` : `Participants: ${participantCount}`}
                                                         </span>
                                                     </div>
                                                     {box.wisherList.slice(0, showRows).map((item: string, i) => (
-                                                        <div key={i} className={index === 1 ? style.dataRow1 : style.dataRow}>
-                                                            <span>{item == userAddress ? "YOU" : shortenAddress(item)}</span>
-                                                            <span>
+                                                        <div key={i} className={index === BOOST_TYLE_STAR ? style.dataRow1 : style.dataRow}>
+                                                            <span className={item == userAddress ? style.dataRowYouColor : ""}>
+                                                                {item == userAddress ? shortenAddress(item) + " (YOU)" : shortenAddress(item)}
+                                                            </span>
+                                                            <span className={item == userAddress ? style.dataRowYouColor : ""}>
                                                                 {index == 0 ? Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedPointsAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '') : Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedStarAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '')} {CURRENCY_SYMBOL}
                                                             </span>
                                                         </div>
