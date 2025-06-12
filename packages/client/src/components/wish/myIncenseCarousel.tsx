@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import styles from "./myIncenseCarousel.module.css";
 import { ImageItem, incenseData } from "../../utils/incenseData";
 import { useAccount } from "wagmi";
+import { apiServer } from "../../common";
 
 interface IncenseItemWithPurchaseInfo {
   id: number;
@@ -75,7 +76,7 @@ export const MyIncenseCarousel = () => {
     if (!userAddress) return;
     try {
       const params = new URLSearchParams({ address: userAddress });
-      const res = await fetch(`/api/cyberwish/get_incense_by_wisher?${params}`);
+      const res = await fetch(apiServer + `/api/cyberwish/get_incense_by_wisher?${params}`);
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const jsonRes = await res.json();
       if (!jsonRes.success) throw new Error(jsonRes.error || 'API request failed');

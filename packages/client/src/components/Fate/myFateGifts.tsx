@@ -9,6 +9,7 @@ import { WISH_POOL_ID } from '../../utils/contants';
 import { useAccountModal } from '@latticexyz/entrykit/internal';
 import { getTimeStampByCycle, getWisherCycleRecords } from '../common';
 import { formatInTimeZone } from 'date-fns-tz';
+import { apiServer } from '../../common';
 
 
 interface Props {
@@ -61,7 +62,7 @@ const MyFateGifts = ({ onClose }: Props) => {
         address: userAddress
       });
 
-      const res = await fetch(`/api/cyberwish/get_selection_history_by_wisher?${params}`);
+      const res = await fetch(apiServer + `/api/cyberwish/get_selection_history_by_wisher?${params}`);
 
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
