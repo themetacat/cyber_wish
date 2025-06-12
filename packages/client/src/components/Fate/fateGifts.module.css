@@ -201,7 +201,7 @@
     padding: 4px 0;
     color: rgba(255, 245, 204, 1);
     display: flex;
-    width: 58%;
+    min-width: 42%;
     margin: auto;
     align-items: center;
     gap: 10px;
@@ -211,6 +211,7 @@
 .dataRow, .dataRow1 span {
     flex: 1;
     text-align: left;
+    white-space: nowrap;
 }
 
 .dataRow1 {
@@ -287,8 +288,8 @@
         gap: 8px;
     }
 
-    .dataRow {
-        width: 100%;
-        gap: 5px;
+    .dataRow, .dataRow1 {
+        min-width: 35%;
     }
+
 }

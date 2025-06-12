@@ -21,7 +21,8 @@
     "@latticexyz/schema-type": "2.2.21",
     "@latticexyz/store": "2.2.21",
     "@latticexyz/world": "2.2.21",
-    "@latticexyz/world-modules": "2.2.21"
+    "@latticexyz/world-modules": "2.2.21",
+    "@prb/math": "^4.1.0"
   },
   "devDependencies": {
     "ds-test": "https://github.com/dapphub/ds-test.git#e282159d5170298eb2455a6c05280ab5a73a4ef0",

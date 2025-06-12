@@ -18,5 +18,6 @@ export default defineWorld({
     Incense: { schema: { poolId: "bytes32", id: "uint256", amount: "uint256", duration: "uint256", pointsMin: "uint256", pointsMax: "uint256", starProbability: "uint256", easterEggProbability: "bool", name: "string" }, key: ["poolId", "id"] },
     PropBlindBox: { schema: { poolId: "bytes32", id: "uint256", amount: "uint256", pointsMin: "uint256", pointsMax: "uint256", starProbability: "uint256", easterEggProbability: "bool", name: "string", propIds: "uint256[]" }, key: ["poolId", "id"] },
     Props: { schema: { poolId: "bytes32", boxId: "uint256", id: "uint256", name: "string" }, key: ["poolId", "boxId", "id"] },
+    WisherIndexId: { schema: { id: "uint256", boostType: "uint256", inUse: "bool" }, key: ["id", "boostType"] }
   },
 });

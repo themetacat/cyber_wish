@@ -18,11 +18,11 @@ export function Providers({ children }: Props) {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <EntryKitProvider config={defineConfig({ chainId, worldAddress })}>
+        {/* <EntryKitProvider config={defineConfig({ chainId, worldAddress })}> */}
           <SyncProvider chainId={chainId} address={worldAddress} startBlock={startBlock} indexerUrl={indexerUrl} adapter={syncAdapter}>
             {children}
           </SyncProvider>
-        </EntryKitProvider>
+        {/* </EntryKitProvider> */}
       </QueryClientProvider>
     </WagmiProvider>
   );

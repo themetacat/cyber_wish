@@ -5,6 +5,7 @@ import { useAccount } from "wagmi";
 import { useState, useRef, useEffect } from "react";
 import MyFateGifts from "../Fate/myFateGifts";
 import { useDisconnect } from 'wagmi'
+import { shortenAddress } from "../../utils/common";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -87,7 +88,11 @@ export default function Header() {
           About
         </button>
         <div className={styles.connectButton}>
-          <AccountButton />
+          {/* <AccountButton /> */}
+          {
+            address &&  <span style={{color: "white"}}>{shortenAddress(address)}</span>
+          }
+         
           {
             address && <div className={styles.dropdown}>
               <div className={styles.dropdownItem} style={{ paddingTop: "15px" }} onClick={handleMyWishesClick}>My Wishes</div>

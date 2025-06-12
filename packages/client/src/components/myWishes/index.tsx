@@ -87,11 +87,11 @@ export default function MyWishes() {
     setLoading(true);
     try {
       const params = new URLSearchParams({
-        wisher: userAddress ?? '',
+        address: userAddress ?? '',
         page: String(loadPage.current ?? 1),
         pageSize: String(pageSize ?? 20),
       });
-      const res = await fetch('/api/get_wishes_by_wisher?' + params)
+      const res = await fetch('/api/cyberwish/get_wishes_by_wisher?' + params)
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }

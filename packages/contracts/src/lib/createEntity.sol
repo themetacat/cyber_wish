@@ -2,7 +2,7 @@
 pragma solidity >=0.8.24;
 
 import { Entity } from "./Entity.sol";
-import { WishCount } from "./codegen/tables/WishCount.sol";
+import { WishCount } from "../codegen/tables/WishCount.sol";
 
 // function createEntity() returns (Entity entity) {
 //   return Entity.wrap(uuid());

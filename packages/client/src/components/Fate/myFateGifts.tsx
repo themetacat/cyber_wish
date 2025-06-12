@@ -58,10 +58,10 @@ const MyFateGifts = ({ onClose }: Props) => {
     setLoading(true);
     try {
       const params = new URLSearchParams({
-        wisher: userAddress
+        address: userAddress
       });
 
-      const res = await fetch(`/api/get_selection_history_by_wisher?${params}`);
+      const res = await fetch(`/api/cyberwish/get_selection_history_by_wisher?${params}`);
 
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);

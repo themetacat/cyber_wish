@@ -1,11 +1,13 @@
 import { useClient } from "wagmi";
-import { chainId, getWorldAddress } from "../common";
-import { Account, Chain, Client, GetContractReturnType, Transport, getContract, createWalletClient } from "viem";
+import { chainId, getWorldAddress, getChain } from "../common";
+import { Account, Chain, Client, GetContractReturnType, Transport, getContract, createWalletClient, custom, fallback, webSocket, http, ClientConfig } from "viem";
 import { useQuery } from "@tanstack/react-query";
-import { useSessionClient } from "@latticexyz/entrykit/internal";
+// import { useSessionClient } from "@latticexyz/entrykit/internal";
 import { observer } from "@latticexyz/explorer/observer";
 import worldAbi from "contracts/out/IWorld.sol/IWorld.abi.json";
 import { transactionQueue, writeObserver } from "@latticexyz/common/actions";
+import { ContractWrite, transportObserver } from "@latticexyz/common";
+import { Subject } from "rxjs";
 
 export function useWorldContract():
   | GetContractReturnType<
@@ -17,45 +19,51 @@ export function useWorldContract():
     >
   | undefined {
   const client = useClient({ chainId });
-  const { data: sessionClient } = useSessionClient();
-  // console.log(sessionClient);
-  
-  const { data: worldContract } = useQuery({
-    queryKey: ["worldContract", client?.uid, sessionClient?.uid],
-    queryFn: () => {
-      if (!client || !sessionClient) {
-        throw new Error("Not connected.");
-      }
 
-      return getContract({
-        abi: worldAbi,
-        address: getWorldAddress(),
-        client: {
-          public: client,
-          wallet: sessionClient.extend(observer()),
-        },
+  const { data: worldContract } = useQuery({
+    queryKey: ["worldContract", client?.uid],
+    queryFn: () => {
+      if (!client) throw new Error("Not connected.");
+
+      return getEoaContractFun().then((eoaWalletClient) => {
+        
+        return getContract({
+          abi: worldAbi,
+          address: getWorldAddress(),
+          client: {
+            public: client,
+            wallet: eoaWalletClient,
+          },
+        });
       });
     },
+    enabled: !!client,
     staleTime: Infinity,
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
   });
-
   return worldContract;
 }
 
-// const getEoaContractFun = async () => {
-//   const [account] = await window.ethereum!.request({
-//     method: "eth_requestAccounts",
-//   });
+const clientOptions = {
+  chain: getChain(),
+  transport: transportObserver(fallback([webSocket(), http()])),
+  pollingInterval: 1000,
+} as const satisfies ClientConfig;
 
-//   const eoaWalletClient = createWalletClient({
-//     chain: clientOptions.chain,
-//     transport: custom(window.ethereum!),
-//     account: account,
-//   }).extend(transactionQueue())
-//     .extend(writeObserver({ onWrite: (write) => write$.next(write) });
+const write$ = new Subject<ContractWrite>();
 
-//   return eoaWalletClient;
-// };
+export const getEoaContractFun = async () => {
+  const [account] = await window.ethereum!.request({
+    method: "eth_requestAccounts",
+  });
+
+  const eoaWalletClient = createWalletClient({
+    chain: clientOptions.chain,
+    transport: custom(window.ethereum!),
+    account: account,
+  }).extend(transactionQueue());
+
+  return eoaWalletClient;
+};

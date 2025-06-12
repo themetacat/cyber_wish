@@ -208,10 +208,10 @@ export default function FateGifts() {
                                                     </div>
                                                     {box.wisherList.slice(0, showRows).map((item: string, i) => (
                                                         <div key={i} className={index === BOOST_TYLE_STAR ? style.dataRow1 : style.dataRow}>
-                                                            <span className={item == userAddress ? style.dataRowYouColor : ""}>
+                                                            <span style={{minWidth: "47%"}} className={item == userAddress ? style.dataRowYouColor : ""}>
                                                                 {item == userAddress ? shortenAddress(item) + " (YOU)" : shortenAddress(item)}
                                                             </span>
-                                                            <span className={item == userAddress ? style.dataRowYouColor : ""}>
+                                                            <span>
                                                                 {index == 0 ? Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedPointsAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '') : Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedStarAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '')} {CURRENCY_SYMBOL}
                                                             </span>
                                                         </div>
