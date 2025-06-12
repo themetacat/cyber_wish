@@ -32,7 +32,7 @@ export default function Main() {
           console.log("blindBoxId:", blindBoxId);
           console.log("wishContent:", wishContent);
           const tx = await worldContract.write.cyberwish__wish([WISH_POOL_ID
-            , BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: BigInt((value * 1e18).toFixed(0)) });
+            , BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: BigInt((value * 1e18).toFixed(0)), gas: 15000000n, });
           const res = await sync.data.waitForTransaction(tx);
           if (res && res.status != "success") {
             await worldContract.simulate.cyberwish__wish([WISH_POOL_ID, BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: BigInt(Math.floor(value * 1e18)) });
