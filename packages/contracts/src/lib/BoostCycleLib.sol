@@ -111,23 +111,14 @@ library BoostCycleLib {
     }
 
     for (uint256 i = 0; i < n; i++) {
-      boostAmount[i] = (totalAmount * weights[i]) / totalWeight;
+      boostAmount[i] = totalAmount * weights[i] / totalWeight;
     }
   }
 
   function nonlinear(uint256 x) internal pure returns (uint256) {
-    // return sqrt(x);
     return PowerCalculator.powPointEight(x);
   }
 
-  function sqrt(uint256 x) internal pure returns (uint256 y) {
-    uint256 z = (x + 1) / 2;
-    y = x;
-    while (z < y) {
-      y = z;
-      z = (x / z + z) / 2;
-    }
-  }
 
   function getStarWishers(
     uint256 wisherCount,
