@@ -194,7 +194,7 @@ export default function FateGifts() {
                                             return (
                                                 <div key={index} className={index === BOOST_TYLE_STAR ? style.box1 : style.box}>
                                                     <div className={style.boxHeader}>
-                                                        <span className={index === BOOST_TYLE_STAR ? style.boxHeaderTitle1 : style.boxHeaderTitle}>{box.title}</span>
+                                                        <span className={style.boxHeaderTitle}>{box.title}</span>
                                                     </div>
                                                     <div className={index === BOOST_TYLE_STAR ? style.boxSubtitle1 : style.boxSubtitle}>
                                                         <span>

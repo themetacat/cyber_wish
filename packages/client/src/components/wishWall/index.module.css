@@ -132,10 +132,10 @@
     &:hover::after {
       content: attr(data-tooltip);
       position: absolute;
-      bottom: -25px;
+      top: -23px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.85);
+      background: rgba(0, 0, 0, 1);
       color: #FFD700;
       padding: 4px 8px;
       border: 1px solid #FFD700;
@@ -271,7 +271,7 @@
 }
 
 .notHasMore span:last-child {
-  color: #F4C873;
+  color: #938d7c;
   font-size: 16px;
   font-family: 'FSKim-Regular';
   font-weight: 400;

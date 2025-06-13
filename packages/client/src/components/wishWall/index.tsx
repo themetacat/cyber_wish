@@ -160,7 +160,7 @@ export default function WishingWall() {
         {!hasMore &&
           <div className={styles.notHasMore}>
             <span>
-              <img src="/images/wishWall/NotHasMore.svg" alt="notHasMore" />
+              <img src="/images/wishWall/NotHasMore.png" alt="notHasMore" />
             </span>
             <span>
               You&apos;ve reached the end!

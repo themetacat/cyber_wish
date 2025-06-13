@@ -53,7 +53,7 @@
 }
 
 .navItem:hover {
-  color: #ffd700;
+  /* color: #ffd700; */
   transform: scale(1.05);
 }
 

@@ -220,7 +220,7 @@ export default function MyWishes() {
         {!hasMore && (
           <div className={styles.notHasMore}>
             <span>
-              <img src="/images/wishWall/NotHasMore.svg" alt="notHasMore" />
+              <img src="/images/wishWall/NotHasMore.png" alt="notHasMore" />
             </span>
             <span>You've reached the end!</span>
           </div>

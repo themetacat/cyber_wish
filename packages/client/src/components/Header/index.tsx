@@ -81,12 +81,12 @@ export default function Header() {
         >
           Wishflow Rewards
         </button>
-        <button
+        {/* <button
           onClick={() => navigate("/about")}
           className={`${styles.navItem} ${location.pathname === "/about" ? styles.selected : ""}`}
         >
           About
-        </button>
+        </button> */}
         <div className={styles.connectButton}>
           {/* <AccountButton /> */}
           {
