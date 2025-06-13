@@ -3,7 +3,7 @@ pragma solidity >=0.8.24;
 
 import { System } from "@latticexyz/world/src/System.sol";
 
-import { WishingPool, Wisher, WisherData, Incense, IncenseData, Wishes, BoostWisherRecords, IndexToWisher, CycleInfo, CycleInfoData, WisherCycleRecords, WisherCycleRecords, PropBlindBox, PropBlindBoxData, WisherTemporaryRecords, WisherTemporaryRecordsData, CycleInfoData, WisherIndexId } from "./codegen/index.sol";
+import { WishingPool, Wisher, WisherData, Incense, Wishes, BoostWisherRecords, WisherCycleRecords, WisherTemporaryRecords, WisherTemporaryRecordsData } from "./codegen/index.sol";
 import { Entity } from "./lib/Entity.sol";
 import { uuid } from "./lib/createEntity.sol";
 import { WishPropsResult, PointsData, ProcessPointsParams } from "./lib/Struct.sol";
@@ -25,7 +25,6 @@ contract WishSystem is System {
 
     WisherTemporaryRecordsData memory wisherTemporaryRecordsData = WisherTemporaryRecords.get(poolId, wisher);
 
-    require(!(isFreeWish && wisherTemporaryRecordsData.freeWishTime >= 10), "Free times limit reached");
     uint256 currentCycle = WishUtils.getCurrentCycle(poolId);
     Validate._validateIsBoosted(poolId, currentCycle);
 
@@ -48,6 +47,7 @@ contract WishSystem is System {
       totalPoints,
       isFreeWish
     );
+    require(!(isFreeWish && wisherTemporaryRecordsData.freeWishTime > 10), "Free times limit reached");
 
     bool isStar;
     if (currentCycle > 0) {
@@ -112,7 +112,7 @@ contract WishSystem is System {
     uint256 currentCycle,
     uint256 totalPoints,
     bool isFreeWish
-  ) internal pure returns (WisherTemporaryRecordsData memory) {
+  ) private pure returns (WisherTemporaryRecordsData memory) {
     if (data.pointsLastCycle == currentCycle) {
       data.points += totalPoints;
       data.wishCount += 1;
