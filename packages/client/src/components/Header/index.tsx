@@ -90,7 +90,7 @@ export default function Header() {
         <div className={styles.connectButton}>
           {/* <AccountButton /> */}
           {
-            address &&  <span style={{color: "white"}}>{shortenAddress(address)}</span>
+            address &&  <span style={{color: "#F8E49C"}}>{shortenAddress(address)}</span>
           }
          
           {
