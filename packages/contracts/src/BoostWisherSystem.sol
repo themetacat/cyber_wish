@@ -2,7 +2,7 @@
 pragma solidity >=0.8.24;
 
 import { System } from "@latticexyz/world/src/System.sol";
-import { WishingPool, WishingPoolData, Wisher, WisherData, Incense, IncenseData, Wishes, BoostWisherRecords, BoostWisherRecordsData, WisherCycleRecords, CycleInfo, CycleInfoData, IndexToWisher, IndexToWisherData, WisherIndexId } from "./codegen/index.sol";
+import { WishingPool, Wisher, WisherData, BoostWisherRecords, BoostWisherRecordsData, WisherCycleRecords, CycleInfo, CycleInfoData, IndexToWisher, WisherIndexId } from "./codegen/index.sol";
 import { Entity } from "./lib/Entity.sol";
 import { WishUtils } from "./lib/WishUtils.sol";
 import { WorldResourceIdLib } from "@latticexyz/world/src/WorldResourceId.sol";
@@ -15,7 +15,7 @@ import { UD60x18 } from "@prb/math/src/UD60x18.sol";
 contract BoostWisherSystem is System {
   function BoostWisherByPoints(bytes32 poolId, uint256 boostCycle) public {
     address sender = _msgSender();
-    // require(WishingPool.getCreator(poolId) == sender, "Not eligible");
+    require(WishingPool.getCreator(poolId) == sender, "Not eligible");
     require(boostCycle > 0, "Does not exist cycle");
 
     uint256 currentCycle = WishUtils.getCurrentCycle(poolId);
@@ -64,9 +64,8 @@ contract BoostWisherSystem is System {
   }
 
   function BoostWisherByStar(bytes32 poolId, uint256 boostCycle) public {
-    // WishingPoolData memory wishingPoolData = WishingPool.get(poolId);
     address sender = _msgSender();
-    // require(WishingPool.getCreator(poolId) == _msgSender(), "Not eligible");
+    require(WishingPool.getCreator(poolId) == _msgSender(), "Not eligible");
     require(boostCycle > 0, "Does not exist cycle");
 
     uint256 currentCycle = WishUtils.getCurrentCycle(poolId);
