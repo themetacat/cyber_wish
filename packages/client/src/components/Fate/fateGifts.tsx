@@ -39,7 +39,7 @@ export default function FateGifts() {
     const { address: userAddress } = useAccount();
     const [showMyFateGifts, setShowMyFateGifts] = useState(false);
 
-    const BOOST_TYLE_STAR = 1;
+    const BOOST_TYLE_STAR = 2;
 
     const data: TotalPoolData[] = useMemo(() => {
         return boostWisherRecordsData
@@ -186,7 +186,8 @@ export default function FateGifts() {
                                     <div className={style.boxContainer} onClick={(e) => {
                                         e.stopPropagation();
                                     }}>
-                                        {[boostByPointsInfo, boostByStarInfo].map((box, index) => {
+                                        {[boostByPointsInfo, boostByStarInfo].map((box, i) => {
+                                            const index = i + 1
                                             const cycleInfo = getCycleInfo(row.cycle, index);
                                             const participantCount = cycleInfo?.wisherCount ?? 0;
                                             return (
@@ -199,7 +200,7 @@ export default function FateGifts() {
                                                             Pool: {
                                                                 row.isBoost
                                                                     ? formatEther(box.amount)
-                                                                    : formatEther((row.totalAmount * BigInt(index === 0 ? 24 : 36)) / 100n)
+                                                                    : formatEther((row.totalAmount * BigInt(index === 1 ? 24 : 36)) / 100n)
                                                             } {CURRENCY_SYMBOL}
                                                         </span>
                                                         <span style={{ marginLeft: "2vw" }}>
@@ -212,7 +213,7 @@ export default function FateGifts() {
                                                                 {item == userAddress ? shortenAddress(item) + " (YOU)" : shortenAddress(item)}
                                                             </span>
                                                             <span>
-                                                                {index == 0 ? Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedPointsAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '') : Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedStarAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '')} {CURRENCY_SYMBOL}
+                                                                {index == 1 ? Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedPointsAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '') : Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedStarAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '')} {CURRENCY_SYMBOL}
                                                             </span>
                                                         </div>
                                                     ))}

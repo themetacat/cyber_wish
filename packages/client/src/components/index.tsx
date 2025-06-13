@@ -1,15 +1,11 @@
-import { AccountButton } from "@latticexyz/entrykit/internal";
-import { Direction, Entity } from "../common";
-import mudConfig from "contracts/mud.config";
 import { useMemo, useState } from "react";
-import { getEoaContractFun, useWorldContract } from "../mud/useWorldContract";
-import { Synced } from "./mud/Synced";
+import { useWorldContract } from "../mud/useWorldContract";
 import { useSync } from "@latticexyz/store-sync/react";
 import styles from "./index.module.css";
 import WishPanel from "./wish/WishPanel";
 import WishesPanel from "./wish/wishesPanel";
 import WishingWall from "./wishWall";
-import MyWishes from "./MyWishes";
+import MyWishes from "./myWishes";
 import WishResult from "./wish/wishResult";
 import { MyIncenseCarousel } from './wish/myIncenseCarousel';
 import FateGifts from "./Fate/fateGifts";
@@ -18,9 +14,7 @@ import About from "./About";
 import { useLocation } from "react-router-dom";
 import { WISH_POOL_ID } from "../utils/contants";
 import { useAccount } from 'wagmi';
-import { resourceToHex } from "@latticexyz/common";
-import wishSystemAbi from "contracts/out/wishSystem.sol/wishSystem.abi.json";
-import { encodeFunctionData } from "viem";
+
 
 export default function Main() {
   const [wishStatus, setWishStatus] = useState(false);
@@ -38,7 +32,7 @@ export default function Main() {
           console.log("blindBoxId:", blindBoxId);
           console.log("wishContent:", wishContent);
           const tx = await worldContract.write.cyberwish__wish([WISH_POOL_ID
-            , BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: BigInt((value * 1e18).toFixed(0)) });
+            , BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: BigInt((value * 1e18).toFixed(0)), gas: 15000000n, });
           const res = await sync.data.waitForTransaction(tx);
           if (res && res.status != "success") {
             await worldContract.simulate.cyberwish__wish([WISH_POOL_ID, BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: BigInt(Math.floor(value * 1e18)) });

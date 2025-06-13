@@ -10,6 +10,7 @@ import { shortenAddress } from "../../utils/common";
 import MyFateGifts from "../Fate/myFateGifts";
 import { useAccount } from "wagmi";
 import { useAccountModal } from "@latticexyz/entrykit/internal";
+import { apiServer } from "../../common";
 
 interface WishData {
   wisher: string;
@@ -91,7 +92,7 @@ export default function MyWishes() {
         page: String(loadPage.current ?? 1),
         pageSize: String(pageSize ?? 20),
       });
-      const res = await fetch('/api/cyberwish/get_wishes_by_wisher?' + params)
+      const res = await fetch(apiServer + '/api/cyberwish/get_wishes_by_wisher?' + params)
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
@@ -187,7 +188,7 @@ export default function MyWishes() {
                 <div data-tooltip="Coming Soon"><img src="/images/wishWall/Msg.webp" alt="Message" /></div>
                 <div data-tooltip="Wish Point(WP)">
                   <img src="/images/wishWall/Points.webp" alt="Points" />
-                  {item.pointsIncense +  item.pointsBlindBox +  item.pointsIncenseEasterEgg +  item.pointsBlindBoxEasterEgg}
+                  {item.pointsIncense + item.pointsBlindBox + item.pointsIncenseEasterEgg + item.pointsBlindBoxEasterEgg}
                 </div>
               </div>
             </div>
