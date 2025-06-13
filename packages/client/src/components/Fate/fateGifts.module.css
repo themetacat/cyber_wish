@@ -127,23 +127,14 @@
     transform: scale(1);
 }
 
-.boxHeaderTitle, .boxHeaderTitle1 {
-    color: #FFF9E5;
-    text-shadow:
-        0.1px 0.1px 0 white,
-        -0.1px 0.1px 0 white,
-        0.1px -0.1px 0 white,
-        -0.1px -0.1px 0 white;
-    font-size: clamp(10px, 1.2vw, 20px);
-}
-
-.boxHeaderTitle1 {
+.boxHeaderTitle {
     color: #371508;
     text-shadow:
         0.1px 0.1px 0 #7E4806,
         -0.1px 0.1px 0 #7E4806,
         0.1px -0.1px 0 #7E4806,
         -0.1px -0.1px 0 #7E4806;
+    font-size: clamp(10px, 1.2vw, 20px);
 }
 
 .viewAllButton {
