@@ -73,3 +73,10 @@ export const getCycleInfo = (cycle: number, boostType: number) => {
     const cycleInfo = getComponentValue(CycleInfo, key);
     return cycleInfo;
 }
+
+export const getWisherByIndex = (boostType: number, id: number, index: number) => {
+    const IndexToWisher = components.IndexToWisher;
+    const key = encodeEntity(IndexToWisher.metadata.keySchema, { poolId: WISH_POOL_ID, boostType: BigInt(boostType), id: BigInt(id), index: BigInt(index)});
+    const wisherInfo = getComponentValue(IndexToWisher, key);
+    return wisherInfo;
+}
