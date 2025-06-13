@@ -140,7 +140,7 @@ export default function FateGifts() {
             </div>
             <div className={style.dataContainer}>
                 <div className={style.scrollableContent}>
-                    {data.map((row) => {
+                    {data.map((row: TotalPoolData) => {
                         const isExpanded = expandedId === row.id;
                         const [boostByPointsInfo, boostByStarInfo] = row.pools;
                         const maxRows = Math.max(boostByPointsInfo.wisherList.length, boostByStarInfo.wisherList.length, 0);
@@ -190,6 +190,7 @@ export default function FateGifts() {
                                             const index = i + 1
                                             const cycleInfo = getCycleInfo(row.cycle, index);
                                             const participantCount = cycleInfo?.wisherCount ?? 0;
+                                            
                                             return (
                                                 <div key={index} className={index === BOOST_TYLE_STAR ? style.box1 : style.box}>
                                                     <div className={style.boxHeader}>
@@ -198,13 +199,13 @@ export default function FateGifts() {
                                                     <div className={index === BOOST_TYLE_STAR ? style.boxSubtitle1 : style.boxSubtitle}>
                                                         <span>
                                                             Pool: {
-                                                                row.isBoost
+                                                                cycleInfo?.isboost
                                                                     ? formatEther(box.amount)
                                                                     : formatEther((row.totalAmount * BigInt(index === 1 ? 24 : 36)) / 100n)
                                                             } {CURRENCY_SYMBOL}
                                                         </span>
                                                         <span style={{ marginLeft: "2vw" }}>
-                                                            {row.isBoost ? `Selected: ${box.selectedCount}` : `Participants: ${participantCount}`}
+                                                            {cycleInfo?.isboost ? `Selected: ${box.selectedCount}` : `Participants: ${participantCount}`}
                                                         </span>
                                                     </div>
                                                     {box.wisherList.slice(0, showRows).map((item: string, i) => (
