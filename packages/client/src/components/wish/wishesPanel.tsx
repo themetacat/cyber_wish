@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import styles from "./wishesPanel.module.css";
-import { useComponentValue, useEntityQuery } from "@latticexyz/react";
+import { useComponentValue } from "@latticexyz/react";
 import { components } from "../../mud/recs";
-import { getComponentValue, Has } from "@latticexyz/recs";
+import { getComponentValue } from "@latticexyz/recs";
 import { encodeEntity, singletonEntity } from "@latticexyz/store-sync/recs";
 import { WISH_POOL_ID } from "../../utils/contants";
 import { pad } from "viem";

@@ -98,7 +98,6 @@ export default function WishesResult({ wishStatus }: Props) {
 
   useEffect(() => {
     if (wishStatus) {
-      console.log("+1 wish count");
       setWishCount((prev) => prev + 1);
       setShowModal(true);
       setShowLightPointsSwell(false);
@@ -146,7 +145,6 @@ export default function WishesResult({ wishStatus }: Props) {
     if (wishInfo.wisher !== userAddress) {
       return;
     }
-    console.log(wishInfo);
     setIncenseId(wishInfo.incenseId);
     setBlindBoxId(wishInfo.blindBoxId);
     setPropId(wishInfo.propId);
