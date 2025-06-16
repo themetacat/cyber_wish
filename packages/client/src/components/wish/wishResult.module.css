@@ -96,10 +96,10 @@
 
 .blessingItemTitle {
     text-align: left;
-    font-weight: 200;
+    font-weight: 400;
     font-family: 'Sling';
-    font-size: 16px;
-    color: #F4C873;
+    font-size: 14px;
+    color: #F4C874;
     opacity: 0;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -177,10 +177,10 @@
 
 .wishPointsTitle {
     text-align: left;
-    font-weight: 200;
+    font-weight: 400;
     font-family: 'Sling';
-    font-size: 16px;
-    color: #F4C873;
+    font-size: 14px;
+    color: #F4C874;
     margin-top: 2px;
     opacity: 0;
     text-transform: uppercase;
