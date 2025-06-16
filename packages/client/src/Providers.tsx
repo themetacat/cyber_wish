@@ -5,7 +5,7 @@ import { SyncProvider } from "@latticexyz/store-sync/react";
 import { wagmiConfig } from "./wagmiConfig";
 import { chainId, getWorldAddress, indexerUrl, startBlock } from "./common";
 import { syncAdapter } from "./mud/recs";
-import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
 
 const queryClient = new QueryClient();
 
@@ -19,6 +19,7 @@ export function Providers({ children }: Props) {
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
+        theme={darkTheme()}
           initialChain={chainId}
           appInfo={{
             appName: 'CyberWish',
