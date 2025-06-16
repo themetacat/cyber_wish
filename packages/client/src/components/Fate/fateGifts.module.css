@@ -151,20 +151,8 @@
     -webkit-text-fill-color: transparent;
 }
 
-.viewAllButton::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: rgba(191, 144, 76, 1);
-    box-shadow: 0 0 0 1px #240800;
-    border-radius: 10px;
-    margin-bottom: 1px;
-}
-
 .viewAllButton:hover {
+     text-decoration: underline;
     transform: scale(1.05);
 }
 
