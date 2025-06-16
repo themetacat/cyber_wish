@@ -144,7 +144,7 @@ const Selected = ({ cycle, onClose }: Props) => {
                     <div className={`${styles.cell} ${styles.colNum}`}>{idx + 1}</div>
                     <div className={`${styles.cell} ${styles.colAddress}`}>
                       {shortenAddress(row.wisher)}
-                      {userAddress == (row.wisher) ? <span style={{ color: "rgba(244, 200, 116, 1)" }}> (you)</span> : ""}
+                      {userAddress?.toLowerCase() == (row.wisher) ? <span style={{ color: "rgba(244, 200, 116, 1)" }}> (you)</span> : ""}
                     </div>
                     <div className={`${styles.cell} ${styles.colWishPoints}`}>{row.wp} WP</div>
                     <div className={`${styles.cell} ${styles.colWishPointsPool}`}>{row.wp_pool_rewards} {CURRENCY_SYMBOL}</div>
