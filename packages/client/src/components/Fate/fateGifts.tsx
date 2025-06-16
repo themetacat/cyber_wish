@@ -171,7 +171,7 @@ export default function FateGifts() {
                                             )
                                         )}
                                     </span>
-                                    <span className={row.isBoost ? style.cycleStatus1 : style.cycleStatus}>
+                                    <span className={row.isBoost ? style.cycleStatus : style.cycleStatus1}>
                                         {row.isBoost ? "Ended" : "Ongoing"}
                                     </span>
                                     {isExpanded && (

@@ -69,6 +69,12 @@ export default function Header() {
       </div>
       <nav className={styles.nav}>
         <button
+            onClick={() => navigate("/")}
+            className={styles.navItem}
+          >
+          Home
+        </button>
+        <button
           onClick={() => navigate("/wishing-wall")}
           className={`${styles.navItem} ${location.pathname === "/wishing-wall" ? styles.selected : ""}`}
         >
