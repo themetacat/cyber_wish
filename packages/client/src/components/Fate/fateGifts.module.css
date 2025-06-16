@@ -149,10 +149,10 @@
     -webkit-text-stroke: 1px #240800;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+     text-decoration: underline;
 }
 
 .viewAllButton:hover {
-     text-decoration: underline;
     transform: scale(1.05);
 }
 
