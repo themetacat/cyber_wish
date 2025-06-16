@@ -136,9 +136,9 @@
       left: 50%;
       transform: translateX(-50%);
       background: rgba(0, 0, 0, 1);
-      color: #FFD700;
+      color: #F8E49C;
       padding: 4px 8px;
-      border: 1px solid #FFD700;
+      border: 1px solid #F8E49C;
       border-radius: 4px;
       font-size: 12px;
       white-space: nowrap;
@@ -272,7 +272,7 @@
 
 .notHasMore span:last-child {
   color: #938d7c;
-  font-size: 16px;
+  font-size: 15px;
   font-family: 'FSKim-Regular';
   font-weight: 400;
   padding-bottom: 8px;

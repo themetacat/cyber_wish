@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, useMemo, useCallback } from "react";
 import styles from "./index.module.css";
+import wishWallStyles from "../wishWall/index.module.css";
 import { components } from "../../mud/recs";
 import { getComponentValue } from "@latticexyz/recs";
 import { encodeEntity } from "@latticexyz/store-sync/recs";
@@ -183,7 +184,7 @@ export default function MyWishes() {
                 </span>
               </div>
 
-              <div className={styles.wishInteractData}>
+              <div className={wishWallStyles.wishInteractData}>
                 <div data-tooltip="Coming Soon"><img src="/images/wishWall/Worship.webp" alt="Worship" /></div>
                 <div data-tooltip="Coming Soon"><img src="/images/wishWall/Msg.webp" alt="Message" /></div>
                 <div data-tooltip="Wish Point(WP)">
@@ -218,7 +219,7 @@ export default function MyWishes() {
         )}
 
         {!hasMore && (
-          <div className={styles.notHasMore}>
+          <div className={wishWallStyles.notHasMore}>
             <span>
               <img src="/images/wishWall/NotHasMore.png" alt="notHasMore" />
             </span>
