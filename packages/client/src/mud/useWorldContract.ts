@@ -1,13 +1,11 @@
-import { useClient } from "wagmi";
-import { chainId, getWorldAddress, getChain } from "../common";
+import { useClient, useChainId } from "wagmi";
+import { getWorldAddress, getChain } from "../common";
 import { Account, Chain, Client, GetContractReturnType, Transport, getContract, createWalletClient, custom, fallback, webSocket, http, ClientConfig } from "viem";
 import { useQuery } from "@tanstack/react-query";
-// import { useSessionClient } from "@latticexyz/entrykit/internal";
-import { observer } from "@latticexyz/explorer/observer";
 import worldAbi from "contracts/out/IWorld.sol/IWorld.abi.json";
-import { transactionQueue, writeObserver } from "@latticexyz/common/actions";
-import { ContractWrite, transportObserver } from "@latticexyz/common";
-import { Subject } from "rxjs";
+import { transactionQueue } from "@latticexyz/common/actions";
+import { transportObserver } from "@latticexyz/common";
+import { useAccount } from "wagmi";
 
 export function useWorldContract():
   | GetContractReturnType<
@@ -18,15 +16,15 @@ export function useWorldContract():
       }
     >
   | undefined {
+  const chainId = useChainId();
   const client = useClient({ chainId });
+  const { address: userAddress } = useAccount();
+  const eoaWalletClient = useEOAWalletFun();
 
   const { data: worldContract } = useQuery({
-    queryKey: ["worldContract", client?.uid],
+    queryKey: ["worldContract", client?.uid, userAddress, chainId],
     queryFn: () => {
       if (!client) throw new Error("Not connected.");
-
-      return getEoaContractFun().then((eoaWalletClient) => {
-        
         return getContract({
           abi: worldAbi,
           address: getWorldAddress(),
@@ -35,7 +33,6 @@ export function useWorldContract():
             wallet: eoaWalletClient,
           },
         });
-      });
     },
     enabled: !!client,
     staleTime: Infinity,
@@ -52,17 +49,13 @@ const clientOptions = {
   pollingInterval: 1000,
 } as const satisfies ClientConfig;
 
-const write$ = new Subject<ContractWrite>();
-
-export const getEoaContractFun = async () => {
-  const [account] = await window.ethereum!.request({
-    method: "eth_requestAccounts",
-  });
-
+export const useEOAWalletFun =  () => {
+  const { address: userAddress } = useAccount();
+  
   const eoaWalletClient = createWalletClient({
     chain: clientOptions.chain,
     transport: custom(window.ethereum!),
-    account: account,
+    account: userAddress,
   }).extend(transactionQueue());
 
   return eoaWalletClient;

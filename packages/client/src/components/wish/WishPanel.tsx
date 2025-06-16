@@ -12,6 +12,7 @@ import { incenseData } from "../../utils/incenseData";
 import { blindBoxData } from "../../utils/blindBoxData";
 import { ErrorToast } from "../common/ErrorToast";
 import { useLocation } from "react-router-dom";
+import { ConnectButton, useConnectModal } from '@rainbow-me/rainbowkit';
 
 export type Props = {
   readonly wish?: (
@@ -29,7 +30,7 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { address } = useAccount();
-  const { openAccountModal } = useAccountModal();
+  const { openConnectModal } = useConnectModal();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const location = useLocation();
 
@@ -82,7 +83,9 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
 
   const handleSubmit = async () => {
     if (!address) {
-      openAccountModal();
+      if (openConnectModal) {
+        openConnectModal();
+      }
       return;
     }
 
@@ -106,16 +109,13 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
           wishContent,
           Number(formatEther(totalAmount))
         );
-        console.log("res: ", res);
         if (res && res.status == "success") {
-          console.log("wish success");
           setWishStatus(true);
           setShowModal(false);
           setWishContent("");
           setIncenseIdRaw(null);
           setBlindBoxIdRaw(null);
         } else {
-          console.log("wish faild");
           setErrorMessage("Failed to make a wish. Please try again.");
         }
       } catch (error) {
@@ -199,7 +199,78 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
             <p className={styles.totalEth}>
               Total: {formatEther(totalAmount)} ETH
             </p>
-            <button
+            <ConnectButton.Custom>
+              {({
+                account,
+                chain,
+                openAccountModal,
+                openChainModal,
+                openConnectModal,
+                authenticationStatus,
+                mounted,
+              }) => {
+                const ready = mounted && authenticationStatus !== 'loading';
+                const connected =
+                  ready &&
+                  account &&
+                  chain &&
+                  (!authenticationStatus ||
+                    authenticationStatus === 'authenticated');
+
+                return (
+                  <div
+                    {...(!ready && {
+                      'aria-hidden': true,
+                      'style': {
+                        opacity: 0,
+                        pointerEvents: 'none',
+                        userSelect: 'none',
+                      },
+                    })}
+
+                  >
+                    {(() => {
+                      if (!connected) {
+                        return (
+                          <button
+                            className={styles.sendButton}
+                            onClick={openConnectModal}
+                          >
+                            <span className={styles.sendButtonText}>
+                              Connect Wallet
+                            </span>
+                          </button>
+                        );
+                      }
+                      if (chain.unsupported) {
+                        return (
+                          <button
+                            className={styles.sendButton}
+                            onClick={openChainModal}
+                          >
+                            <span className={styles.sendButtonText}>
+                              Wrong network
+                            </span>
+                          </button>
+                        );
+                      }
+                      return (
+                        <button
+                          className={styles.sendButton}
+                          onClick={() => handleSubmit()}
+                          disabled={isSubmitting}
+                        >
+                          <span className={styles.sendButtonText}>
+                            {isSubmitting ? "Loading..." : "Send the wish"}
+                          </span>
+                        </button>
+                      );
+                    })()}
+                  </div>
+                );
+              }}
+            </ConnectButton.Custom>
+            {/* <button
               className={styles.sendButton}
               onClick={() => handleSubmit()}
               disabled={isSubmitting}
@@ -207,7 +278,7 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
               <span className={styles.sendButtonText}>
                 {isSubmitting ? "Loading..." : "Send the wish"}
               </span>
-            </button>
+            </button> */}
             <button
               className={styles.closeButton}
               onClick={() => setShowModal(false)}
@@ -273,19 +344,19 @@ const Carousel = ({ images, onSelectId, type = "incense" }: CarouselProps) => {
     const itemData =
       type === "incense"
         ? getComponentValue(
-            components.Incense,
-            encodeEntity(
-              { poolId: "bytes32", id: "uint256" },
-              { poolId: WISH_POOL_ID, id: BigInt(images[currentIndex].id) }
-            )
+          components.Incense,
+          encodeEntity(
+            { poolId: "bytes32", id: "uint256" },
+            { poolId: WISH_POOL_ID, id: BigInt(images[currentIndex].id) }
           )
+        )
         : getComponentValue(
-            components.PropBlindBox,
-            encodeEntity(
-              { poolId: "bytes32", id: "uint256" },
-              { poolId: WISH_POOL_ID, id: BigInt(images[currentIndex].id) }
-            )
-          );
+          components.PropBlindBox,
+          encodeEntity(
+            { poolId: "bytes32", id: "uint256" },
+            { poolId: WISH_POOL_ID, id: BigInt(images[currentIndex].id) }
+          )
+        );
 
     if (itemData) {
       if (type === "incense") {

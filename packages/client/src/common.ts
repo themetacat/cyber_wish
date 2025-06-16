@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { chains } from "./wagmiConfig";
 import { Chain, Hex } from "viem";
 
@@ -29,4 +30,38 @@ export function getChain(): Chain {
     throw new Error(`No chain configured for chain ID ${chainId}.`);
   }
   return chain;
+}
+
+export function useDetectedChainId() {
+  const [chainId, setChainId] = useState(31338);
+
+  useEffect(() => {
+    if (!window.ethereum) {
+      console.error('No window.ethereum');
+      return;
+    }
+
+    const getChainId = async () => {
+      try {
+        const chainIdHex = await window.ethereum.request({ method: 'eth_chainId' });
+        setChainId(parseInt(chainIdHex, 16));
+      } catch (error) {
+        console.error('get chainId error', error);
+      }
+    };
+
+    getChainId();
+
+    const handleChainChanged = (chainIdHex: string) => {
+      setChainId(parseInt(chainIdHex, 16));
+    };
+
+    window.ethereum.on('chainChanged', handleChainChanged);
+
+    return () => {
+      window.ethereum.removeListener('chainChanged', handleChainChanged);
+    };
+  }, []);
+
+  return chainId;
 }

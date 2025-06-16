@@ -10,8 +10,8 @@ import { propsData } from "../../utils/propsData";
 import { shortenAddress } from "../../utils/common";
 import MyFateGifts from "../Fate/myFateGifts";
 import { useAccount } from "wagmi";
-import { useAccountModal } from "@latticexyz/entrykit/internal";
 import { apiServer } from "../../common";
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 interface WishData {
   wisher: string;
@@ -46,25 +46,28 @@ export default function MyWishes() {
   const [wishPoints, setWishPoints] = useState(0);
   const { address: userAddress } = useAccount();
   const [showMyFateGifts, setShowMyFateGifts] = useState(false);
-  const { openAccountModal } = useAccountModal();
+  const { openConnectModal } = useConnectModal();
   const Wisher = components.Wisher;
   const loadPage = useRef<number>(1);
-  const pageSize = 5;
+  const pageSize = 8;
+
+  useEffect(() => {
+    setWishes([]);
+    if (!userAddress) {
+      if (openConnectModal) {
+        openConnectModal();
+      }
+    }
+  }, [userAddress, openConnectModal]);
 
   const wisherKey = useMemo(() => {
-    if (!WISH_POOL_ID) return null;
-
-    if (!userAddress) {
-      setWishes([]);
-      openAccountModal();
-      return;
-    }
+    if (!WISH_POOL_ID || !userAddress) return null;
 
     return encodeEntity(Wisher.metadata.keySchema, {
       poolId: WISH_POOL_ID,
       wisher: userAddress,
     });
-  }, [userAddress, Wisher, openAccountModal]);
+  }, [userAddress, Wisher]);
 
   const wisherData = useMemo(() => {
     if (!wisherKey) return null;
@@ -85,7 +88,6 @@ export default function MyWishes() {
   const loadWishes = useCallback(async () => {
 
     if (loading || !hasMore || !userAddress) return;
-
     setLoading(true);
     try {
       const params = new URLSearchParams({

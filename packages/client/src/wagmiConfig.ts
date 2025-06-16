@@ -1,7 +1,6 @@
 import { Chain, defineChain, http, webSocket } from "viem";
 import { anvil } from "viem/chains";
 import { createWagmiConfig } from "@latticexyz/entrykit/internal";
-import { rhodolite, garnet, redstone } from "@latticexyz/common/chains";
 import { chainId } from "./common";
 
 const MetaCatDev = defineChain({
@@ -37,9 +36,6 @@ const MetaCatDev = defineChain({
 })
 
 export const chains = [
-  redstone,
-  garnet,
-  rhodolite,
   MetaCatDev,
   {
     ...anvil,
@@ -60,11 +56,8 @@ export const chains = [
 ] as const satisfies Chain[];
 
 export const transports = {
-  [anvil.id]: webSocket(),
-  [garnet.id]: http(),
-  [rhodolite.id]: http(),
-  [redstone.id]: http(),
   [MetaCatDev.id]: webSocket(),
+  [anvil.id]: webSocket(),
 } as const;
 
 export const wagmiConfig = createWagmiConfig({
@@ -75,10 +68,9 @@ export const wagmiConfig = createWagmiConfig({
   chains,
   transports,
   pollingInterval: {
-    [anvil.id]: 2000,
-    [garnet.id]: 2000,
-    [rhodolite.id]: 2000,
-    [redstone.id]: 2000,
     [MetaCatDev.id]: 2000,
+    [anvil.id]: 2000,
   },
 });
+
+export const supportedChains = [31337, 31338];

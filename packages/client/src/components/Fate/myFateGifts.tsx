@@ -6,10 +6,10 @@ import { components } from "../../mud/recs";
 import { getComponentValue } from "@latticexyz/recs";
 import { encodeEntity } from '@latticexyz/store-sync/recs';
 import { WISH_POOL_ID } from '../../utils/contants';
-import { useAccountModal } from '@latticexyz/entrykit/internal';
 import { getTimeStampByCycle, getWisherCycleRecords } from '../common';
 import { formatInTimeZone } from 'date-fns-tz';
 import { apiServer } from '../../common';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 
 interface Props {
@@ -35,23 +35,28 @@ const MyFateGifts = ({ onClose }: Props) => {
   const [timeSelected, setTimeSelected] = useState(0);
   const [allRewardsData, setAllRewardsData] = useState<RewardsData[]>([]);
   const [totalReceived, setTotalReceived] = useState<bigint>(0n);
-  const { openAccountModal } = useAccountModal();
+  const { openConnectModal } = useConnectModal();
   const [loading, setLoading] = useState(false);
   const Wisher = components.Wisher;
 
-  const wisherKey = useMemo(() => {
-
+  useEffect(() => {
     if (!userAddress) {
       setAllRewardsData([]);
-      openAccountModal()
+      if (openConnectModal) {
+        openConnectModal();
+      }
       onClose();
-    } else {
-      return encodeEntity(Wisher.metadata.keySchema, {
-        poolId: WISH_POOL_ID,
-        wisher: userAddress,
-      });
     }
-  }, [userAddress, Wisher, openAccountModal]);
+  }, [userAddress, openConnectModal, onClose]);
+
+  const wisherKey = useMemo(() => {
+    if (!userAddress) return undefined;
+
+    return encodeEntity(Wisher.metadata.keySchema, {
+      poolId: WISH_POOL_ID,
+      wisher: userAddress,
+    });
+  }, [userAddress, Wisher]);
 
   const loadWishRewards = useCallback(async () => {
     if (!userAddress) return;

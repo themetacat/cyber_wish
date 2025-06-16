@@ -2,10 +2,10 @@ import { WagmiProvider } from "wagmi";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactNode } from "react";
 import { SyncProvider } from "@latticexyz/store-sync/react";
-import { defineConfig, EntryKitProvider } from "@latticexyz/entrykit/internal";
 import { wagmiConfig } from "./wagmiConfig";
 import { chainId, getWorldAddress, indexerUrl, startBlock } from "./common";
 import { syncAdapter } from "./mud/recs";
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 
 const queryClient = new QueryClient();
 
@@ -18,11 +18,15 @@ export function Providers({ children }: Props) {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        {/* <EntryKitProvider config={defineConfig({ chainId, worldAddress })}> */}
+        <RainbowKitProvider
+          initialChain={chainId}
+          appInfo={{
+            appName: 'CyberWish',
+          }}>
           <SyncProvider chainId={chainId} address={worldAddress} startBlock={startBlock} indexerUrl={indexerUrl} adapter={syncAdapter}>
             {children}
           </SyncProvider>
-        {/* </EntryKitProvider> */}
+        </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );
