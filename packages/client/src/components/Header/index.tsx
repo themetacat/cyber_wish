@@ -127,7 +127,7 @@ export default function Header() {
                     }
                     if (chain.unsupported) {
                       return (
-                        <button onClick={openChainModal} type="button" className={styles.navItem}>
+                        <button onClick={openChainModal} type="button" className={styles.navItem} style={{color: "#FF494A"}}>
                           Wrong network
                         </button>
                       );

@@ -246,6 +246,12 @@
   white-space: nowrap;
 }
 
+.wrongNetwork {
+  -webkit-text-stroke: 1px rgba(36, 8, 0, 1);
+  -webkit-background-clip: text;
+  white-space: nowrap;
+}
+
 .itemTitle {
   color: #F4C874;
   font-family: 'Sling';

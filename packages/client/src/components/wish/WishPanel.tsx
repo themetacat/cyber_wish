@@ -248,7 +248,8 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
                             className={styles.sendButton}
                             onClick={openChainModal}
                           >
-                            <span className={styles.sendButtonText}>
+                            <span className={styles.wrongNetwork}
+                             style={{color: "#FF494A"}}>
                               Wrong network
                             </span>
                           </button>
