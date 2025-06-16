@@ -174,9 +174,15 @@ export default function FateGifts() {
                                     <span className={row.isBoost ? style.cycleStatus1 : style.cycleStatus}>
                                         {row.isBoost ? "Ended" : "Ongoing"}
                                     </span>
-                                    <span className={style.viewAllButton} onClick={() => setSelectedCycle(row.cycle)}>
-                                        {isExpanded ? "Cycle Details" : ""}
-                                    </span>
+                                    {isExpanded && (
+                                        <span className={style.viewAllButton} onClick={(e) => {
+                                            e.stopPropagation();
+                                            setSelectedCycle(row.cycle)
+                                        }}>
+                                            Cycle Details
+                                        </span>
+                                    )}
+
                                     <span>
                                         <img src="/images/Fate/Dropdown.webp" alt="" className={`${style.dropdown} ${isExpanded ? style.dropdownSelected : ''}`} />
                                     </span>
@@ -190,7 +196,7 @@ export default function FateGifts() {
                                             const index = i + 1
                                             const cycleInfo = getCycleInfo(row.cycle, index);
                                             const participantCount = cycleInfo?.wisherCount ?? 0;
-                                            
+
                                             return (
                                                 <div key={index} className={index === BOOST_TYLE_STAR ? style.box1 : style.box}>
                                                     <div className={style.boxHeader}>
@@ -210,7 +216,7 @@ export default function FateGifts() {
                                                     </div>
                                                     {box.wisherList.slice(0, showRows).map((item: string, i) => (
                                                         <div key={i} className={index === BOOST_TYLE_STAR ? style.dataRow1 : style.dataRow}>
-                                                            <span style={{minWidth: "47%"}} className={item == userAddress ? style.dataRowYouColor : ""}>
+                                                            <span style={{ minWidth: "47%" }} className={item == userAddress ? style.dataRowYouColor : ""}>
                                                                 {item == userAddress ? shortenAddress(item) + " (YOU)" : shortenAddress(item)}
                                                             </span>
                                                             <span>
@@ -234,7 +240,7 @@ export default function FateGifts() {
                         );
                     })}
                 </div>
-                
+
             </div>
             {showMyFateGifts && <MyFateGifts onClose={() => setShowMyFateGifts(false)} />}
             {selectedCycle && <Selected cycle={selectedCycle} onClose={() => setSelectedCycle(0)} />}
