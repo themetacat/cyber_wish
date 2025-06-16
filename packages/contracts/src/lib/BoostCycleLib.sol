@@ -60,8 +60,7 @@ library BoostCycleLib {
     uint256 wisherCount,
     address sender
   ) internal view returns (WisherPoints[] memory selected) {
-    // !!!!
-    uint256 boostCount = wisherCount / 1;
+    uint256 boostCount = wisherCount / 3;
     if (boostCount == 0) {
       boostCount = 1;
     }
