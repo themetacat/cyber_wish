@@ -28,10 +28,10 @@ interface ApiWishData {
   wish_content: string;
   wish_time: number;
   prop_id: number;
-  pointsIncense: number;
-  pointsBlindBox: number;
-  pointsIncenseEasterEgg: number;
-  pointsBlindBoxEasterEgg: number;
+  points_incense: number;
+  points_blind_box: number;
+  points_incense_easter_egg: number;
+  points_blind_box_easter_egg: number;
 }
 
 
