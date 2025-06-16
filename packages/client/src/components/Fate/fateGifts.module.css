@@ -68,9 +68,10 @@
     font-size: clamp(9px, 1.1vw, 20px);
     color: rgba(255, 245, 204, 1);
     border-radius: 10px;
-    padding: 5px 18px;
+    padding: 4px 18px;
     background-color: rgba(255, 245, 204, 0.08);
     letter-spacing: 1.8px;
+    align-items: center;
 }
 
 .cycleStatus1 {
@@ -167,7 +168,7 @@
     text-align: center;
     align-items: center;
     justify-content: center;
-    color: #E2D7BA;
+    color: rgba(255, 245, 204, 1);
     display: flex;
     flex-wrap: wrap;
 }
@@ -202,9 +203,13 @@
     color: #371508;
 } */
 
-.dataRowYouColor {
+.dataRowYouColor, .dataRowYouColor1 {
     color: #F4C874;
     font-weight: 700;
+}
+
+.dataRowYouColor1 {
+    color: #371508;
 }
 
 .fatedGiftsBtnContainer {
