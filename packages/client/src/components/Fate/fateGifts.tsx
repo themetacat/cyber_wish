@@ -215,17 +215,21 @@ export default function FateGifts() {
                                                             {row.isBoost ? `Selected: ${box.selectedCount}` : `Participants: ${participantCount}`}
                                                         </span>
                                                     </div>
-                                                    {box.wisherList.slice(0, showRows).map((item: string, i) => (
-                                                        <div key={i} className={index === BOOST_TYLE_STAR ? style.dataRow1 : style.dataRow}>
-                                                            <span style={{minWidth: "47%"}} className={item !== userAddress ? (index === BOOST_TYLE_STAR ? style.dataRowYouColor1 : style.dataRowYouColor) : ""}>
-                                                                {item !== userAddress ? "YOU" : shortenAddress(item)}
-                                                            </span>
-                                                            <span>
-                                                                {index == 1 ? Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedPointsAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '') : Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedStarAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '')} {CURRENCY_SYMBOL}
-                                                            </span>
-                                                        </div>
-                                                    ))}
-                                                    {box.wisherList.length < showRows &&
+                                                    {box.wisherList.length === 0 ? (
+                                                        <div className={style.dataRow1}>No one was selected!</div>
+                                                    ) : (
+                                                        box.wisherList.slice(0, showRows).map((item: string, i) => (
+                                                            <div key={i} className={index === BOOST_TYLE_STAR ? style.dataRow1 : style.dataRow}>
+                                                                <span style={{minWidth: "47%"}} className={item !== userAddress ? (index === BOOST_TYLE_STAR ? style.dataRowYouColor1 : style.dataRowYouColor) : ""}>
+                                                                    {item !== userAddress ? "YOU" : shortenAddress(item)}
+                                                                </span>
+                                                                <span>
+                                                                    {index == 1 ? Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedPointsAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '') : Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedStarAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '')} {CURRENCY_SYMBOL}
+                                                                </span>
+                                                            </div>
+                                                        ))
+                                                    )}
+                                                    {box.wisherList.length > 0 && box.wisherList.length < showRows &&
                                                         Array(showRows - box.wisherList.length)
                                                             .fill(null)
                                                             .map((_, i) => (
