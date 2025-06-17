@@ -39,7 +39,7 @@
 }
 
 .content {
-  height: 69vh;
+  height: 100vh;
   width: 65%;
   overflow-y: auto;
   padding: 0 20px;
@@ -76,7 +76,7 @@
 .wishContent {
   font-family: '155-SSZhongZhengSongTi';
   font-weight: 400;
-  font-size: 15px;
+  font-size: 16px;
   color: #FFF5CC;
   line-height: 31px;
   word-break: break-word;
