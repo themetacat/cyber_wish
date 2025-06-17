@@ -7,7 +7,7 @@ import { WishingPool, WishingPoolData, CycleInfoData, PropBlindBox, CycleInfo, W
 library WishUtils {
   function getCurrentCycle(bytes32 poolId) internal view returns (uint256) {
     WishingPoolData memory wishingPoolData = WishingPool.get(poolId);
-    if (wishingPoolData.startTime == 0 || wishingPoolData.duration == 0) {
+    if (wishingPoolData.startTime == 0 || wishingPoolData.duration == 0 || block.timestamp < wishingPoolData.startTime) {
       return 0;
     }
     uint256 currentCycle = (block.timestamp - wishingPoolData.startTime) / wishingPoolData.duration + 1;
