@@ -39,6 +39,7 @@ export default function FateGifts() {
     const { address: userAddress } = useAccount();
     const [showMyFateGifts, setShowMyFateGifts] = useState(false);
 
+    const BOOST_TYLE_POINT = 1;
     const BOOST_TYLE_STAR = 2;
 
     const data: TotalPoolData[] = useMemo(() => {
@@ -50,7 +51,7 @@ export default function FateGifts() {
                     return;
                 }
                 const cycle = Number(decodeKey.cycle);
-                const cycleInfo = getCycleInfo(cycle, BOOST_TYLE_STAR);
+                const cycleInfo = getCycleInfo(cycle, BOOST_TYLE_POINT);
                 const isBoost = Boolean(cycleInfo?.isboost);
 
                 const res: TotalPoolData = {
@@ -211,25 +212,19 @@ export default function FateGifts() {
                                                             } {CURRENCY_SYMBOL}
                                                         </span>
                                                         <span style={{ marginLeft: "2vw" }}>
-                                                            {cycleInfo?.isboost ? `Selected: ${box.selectedCount}` : `Participants: ${participantCount}`}
+                                                            {row.isBoost ? `Selected: ${box.selectedCount}` : `Participants: ${participantCount}`}
                                                         </span>
                                                     </div>
-                                                    {box.wisherList.length === 0 ? (
-                                                        <div className={index === BOOST_TYLE_STAR ? style.dataRow1 : style.dataRow}>
-                                                            <span style={{minWidth: "47%"}}>No one was selected</span>
+                                                    {box.wisherList.slice(0, showRows).map((item: string, i) => (
+                                                        <div key={i} className={index === BOOST_TYLE_STAR ? style.dataRow1 : style.dataRow}>
+                                                            <span style={{minWidth: "47%"}} className={item !== userAddress ? (index === BOOST_TYLE_STAR ? style.dataRowYouColor1 : style.dataRowYouColor) : ""}>
+                                                                {item !== userAddress ? "YOU" : shortenAddress(item)}
+                                                            </span>
+                                                            <span>
+                                                                {index == 1 ? Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedPointsAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '') : Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedStarAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '')} {CURRENCY_SYMBOL}
+                                                            </span>
                                                         </div>
-                                                    ) : (
-                                                        box.wisherList.slice(0, showRows).map((item: string, i) => (
-                                                            <div key={i} className={index === BOOST_TYLE_STAR ? style.dataRow1 : style.dataRow}>
-                                                                <span style={{minWidth: "47%"}} className={item !== userAddress ? (index === BOOST_TYLE_STAR ? style.dataRowYouColor1 : style.dataRowYouColor) : ""}>
-                                                                    {item !== userAddress ? "YOU" : shortenAddress(item)}
-                                                                </span>
-                                                                <span>
-                                                                    {index == 1 ? Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedPointsAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '') : Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedStarAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '')} {CURRENCY_SYMBOL}
-                                                                </span>
-                                                            </div>
-                                                        ))
-                                                    )}
+                                                    ))}
                                                     {box.wisherList.length < showRows &&
                                                         Array(showRows - box.wisherList.length)
                                                             .fill(null)
