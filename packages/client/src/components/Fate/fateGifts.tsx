@@ -175,15 +175,12 @@ export default function FateGifts() {
                                     <span className={row.isBoost ? style.cycleStatus : style.cycleStatus1}>
                                         {row.isBoost ? "Ended" : "Ongoing"}
                                     </span>
-                                    {isExpanded && (
-                                        <span className={style.viewAllButton} onClick={(e) => {
+                                    <span className={style.viewAllButton} onClick={(e) => {
                                             e.stopPropagation();
                                             setSelectedCycle(row.cycle)
-                                        }}>
-                                            Cycle Details
-                                        </span>
-                                    )}
-
+                                    }}>
+                                        {isExpanded ? "Cycle Details" : ""}
+                                    </span>
                                     <span>
                                         <img src="/images/Fate/Dropdown.webp" alt="" className={`${style.dropdown} ${isExpanded ? style.dropdownSelected : ''}`} />
                                     </span>
