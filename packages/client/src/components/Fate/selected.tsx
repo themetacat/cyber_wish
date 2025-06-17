@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './selected.module.css';
+import commonStyle from "../wishWall/index.module.css";
 import { shortenAddress } from '../../utils/common';
 import { useAccount } from 'wagmi';
 import { getBoostWisherRecords, getCycleInfo, getWisherByIndex, getWisherCycleRecords } from '../common';
@@ -154,7 +155,7 @@ const Selected = ({ cycle, onClose }: Props) => {
                 ))}
               </div>
               {loading && (
-                <div className={styles.loading}>
+                <div className={commonStyle.loading}>
                   <img src="/images/wishWall/Loading.webp" alt="Loading..." />
                 </div>
               )}
