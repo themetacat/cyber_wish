@@ -1,6 +1,6 @@
 .dataContainer {
     width: 65%;
-    height: 70vh;
+    height: 100vh;
     margin: 0 auto;
     overflow: hidden;
     display: flex;
@@ -40,7 +40,7 @@
     align-items: center;
     width: 100%;
     color: rgba(255, 245, 204, 1);
-    font-size: 20px;
+    font-size: clamp(9px, 1.1vw, 18px);
     font-family: "155-SSZhongZhengSongTi";
     user-select: none;
     justify-items: center;
@@ -65,12 +65,13 @@
 .cycleStatus, .cycleStatus1 {
     font-family: "Orbitron";
     font-weight: 400;
-    font-size: clamp(9px, 1.1vw, 20px);
+    font-size: clamp(9px, 1.1vw, 18px);
     color: rgba(255, 245, 204, 1);
     border-radius: 10px;
-    padding: 5px 18px;
+    padding: 4px 18px;
     background-color: rgba(255, 245, 204, 0.08);
     letter-spacing: 1.8px;
+    align-items: center;
 }
 
 .cycleStatus1 {
@@ -117,8 +118,8 @@
 }
 
 .dropdown {
-    width: 29px;
-    height: 20px;
+    width: clamp(18px, 2vw, 29px);
+    height: clamp(14px, 1.5vw, 20px);
     transform: scale(-1);
     user-select: none;
 }
@@ -134,7 +135,7 @@
         -0.1px 0.1px 0 #7E4806,
         0.1px -0.1px 0 #7E4806,
         -0.1px -0.1px 0 #7E4806;
-    font-size: clamp(10px, 1.2vw, 20px);
+    font-size: clamp(10px, 1.1vw, 18px);
 }
 
 .viewAllButton {
@@ -142,7 +143,7 @@
     cursor: pointer;
     font-family: "Orbitron";
     font-weight: 700;
-    font-size: clamp(13px, 1.1vw, 20px);
+    font-size: clamp(9px, 1.1vw, 18px);
     color: rgba(255, 169, 20, 0.35);
     position: relative;
     background: linear-gradient(2deg, #BF904C 14.6484375%, #FFEEDB 77.2216796875%, #FFEEDB 100%);
@@ -162,12 +163,12 @@
 }
 
 .boxSubtitle, .boxSubtitle1 {
-    font-size: clamp(9px, 1.2vw, 20px);
+    font-size: clamp(9px, 1.0vw, 18px);
     margin: 8px 0;
     text-align: center;
     align-items: center;
     justify-content: center;
-    color: #E2D7BA;
+    color: rgba(255, 245, 204, 1);
     display: flex;
     flex-wrap: wrap;
 }
@@ -177,7 +178,7 @@
 }
 
 .dataRow, .dataRow1 {
-    font-size: clamp(7px, 0.8vw, 14px);
+    font-size: clamp(7px, 0.85vw, 15px);
     padding: 4px 0;
     color: rgba(255, 245, 204, 1);
     display: flex;
@@ -202,13 +203,17 @@
     color: #371508;
 } */
 
-.dataRowYouColor {
+.dataRowYouColor, .dataRowYouColor1 {
     color: #F4C874;
     font-weight: 700;
 }
 
+.dataRowYouColor1 {
+    color: #371508;
+}
+
 .fatedGiftsBtnContainer {
-    display: flex;
+    display: none;
     justify-content: flex-end;
     width: 65%;
     padding: 0 20px;

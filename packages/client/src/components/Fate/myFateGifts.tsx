@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import styles from './myFateGifts.module.css';
+import commonStyle from "../wishWall/index.module.css";
 import { useAccount } from 'wagmi';
 import { formatEther } from 'viem';
 import { components } from "../../mud/recs";
@@ -173,7 +174,7 @@ const MyFateGifts = ({ onClose }: Props) => {
                     ))}
                   </div>
                   {loading && (
-                    <div className={styles.loading}>
+                    <div className={commonStyle.loading}>
                       <img src="/images/wishWall/Loading.webp" alt="Loading..." />
                     </div>
                   )}

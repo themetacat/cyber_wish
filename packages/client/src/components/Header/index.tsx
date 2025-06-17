@@ -86,6 +86,12 @@ export default function Header() {
         >
           Wishflow Rewards
         </button>
+        <button
+          onClick={() => window.open("https://www.notion.so/Q-A-CyberWish-209d5656f3d980e0af0ef0bfed4aa355", "_blank")}
+          className={styles.navItem}
+        >
+          Q&A
+        </button>
         <div className={styles.connectButton}>
           <ConnectButton.Custom>
             {({

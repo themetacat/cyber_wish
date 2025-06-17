@@ -141,7 +141,7 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
 
   return (
     <>
-      {location.pathname !== "/about" && (
+      {location.pathname === "/" && (
         <div className={styles.buttonContainer}>
           <button
             className={styles.mainButton}

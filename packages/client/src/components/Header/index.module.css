@@ -39,7 +39,7 @@
   font-size: 18px;
   color: #E2BE76;
   text-decoration: none;
-  text-transform: uppercase;
+  text-transform: capitalize;
   transition: color 0.2s ease;
   border: none;
   cursor: pointer;

@@ -1,0 +1,45 @@
+.footer {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 98;
+}
+
+.socialIcons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.socialIcons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.socialIcons a:hover {
+  transform: scale(1.1);
+}
+
+.socialIcons img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .socialIcons {
+    gap: 8px;
+  }
+
+  .socialIcons img {
+    width: 28px;
+    height: 28px;
+  }
+} 

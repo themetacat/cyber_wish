@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, useMemo, useCallback } from "react";
 import styles from "./index.module.css";
+import commonStyle from "../wishWall/index.module.css";
 import wishWallStyles from "../wishWall/index.module.css";
 import { components } from "../../mud/recs";
 import { getComponentValue } from "@latticexyz/recs";
@@ -215,7 +216,7 @@ export default function MyWishes() {
           </div>
         ))}
         {loading && (
-          <div className={styles.loading}>
+          <div className={commonStyle.loading}>
             <img src="/images/wishWall/Loading.webp" alt="Loading..." />
           </div>
         )}
