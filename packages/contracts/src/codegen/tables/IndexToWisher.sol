@@ -19,6 +19,8 @@ import { ResourceId } from "@latticexyz/store/src/ResourceId.sol";
 struct IndexToWisherData {
   address wisher;
   uint256 points;
+  uint256 wishCount;
+  uint256 freeWishTime;
 }
 
 library IndexToWisher {
@@ -26,12 +28,12 @@ library IndexToWisher {
   ResourceId constant _tableId = ResourceId.wrap(0x74626379626572776973680000000000496e646578546f576973686572000000);
 
   FieldLayout constant _fieldLayout =
-    FieldLayout.wrap(0x0034020014200000000000000000000000000000000000000000000000000000);
+    FieldLayout.wrap(0x0074040014202020000000000000000000000000000000000000000000000000);
 
   // Hex-encoded key schema of (bytes32, uint256, uint256, uint256)
   Schema constant _keySchema = Schema.wrap(0x008004005f1f1f1f000000000000000000000000000000000000000000000000);
-  // Hex-encoded value schema of (address, uint256)
-  Schema constant _valueSchema = Schema.wrap(0x00340200611f0000000000000000000000000000000000000000000000000000);
+  // Hex-encoded value schema of (address, uint256, uint256, uint256)
+  Schema constant _valueSchema = Schema.wrap(0x00740400611f1f1f000000000000000000000000000000000000000000000000);
 
   /**
    * @notice Get the table's key field names.
@@ -50,9 +52,11 @@ library IndexToWisher {
    * @return fieldNames An array of strings with the names of value fields.
    */
   function getFieldNames() internal pure returns (string[] memory fieldNames) {
-    fieldNames = new string[](2);
+    fieldNames = new string[](4);
     fieldNames[0] = "wisher";
     fieldNames[1] = "points";
+    fieldNames[2] = "wishCount";
+    fieldNames[3] = "freeWishTime";
   }
 
   /**
@@ -198,6 +202,146 @@ library IndexToWisher {
   }
 
   /**
+   * @notice Get wishCount.
+   */
+  function getWishCount(
+    bytes32 poolId,
+    uint256 boostType,
+    uint256 id,
+    uint256 index
+  ) internal view returns (uint256 wishCount) {
+    bytes32[] memory _keyTuple = new bytes32[](4);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(boostType));
+    _keyTuple[2] = bytes32(uint256(id));
+    _keyTuple[3] = bytes32(uint256(index));
+
+    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 2, _fieldLayout);
+    return (uint256(bytes32(_blob)));
+  }
+
+  /**
+   * @notice Get wishCount.
+   */
+  function _getWishCount(
+    bytes32 poolId,
+    uint256 boostType,
+    uint256 id,
+    uint256 index
+  ) internal view returns (uint256 wishCount) {
+    bytes32[] memory _keyTuple = new bytes32[](4);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(boostType));
+    _keyTuple[2] = bytes32(uint256(id));
+    _keyTuple[3] = bytes32(uint256(index));
+
+    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 2, _fieldLayout);
+    return (uint256(bytes32(_blob)));
+  }
+
+  /**
+   * @notice Set wishCount.
+   */
+  function setWishCount(bytes32 poolId, uint256 boostType, uint256 id, uint256 index, uint256 wishCount) internal {
+    bytes32[] memory _keyTuple = new bytes32[](4);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(boostType));
+    _keyTuple[2] = bytes32(uint256(id));
+    _keyTuple[3] = bytes32(uint256(index));
+
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((wishCount)), _fieldLayout);
+  }
+
+  /**
+   * @notice Set wishCount.
+   */
+  function _setWishCount(bytes32 poolId, uint256 boostType, uint256 id, uint256 index, uint256 wishCount) internal {
+    bytes32[] memory _keyTuple = new bytes32[](4);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(boostType));
+    _keyTuple[2] = bytes32(uint256(id));
+    _keyTuple[3] = bytes32(uint256(index));
+
+    StoreCore.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((wishCount)), _fieldLayout);
+  }
+
+  /**
+   * @notice Get freeWishTime.
+   */
+  function getFreeWishTime(
+    bytes32 poolId,
+    uint256 boostType,
+    uint256 id,
+    uint256 index
+  ) internal view returns (uint256 freeWishTime) {
+    bytes32[] memory _keyTuple = new bytes32[](4);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(boostType));
+    _keyTuple[2] = bytes32(uint256(id));
+    _keyTuple[3] = bytes32(uint256(index));
+
+    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 3, _fieldLayout);
+    return (uint256(bytes32(_blob)));
+  }
+
+  /**
+   * @notice Get freeWishTime.
+   */
+  function _getFreeWishTime(
+    bytes32 poolId,
+    uint256 boostType,
+    uint256 id,
+    uint256 index
+  ) internal view returns (uint256 freeWishTime) {
+    bytes32[] memory _keyTuple = new bytes32[](4);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(boostType));
+    _keyTuple[2] = bytes32(uint256(id));
+    _keyTuple[3] = bytes32(uint256(index));
+
+    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 3, _fieldLayout);
+    return (uint256(bytes32(_blob)));
+  }
+
+  /**
+   * @notice Set freeWishTime.
+   */
+  function setFreeWishTime(
+    bytes32 poolId,
+    uint256 boostType,
+    uint256 id,
+    uint256 index,
+    uint256 freeWishTime
+  ) internal {
+    bytes32[] memory _keyTuple = new bytes32[](4);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(boostType));
+    _keyTuple[2] = bytes32(uint256(id));
+    _keyTuple[3] = bytes32(uint256(index));
+
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 3, abi.encodePacked((freeWishTime)), _fieldLayout);
+  }
+
+  /**
+   * @notice Set freeWishTime.
+   */
+  function _setFreeWishTime(
+    bytes32 poolId,
+    uint256 boostType,
+    uint256 id,
+    uint256 index,
+    uint256 freeWishTime
+  ) internal {
+    bytes32[] memory _keyTuple = new bytes32[](4);
+    _keyTuple[0] = poolId;
+    _keyTuple[1] = bytes32(uint256(boostType));
+    _keyTuple[2] = bytes32(uint256(id));
+    _keyTuple[3] = bytes32(uint256(index));
+
+    StoreCore.setStaticField(_tableId, _keyTuple, 3, abi.encodePacked((freeWishTime)), _fieldLayout);
+  }
+
+  /**
    * @notice Get the full data.
    */
   function get(
@@ -246,8 +390,17 @@ library IndexToWisher {
   /**
    * @notice Set the full data using individual values.
    */
-  function set(bytes32 poolId, uint256 boostType, uint256 id, uint256 index, address wisher, uint256 points) internal {
-    bytes memory _staticData = encodeStatic(wisher, points);
+  function set(
+    bytes32 poolId,
+    uint256 boostType,
+    uint256 id,
+    uint256 index,
+    address wisher,
+    uint256 points,
+    uint256 wishCount,
+    uint256 freeWishTime
+  ) internal {
+    bytes memory _staticData = encodeStatic(wisher, points, wishCount, freeWishTime);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -264,8 +417,17 @@ library IndexToWisher {
   /**
    * @notice Set the full data using individual values.
    */
-  function _set(bytes32 poolId, uint256 boostType, uint256 id, uint256 index, address wisher, uint256 points) internal {
-    bytes memory _staticData = encodeStatic(wisher, points);
+  function _set(
+    bytes32 poolId,
+    uint256 boostType,
+    uint256 id,
+    uint256 index,
+    address wisher,
+    uint256 points,
+    uint256 wishCount,
+    uint256 freeWishTime
+  ) internal {
+    bytes memory _staticData = encodeStatic(wisher, points, wishCount, freeWishTime);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -283,7 +445,7 @@ library IndexToWisher {
    * @notice Set the full data using the data struct.
    */
   function set(bytes32 poolId, uint256 boostType, uint256 id, uint256 index, IndexToWisherData memory _table) internal {
-    bytes memory _staticData = encodeStatic(_table.wisher, _table.points);
+    bytes memory _staticData = encodeStatic(_table.wisher, _table.points, _table.wishCount, _table.freeWishTime);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -307,7 +469,7 @@ library IndexToWisher {
     uint256 index,
     IndexToWisherData memory _table
   ) internal {
-    bytes memory _staticData = encodeStatic(_table.wisher, _table.points);
+    bytes memory _staticData = encodeStatic(_table.wisher, _table.points, _table.wishCount, _table.freeWishTime);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -324,10 +486,16 @@ library IndexToWisher {
   /**
    * @notice Decode the tightly packed blob of static data using this table's field layout.
    */
-  function decodeStatic(bytes memory _blob) internal pure returns (address wisher, uint256 points) {
+  function decodeStatic(
+    bytes memory _blob
+  ) internal pure returns (address wisher, uint256 points, uint256 wishCount, uint256 freeWishTime) {
     wisher = (address(Bytes.getBytes20(_blob, 0)));
 
     points = (uint256(Bytes.getBytes32(_blob, 20)));
+
+    wishCount = (uint256(Bytes.getBytes32(_blob, 52)));
+
+    freeWishTime = (uint256(Bytes.getBytes32(_blob, 84)));
   }
 
   /**
@@ -341,7 +509,7 @@ library IndexToWisher {
     EncodedLengths,
     bytes memory
   ) internal pure returns (IndexToWisherData memory _table) {
-    (_table.wisher, _table.points) = decodeStatic(_staticData);
+    (_table.wisher, _table.points, _table.wishCount, _table.freeWishTime) = decodeStatic(_staticData);
   }
 
   /**
@@ -374,8 +542,13 @@ library IndexToWisher {
    * @notice Tightly pack static (fixed length) data using this table's schema.
    * @return The static data, encoded into a sequence of bytes.
    */
-  function encodeStatic(address wisher, uint256 points) internal pure returns (bytes memory) {
-    return abi.encodePacked(wisher, points);
+  function encodeStatic(
+    address wisher,
+    uint256 points,
+    uint256 wishCount,
+    uint256 freeWishTime
+  ) internal pure returns (bytes memory) {
+    return abi.encodePacked(wisher, points, wishCount, freeWishTime);
   }
 
   /**
@@ -384,8 +557,13 @@ library IndexToWisher {
    * @return The lengths of the dynamic fields (packed into a single bytes32 value).
    * @return The dynamic (variable length) data, encoded into a sequence of bytes.
    */
-  function encode(address wisher, uint256 points) internal pure returns (bytes memory, EncodedLengths, bytes memory) {
-    bytes memory _staticData = encodeStatic(wisher, points);
+  function encode(
+    address wisher,
+    uint256 points,
+    uint256 wishCount,
+    uint256 freeWishTime
+  ) internal pure returns (bytes memory, EncodedLengths, bytes memory) {
+    bytes memory _staticData = encodeStatic(wisher, points, wishCount, freeWishTime);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;

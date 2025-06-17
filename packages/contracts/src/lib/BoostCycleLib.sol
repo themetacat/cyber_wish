@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.24;
 
-import { IndexToWisher, CycleInfo, CycleInfoData, WisherTemporaryRecordsData, WisherIndexId } from "../codegen/index.sol";
+import { IndexToWisher, IndexToWisherData, CycleInfo, CycleInfoData, WisherTemporaryRecordsData, WisherTemporaryRecords, WisherIndexId } from "../codegen/index.sol";
 import { WishUtils } from "./WishUtils.sol";
 import { WisherPoints } from "./Struct.sol";
 import { PowerCalculator } from "./PowerLib.sol";
@@ -33,7 +33,16 @@ library BoostCycleLib {
     } else {
       wisherCount -= 1;
     }
-    IndexToWisher.set(poolId, 1, indexId, tempData.pointsWishIndex, wisher, tempData.points);
+    IndexToWisher.set(
+      poolId,
+      1,
+      indexId,
+      tempData.pointsWishIndex,
+      wisher,
+      tempData.points,
+      tempData.wishCount,
+      tempData.freeWishTime
+    );
 
     // WishStar boost
     if (tempData.starLastCycle != currentCycle && joinWishStar) {
@@ -50,45 +59,102 @@ library BoostCycleLib {
       isStar = true;
       tempData.starWishIndex = wisherCount;
       tempData.starLastCycle = currentCycle;
-      IndexToWisher.set(poolId, 2, indexId, tempData.starWishIndex, wisher, tempData.points);
+      IndexToWisher.set(poolId, 2, indexId, tempData.starWishIndex, wisher, tempData.points, 0, 0);
     }
   }
 
-  function weightedRandomSelection(
+  function selectEligibleWishers(
     bytes32 poolId,
     uint256 wisherIndexId,
-    uint256 wisherCount,
-    address sender
-  ) internal view returns (WisherPoints[] memory selected) {
-    uint256 boostCount = wisherCount / 3;
-    if (boostCount == 0) {
-      boostCount = 1;
-    }
-    uint256[] memory weights = new uint256[](wisherCount);
+    uint256 wisherCount
+  ) internal view returns (uint256, WisherPoints[] memory) {
+    uint256 freeWisherCount;
+    uint256 payWisherCount;
 
-    uint256 totalWeight;
     for (uint256 i = 0; i < wisherCount; i++) {
-      weights[i] = nonlinear(IndexToWisher.getPoints(poolId, 1, wisherIndexId, i + 1));
-      totalWeight += weights[i];
+      IndexToWisherData memory indexToWisherData = IndexToWisher.get(poolId, 1, wisherIndexId, i + 1);
+      if (indexToWisherData.wishCount == indexToWisherData.freeWishTime) {
+        freeWisherCount++;
+      } else {
+        payWisherCount++;
+      }
+    }
+    WisherPoints[] memory freeWisherArr = new WisherPoints[](freeWisherCount);
+    WisherPoints[] memory payWisherArr = new WisherPoints[](payWisherCount);
+    uint256 freeIndex = 0;
+    uint256 payIndex = 0;
+
+    for (uint256 i = 0; i < wisherCount; i++) {
+      IndexToWisherData memory indexToWisherData = IndexToWisher.get(poolId, 1, wisherIndexId, i + 1);
+
+      WisherPoints memory wisherPoints = WisherPoints({
+        wisher: indexToWisherData.wisher,
+        points: nonlinear(indexToWisherData.points)
+      });
+
+      if (indexToWisherData.wishCount == indexToWisherData.freeWishTime) {
+        freeWisherArr[freeIndex] = wisherPoints;
+        freeIndex++;
+      } else {
+        payWisherArr[payIndex] = wisherPoints;
+        payIndex++;
+      }
     }
 
-    selected = new WisherPoints[](boostCount);
-    bool[] memory used = new bool[](wisherCount);
+    uint256 selectCount = payWisherCount / 3;
+    if(selectCount == 0){
+      selectCount = 1;
+    }
+    if (freeWisherCount == 0) {
+      return (selectCount, payWisherArr);
+    }
 
-    for (uint256 k = 0; k < boostCount; k++) {
-      uint256 random = WishUtils.getRandom(k + wisherCount, totalWeight, sender);
+    uint256 selectFreeCount = PowerCalculator.computeSampleCount(payWisherCount, freeWisherCount);
+    WisherPoints[] memory selectedFreeWisher = weightedRandomSelection(selectFreeCount, freeWisherArr);
+
+    uint256 totalCount = payWisherCount + selectedFreeWisher.length;
+    WisherPoints[] memory selected = new WisherPoints[](totalCount);
+
+    for (uint256 i = 0; i < payWisherCount; i++) {
+      selected[i] = payWisherArr[i];
+    }
+    for (uint256 i = 0; i < selectedFreeWisher.length; i++) {
+      selected[payWisherCount + i] = selectedFreeWisher[i];
+    }
+
+    return (selectCount, selected);
+  }
+
+  function weightedRandomSelection(
+    uint256 count,
+    WisherPoints[] memory wisherPoints
+  ) internal view returns (WisherPoints[] memory selected) {
+    uint256 wisherCount = wisherPoints.length;
+    require(count <= wisherCount, "Count exceeds available entries");
+
+    selected = new WisherPoints[](count);
+    uint256 totalWeight = 0;
+
+    for (uint256 i = 0; i < wisherCount; i++) {
+      totalWeight += wisherPoints[i].points;
+    }
+
+    WisherPoints[] memory pool = new WisherPoints[](wisherCount);
+    for (uint256 i = 0; i < wisherCount; i++) {
+      pool[i] = wisherPoints[i];
+    }
+
+    for (uint256 k = 0; k < count; k++) {
+      uint256 rand = WishUtils.getRandom(k, totalWeight, pool[k].wisher);
 
       uint256 cumulative = 0;
-      for (uint256 i = 0; i < wisherCount; i++) {
-        if (used[i]) continue;
-        cumulative += weights[i];
-        if (random < cumulative) {
-          selected[k] = WisherPoints({
-            wisher: IndexToWisher.getWisher(poolId, 1, wisherIndexId, i + 1),
-            points: weights[i]
-          });
-          totalWeight -= weights[i];
-          used[i] = true;
+      for (uint256 i = 0; i < wisherCount - k; i++) {
+        cumulative += pool[i].points;
+        if (rand < cumulative) {
+          selected[k] = pool[i];
+
+          totalWeight -= pool[i].points;
+          pool[i] = pool[wisherCount - k - 1];
           break;
         }
       }
@@ -110,14 +176,13 @@ library BoostCycleLib {
     }
 
     for (uint256 i = 0; i < n; i++) {
-      boostAmount[i] = totalAmount * weights[i] / totalWeight;
+      boostAmount[i] = (totalAmount * weights[i]) / totalWeight;
     }
   }
 
   function nonlinear(uint256 x) internal pure returns (uint256) {
     return PowerCalculator.powPointEight(x);
   }
-
 
   function getStarWishers(
     uint256 wisherCount,
