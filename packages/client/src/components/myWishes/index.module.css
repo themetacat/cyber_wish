@@ -266,6 +266,6 @@
 
 @media (max-height: 743px) {
   .content{
-    height: 62vh;
+    height: 100vh;
   }
 }
