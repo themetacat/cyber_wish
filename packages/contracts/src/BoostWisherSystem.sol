@@ -11,7 +11,6 @@ import { WisherPoints } from "./lib/Struct.sol";
 import { BoostCycleLib } from "./lib/BoostCycleLib.sol";
 import { UD60x18 } from "@prb/math/src/UD60x18.sol";
 
-
 contract BoostWisherSystem is System {
   function BoostWisherByPoints(bytes32 poolId, uint256 boostCycle) public {
     address sender = _msgSender();
@@ -35,12 +34,13 @@ contract BoostWisherSystem is System {
 
     boostWisherRecordsData.amountPoints = totalBoostAmount;
 
-    WisherPoints[] memory selectedWisher = BoostCycleLib.weightedRandomSelection(
+    (uint256 selectCount, WisherPoints[] memory eligibleWishers) = BoostCycleLib.selectEligibleWishers(
       poolId,
       cycleInfoData.wisherIndexId,
-      wisherCount,
-      sender
+      wisherCount
     );
+    if (selectCount == 0) return;
+    WisherPoints[] memory selectedWisher = BoostCycleLib.weightedRandomSelection(selectCount, eligibleWishers);
 
     uint256[] memory boostAmount = BoostCycleLib.getPointsBoostAmount(selectedWisher, totalBoostAmount);
     address[] memory selectedWisherAddr = new address[](selectedWisher.length);
