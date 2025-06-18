@@ -68,6 +68,7 @@
 }
 
 .tableHeader div {
+    display: flex;
     border: 1px solid #FAE3A1;
     padding: 9px;
     border-right: none;
@@ -75,6 +76,7 @@
     text-align: center;
     word-break: break-word;
     align-items: center;
+    justify-content: center; 
 }
 
 .scrollbarSpacer {
