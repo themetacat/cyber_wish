@@ -211,6 +211,7 @@
 
 .dataRowYouColor,
 .dataRowYouColor1 {
+    text-align: center;
     color: #F4C874;
     font-weight: 700;
 }
