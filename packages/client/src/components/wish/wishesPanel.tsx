@@ -105,7 +105,6 @@ export default function WishesPanel() {
     if (!wishInfo) {
       return;
     }
-    console.log(wishInfo);
 
     wishInfoArr.current.push(wishInfo);
   }, [wishCountData, oldWishCount])
