@@ -10,6 +10,8 @@ import { useAccount } from "wagmi";
 import { propsData } from "../../utils/propsData";
 import { incenseData } from "../../utils/incenseData";
 import { blindBoxData } from "../../utils/blindBoxData";
+import commonStyles from "../common/common.module.css";
+
 
 interface WishInfo {
   wisher: string;
@@ -309,13 +311,7 @@ export default function WishesResult({ wishStatus }: Props) {
               Good fortune follows you......
             </span>
 
-            <span className={styles.dividingLine}>
-              <img
-                src="/images/wish/WishPanel/DividingLine.webp"
-                alt="dividing line"
-              />
-            </span>
-
+            <div className={`${commonStyles.divider} ${styles.dividingLine}`} style={{width: "100%", marginLeft: "auto"}}/>
             <span className={styles.blessingItemTitle}>
               Your blessing item is:
             </span>

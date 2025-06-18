@@ -7,7 +7,7 @@ import { encodeEntity } from "@latticexyz/store-sync/recs";
 import { CURRENCY_SYMBOL, WISH_POOL_ID } from "../../utils/contants";
 import { formatEther, TransactionReceipt } from "viem";
 import { useAccount } from "wagmi";
-import { incenseData } from "../../utils/incenseData";
+import { ImageItem, incenseData } from "../../utils/incenseData";
 import { blindBoxData } from "../../utils/blindBoxData";
 import { ErrorToast } from "../common/ErrorToast";
 import { useLocation } from "react-router-dom";
@@ -198,7 +198,6 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
               {({
                 account,
                 chain,
-                openAccountModal,
                 openChainModal,
                 openConnectModal,
                 authenticationStatus,
@@ -265,15 +264,6 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
                 );
               }}
             </ConnectButton.Custom>
-            {/* <button
-              className={styles.sendButton}
-              onClick={() => handleSubmit()}
-              disabled={isSubmitting}
-            >
-              <span className={styles.sendButtonText}>
-                {isSubmitting ? "Loading..." : "Send the wish"}
-              </span>
-            </button> */}
             <button
               className={styles.closeButton}
               onClick={() => setShowModal(false)}
