@@ -93,7 +93,7 @@
     overflow-y: scroll;
     padding-right: 4px;
     box-sizing: content-box;
-    height: calc(52vh + (40vh - 420px) * 0.65);
+    height: calc(50vh + (40vh - 420px) * 0.65);
     width: calc(110vw + (40vw - 200px) * 0.85);
     max-width: 825px;
 }
@@ -229,7 +229,7 @@
         width: 16px;
     }
     .tableBodyWrapper{
-        height: calc(63vh + (40vh - 470px) * 0.45);
+        height: calc(59vh + (40vh - 470px) * 0.45);
         width: calc(170vw + (70vw - 75px) * 2.5);
         max-width: 818px;
     }
