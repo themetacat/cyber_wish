@@ -94,7 +94,6 @@ const MyFateGifts = ({ onClose }: Props) => {
           };
         });
       });
-
       setAllRewardsData(rewardsData);
     } catch (err) {
       console.error('Failed to load wish rewards:', err);
@@ -149,9 +148,9 @@ const MyFateGifts = ({ onClose }: Props) => {
             <p className={styles.pTitle}>MY SELECTION HISTORY :</p>
             <div className={styles.tableWrapper}>
               <div className={styles.tableHeader}>
-                <div className={styles.cell}>Time</div>
+                <div className={`${styles.cell} ${styles.cellTime}`}>Time</div>
                 <div className={styles.cell}>Type</div>
-                <div className={styles.cell}>Received</div>
+                <div className={`${styles.cell} ${styles.cellReceived}`}>Received</div>
                 <div className={styles.scrollbarSpacer} />
               </div>
               <div className={styles.scrollContainer}>
@@ -159,7 +158,7 @@ const MyFateGifts = ({ onClose }: Props) => {
                   <div className={styles.tableBody}>
                     {allRewardsData.map((data, i) => (
                       <div key={i} className={styles.row}>
-                        <div className={styles.cell}>
+                        <div className={`${styles.cell} ${styles.cellTime}`}>
                           {
                             formatInTimeZone(
                               new Date(data.wishTime * 1000),
@@ -169,7 +168,7 @@ const MyFateGifts = ({ onClose }: Props) => {
                           }
                         </div>
                         <div className={styles.cell}>{data.type}</div>
-                        <div className={styles.cell}>{formatEther(data.reward)} ETH</div>
+                        <div className={`${styles.cell} ${styles.cellReceived}`}>{formatEther(data.reward)} ETH</div>
                       </div>
                     ))}
                   </div>
