@@ -213,7 +213,7 @@ export default function FateGifts() {
                                                         </span>
                                                     </div>
                                                     {row.isBoost && box.wisherList.length === 0 ? (
-                                                        <div className={style.dataRow1}>No one was selected!</div>
+                                                        <div className={index === BOOST_TYLE_STAR ? style.noOneSelected1 : style.noOneSelected}>No one was selected!</div>
                                                     ) : (
                                                         box.wisherList.slice(0, showRows).map((item: string, i) => (
                                                             <div key={i} className={index === BOOST_TYLE_STAR ? style.dataRow1 : style.dataRow}>
