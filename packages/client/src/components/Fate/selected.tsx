@@ -148,9 +148,9 @@ const Selected = ({ cycle, onClose }: Props) => {
                       {userAddress?.toLowerCase() == (row.wisher) ? <span style={{ color: "rgba(244, 200, 116, 1)" }}> (you)</span> : ""}
                     </div>
                     <div className={`${styles.cell} ${styles.colWishPoints}`}>{row.wp} WP</div>
-                    <div className={`${styles.cell} ${styles.colWishPointsPool}`}>{row.wp_pool_rewards} {CURRENCY_SYMBOL}</div>
+                    <div className={`${styles.cell} ${styles.colWishPointsPool}`}>{row.wp_pool_rewards.toFixed(6).replace(/\.?0+$/, '')} {CURRENCY_SYMBOL}</div>
                     <div className={`${styles.cell} ${styles.colFatedPoolQualified}`}>{row.fated_pool_qualified ? 'Yes' : 'No'}</div>
-                    <div className={`${styles.cell} ${styles.colFatedPool}`}>{row.fated_pool_rewards} {CURRENCY_SYMBOL}</div>
+                    <div className={`${styles.cell} ${styles.colFatedPool}`}>{row.fated_pool_rewards.toFixed(6).replace(/\.?0+$/, '')} {CURRENCY_SYMBOL}</div>
                   </div>
                 ))}
               </div>
