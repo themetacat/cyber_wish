@@ -133,9 +133,9 @@ const Selected = ({ cycle, onClose }: Props) => {
             <div className={`${styles.colNum}`}>Num</div>
             <div className={`${styles.colAddress}`}>Address</div>
             <div className={`${styles.colWishPoints}`}>Wish Points</div>
-            <div className={`${styles.colWishPointsPool}`}>Wish Points Pool {CURRENCY_SYMBOL}</div>
+            <div className={`${styles.colWishPointsPool}`}>Get From<br /> WP Pool</div>
             <div className={`${styles.colFatedPoolQualified}`}>Fated Pool Qualified</div>
-            <div className={`${styles.colFatedPool}`} style={{ borderRight: "1px solid rgba(255, 209, 98, 1)" }}>Fated Pool {CURRENCY_SYMBOL}</div>
+            <div className={`${styles.colFatedPool}`} style={{ borderRight: "1px solid rgba(255, 209, 98, 1)" }}>Get From Fated Pool</div>
           </div>
           <div className={styles.scrollContainer}>
             <div className={styles.tableBodyWrapper}>
