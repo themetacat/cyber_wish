@@ -15,6 +15,7 @@ import About from "./About";
 import { useLocation } from "react-router-dom";
 import { WISH_POOL_ID } from "../utils/contants";
 import { useAccount } from 'wagmi';
+import { parseEther } from "viem";
 
 
 export default function Main() {
@@ -29,14 +30,11 @@ export default function Main() {
     () =>
       sync.data && worldContract
         ? async (incenseId: number, blindBoxId: number, wishContent: string, value: number) => {
-          console.log("incenseId:", incenseId);
-          console.log("blindBoxId:", blindBoxId);
-          console.log("wishContent:", wishContent);
           const tx = await worldContract.write.cyberwish__wish([WISH_POOL_ID
-            , BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: BigInt((value * 1e18).toFixed(0)), gas: 15000000n, });
+            , BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: parseEther(value.toString()), gas: 15000000n, });
           const res = await sync.data.waitForTransaction(tx);
           if (res && res.status != "success") {
-            await worldContract.simulate.cyberwish__wish([WISH_POOL_ID, BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: BigInt(Math.floor(value * 1e18)) });
+            await worldContract.simulate.cyberwish__wish([WISH_POOL_ID, BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: parseEther(value.toString()) });
           }
           return res;
         }
