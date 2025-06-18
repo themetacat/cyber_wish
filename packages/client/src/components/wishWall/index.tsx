@@ -126,7 +126,7 @@ export default function WishingWall() {
               <div className={styles.wishContent}>{item.wishContent}</div>
               <div className={styles.wishMeta}>
                 <span>{shortenAddress(item.wisher)}</span>
-                <span>{format(new Date(item.wishTime * 1000), "h:mma·MMM d,yyyy")}</span>
+                <span>{format(new Date(item.wishTime * 1000), "h:mm a·MMM d,yyyy")}</span>
               </div>
               <div className={styles.wishInteractData}>
                 <div data-tooltip="Coming Soon"><img src="/images/wishWall/Worship.webp" alt="Worship" /></div>

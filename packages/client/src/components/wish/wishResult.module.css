@@ -16,7 +16,7 @@
     padding: 18px 30px;
     border-radius: 8px;
     width: 35.26rem;
-    height: 45.511rem;
+    height: auto;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -517,12 +517,14 @@
 }
 
 .congratulationText {
+    display: flex;
     text-align: center;
+    justify-content: center;
+    align-items: center;
     font-family: 'FSKim-Medium';
     font-size: 24px;
     color: #F4C873;
     margin-top: auto;
-    padding-bottom: 20px;
     opacity: 0;
     animation: fadeIn 1.5s ease forwards 24.0s;
 }
