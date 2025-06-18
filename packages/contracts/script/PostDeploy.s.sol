@@ -35,20 +35,21 @@ contract PostDeploy is Script {
     propIds2[1] = 3;
     propIds2[2] = 4;
     propIds2[3] = 5;
-    PropBlindBox.set(poolId, 2, 38 * 10 ** 14, 25, 45, 30, true, "Health Blessing", propIds2);
+    PropBlindBox.set(poolId, 2, 38 * 10 ** 14, 25, 45, 30, true, "Fortune Blessing", propIds2);
     uint256[] memory propIds3 = new  uint256[](3);
     propIds3[0] = 6;
     propIds3[1] = 7;
     propIds3[2] = 8;
-    PropBlindBox.set(poolId, 3, 45 * 10 ** 14, 40, 80, 35, true, "Fortune Blessing", propIds3);
+    PropBlindBox.set(poolId, 3, 45 * 10 ** 14, 40, 80, 35, true, "Wisdom Blessing", propIds3);
     propIds3[0] = 9;
     propIds3[1] = 10;
     propIds3[2] = 11;
-    PropBlindBox.set(poolId, 4, 56 * 10 ** 14, 55, 95, 38, true, "Wisdom Blessing", propIds3);
-    propIds3[0] = 12;
-    propIds3[1] = 13;
-    propIds3[2] = 14;
-    PropBlindBox.set(poolId, 5, 56 * 10 ** 14, 55, 95, 38, true, "Love Blessing", propIds3);
+    PropBlindBox.set(poolId, 4, 56 * 10 ** 14, 55, 95, 38, true, "Love Blessing", propIds3);
+    propIds2[0] = 12;
+    propIds2[1] = 13;
+    propIds2[2] = 14;
+    propIds2[3] = 15;
+    PropBlindBox.set(poolId, 5, 56 * 10 ** 14, 55, 95, 38, true, "Health Blessing", propIds2);
     
     vm.stopBroadcast();
   }
