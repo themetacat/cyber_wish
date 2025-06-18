@@ -14,5 +14,4 @@ import { IndexToWisher, IndexToWisherData } from "./tables/IndexToWisher.sol";
 import { WisherCycleRecords, WisherCycleRecordsData } from "./tables/WisherCycleRecords.sol";
 import { Incense, IncenseData } from "./tables/Incense.sol";
 import { PropBlindBox, PropBlindBoxData } from "./tables/PropBlindBox.sol";
-import { Props } from "./tables/Props.sol";
 import { WisherIndexId } from "./tables/WisherIndexId.sol";

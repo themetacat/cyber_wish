@@ -17,7 +17,7 @@ export default defineWorld({
     WisherCycleRecords: { schema: { poolId: "bytes32", cycle: "uint256", wisher: "address", wishCount: "uint256", points: "uint256", boostedPointsAmount: "uint256", boostedStarAmount: "uint256" }, key: ["poolId", "cycle", "wisher"], type: "offchainTable" },
     Incense: { schema: { poolId: "bytes32", id: "uint256", amount: "uint256", duration: "uint256", pointsMin: "uint256", pointsMax: "uint256", starProbability: "uint256", easterEggProbability: "bool", name: "string" }, key: ["poolId", "id"] },
     PropBlindBox: { schema: { poolId: "bytes32", id: "uint256", amount: "uint256", pointsMin: "uint256", pointsMax: "uint256", starProbability: "uint256", easterEggProbability: "bool", name: "string", propIds: "uint256[]" }, key: ["poolId", "id"] },
-    Props: { schema: { poolId: "bytes32", boxId: "uint256", id: "uint256", name: "string" }, key: ["poolId", "boxId", "id"] },
+    // Props: { schema: { poolId: "bytes32", boxId: "uint256", id: "uint256", name: "string" }, key: ["poolId", "boxId", "id"] },
     WisherIndexId: { schema: { id: "uint256", boostType: "uint256", inUse: "bool" }, key: ["id", "boostType"] }
   },
 });
