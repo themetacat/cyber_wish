@@ -20,20 +20,26 @@ export const incenseData: ImageItem[] = [
   },
   {
     id: 3,
-    name: "Fortune Bloom",
-    desc: "For unlocking financial opportunities and abundance flow.",
+    name: "Spirit Wish",
+    desc: "For wellness of body and spirit, in silent, steady warmth.",
     img: "/images/wish/WishPanel/Incense/1.3.gif",
   },
   {
     id: 4,
-    name: "Fate Whisper",
-    desc: "For deepening destined bonds and meaningful encounters.",
+    name: "Fortune Bloom",
+    desc: "For unlocking financial opportunities and abundance flow.",
     img: "/images/wish/WishPanel/Incense/1.4.gif",
   },
   {
     id: 5,
+    name: "Fate Whisper",
+    desc: "For deepening destined bonds and meaningful encounters.",
+    img: "/images/wish/WishPanel/Incense/1.5.gif",
+  },
+  {
+    id: 6,
     name: "Celestial Wish",
     desc: "For big dreams to reach the sky.",
-    img: "/images/wish/WishPanel/Incense/1.5.gif",
+    img: "/images/wish/WishPanel/Incense/1.6.gif",
   },
 ];
