@@ -178,7 +178,7 @@ export default function MyWishes() {
               <div className={styles.wishMeta}>
                 By {shortenAddress(item.wisher)}
                 <span className={styles.metaTime}>
-                  {format(new Date(item.wishTime * 1000), "h:mma·MMM d,yyyy")}
+                  {format(new Date(item.wishTime * 1000), "h:mm a·MMM d,yyyy")}
                 </span>
               </div>
 
