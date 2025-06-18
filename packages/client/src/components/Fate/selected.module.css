@@ -49,16 +49,6 @@
     font-family: 'FSKim-Medium';
 }
 
-.divider {
-    height: 1px;
-    margin-left: 5%;
-    margin-top: 1%;
-    width: 90%;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0.05), rgba(242, 201, 109, 1), rgba(255, 255, 255, 0.05));
-    filter: blur(0px);
-    flex-shrink: 0;
-}
-
 .tableWrapper {
     height: 72.9%;
     display: flex;
@@ -73,12 +63,12 @@
 
 .tableHeader {
     display: flex;
-    color: rgba(255, 209, 98, 1);
+    color: #F4C874;
     font-size: 17px;
 }
 
 .tableHeader div {
-    border: 1px solid rgba(255, 209, 98, 1);
+    border: 1px solid #FAE3A1;
     padding: 9px;
     border-right: none;
     box-sizing: border-box;
@@ -146,14 +136,14 @@
 
 .row {
     display: flex;
-    border-bottom: 1px solid rgba(255, 209, 98, 1);
-    border-left: 1px solid rgba(255, 209, 98, 1);
-    border-right: 1px solid rgba(255, 209, 98, 1);
+    border-bottom: 1px solid #FAE3A1;
+    border-left: 1px solid #FAE3A1;
+    border-right: 1px solid #FAE3A1;
 }
 
 .cell {
     padding: 9px;
-    border-right: 1px solid rgba(255, 209, 98, 1);
+    border-right: 1px solid #FAE3A1;
     box-sizing: border-box;
     text-align: center;
     word-break: break-word;

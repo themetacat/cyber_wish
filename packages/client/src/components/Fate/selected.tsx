@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styles from './selected.module.css';
-import commonStyle from "../wishWall/index.module.css";
+import commonStyles from "../common/common.module.css";
 import { shortenAddress } from '../../utils/common';
 import { useAccount } from 'wagmi';
-import { getBoostWisherRecords, getCycleInfo, getWisherByIndex, getWisherCycleRecords } from '../common';
+import { getBoostWisherRecords, getCycleInfo, getWisherByIndex } from '../common';
 import { formatEther } from 'viem';
 import { CURRENCY_SYMBOL } from "../../utils/contants"
 import { apiServer } from '../../common';
@@ -126,16 +126,16 @@ const Selected = ({ cycle, onClose }: Props) => {
         <div className={styles.header}>
           <h2>Cycle Details</h2>
         </div>
-        <div className={styles.divider} />
+        <div className={commonStyles.divider} />
 
         <div className={styles.tableWrapper}>
           <div className={styles.tableHeader}>
             <div className={`${styles.colNum}`}>Num</div>
             <div className={`${styles.colAddress}`}>Address</div>
             <div className={`${styles.colWishPoints}`}>Wish Points</div>
-            <div className={`${styles.colWishPointsPool}`}>Wish Points Pool {CURRENCY_SYMBOL}</div>
+            <div className={`${styles.colWishPointsPool}`}>Get From<br /> WP Pool</div>
             <div className={`${styles.colFatedPoolQualified}`}>Fated Pool Qualified</div>
-            <div className={`${styles.colFatedPool}`} style={{ borderRight: "1px solid rgba(255, 209, 98, 1)" }}>Fated Pool {CURRENCY_SYMBOL}</div>
+            <div className={`${styles.colFatedPool}`} style={{ borderRight: "1px solid rgba(255, 209, 98, 1)" }}>Get From Fated Pool</div>
           </div>
           <div className={styles.scrollContainer}>
             <div className={styles.tableBodyWrapper}>
@@ -148,14 +148,14 @@ const Selected = ({ cycle, onClose }: Props) => {
                       {userAddress?.toLowerCase() == (row.wisher) ? <span style={{ color: "rgba(244, 200, 116, 1)" }}> (you)</span> : ""}
                     </div>
                     <div className={`${styles.cell} ${styles.colWishPoints}`}>{row.wp} WP</div>
-                    <div className={`${styles.cell} ${styles.colWishPointsPool}`}>{row.wp_pool_rewards} {CURRENCY_SYMBOL}</div>
+                    <div className={`${styles.cell} ${styles.colWishPointsPool}`}>{row.wp_pool_rewards.toFixed(6).replace(/\.?0+$/, '')} {CURRENCY_SYMBOL}</div>
                     <div className={`${styles.cell} ${styles.colFatedPoolQualified}`}>{row.fated_pool_qualified ? 'Yes' : 'No'}</div>
-                    <div className={`${styles.cell} ${styles.colFatedPool}`}>{row.fated_pool_rewards} {CURRENCY_SYMBOL}</div>
+                    <div className={`${styles.cell} ${styles.colFatedPool}`}>{row.fated_pool_rewards.toFixed(6).replace(/\.?0+$/, '')} {CURRENCY_SYMBOL}</div>
                   </div>
                 ))}
               </div>
               {loading && (
-                <div className={commonStyle.loading}>
+                <div className={commonStyles.loading}>
                   <img src="/images/wishWall/Loading.webp" alt="Loading..." />
                 </div>
               )}

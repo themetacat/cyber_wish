@@ -12,7 +12,6 @@ import { BoostCycleLib } from "./lib/BoostCycleLib.sol";
 import { WishUtils } from "./lib/WishUtils.sol";
 import { Validate } from "./lib/Validate.sol";
 
-
 contract WishSystem is System {
   function wish(bytes32 poolId, uint256 incenseId, uint256 blindBoxId, string memory wishContent) public payable {
     address wisher = _msgSender();
@@ -47,10 +46,11 @@ contract WishSystem is System {
       totalPoints,
       isFreeWish
     );
-    require(!(isFreeWish && wisherTemporaryRecordsData.freeWishTime > 10), "Free times limit reached");
 
     bool isStar;
     if (currentCycle > 0) {
+      require(!(isFreeWish && wisherTemporaryRecordsData.freeWishTime > 10), "Free times limit reached");
+
       if (!isFreeWish) {
         BoostWisherRecords.setAmount(
           poolId,
@@ -126,5 +126,4 @@ contract WishSystem is System {
     }
     return data;
   }
-
 }

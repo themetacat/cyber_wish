@@ -93,7 +93,7 @@
 .wishMeta {
   height: 20px;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 30px;
 
   font-family: '155-SSZhongZhengSongTi';
@@ -172,7 +172,7 @@
 }
 
 .blessingItemContainer {
-  height: 85%;
+  height: 86%;
   display: none;
   position: absolute;
   right: 140px;
@@ -180,24 +180,24 @@
   border: 1px solid #F8E49C;
   border-radius: 20px;
   background-color: #000;
-  padding: 6px;
-  width: 400px;
+  padding: 10px;
+  max-width: 500px;
   pointer-events: none;
   z-index: 10000;
 }
 
 .blessingItemContainer img {
-  width: 30.33%;
+  width: 22%;
   height: 80px;
   object-fit: contain;
   transition: transform 0.2s ease;
 }
 
 .blessingItemContentContainer {
-  width: 66.67%;
+  width: 78%;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   cursor: pointer;
   letter-spacing: 0.1em;
   transition: transform 0.2s ease;
@@ -217,7 +217,7 @@
   font-family: 'FSKimTrial-Regular';
   font-size: 12px;
   color: #F4C873;
-  line-height: 1.4;
+  line-height: 1.2;
   word-wrap: break-word;
   text-align: center;
 }
@@ -298,12 +298,16 @@
 
   .content {
     height: 100vh;
+    width: 80vw;
   }
 }
 
 @media (max-width: 768px) {
   .title {
     font-size: 28px;
+  }
+  .content {
+    width: 90vw;
   }
 
 }

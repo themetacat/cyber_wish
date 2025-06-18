@@ -1,25 +1,19 @@
 import styles from "./index.module.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAccount } from "wagmi";
 import { useState, useRef, useEffect } from "react";
 import MyFateGifts from "../Fate/myFateGifts";
 import { useDisconnect } from 'wagmi'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { supportedChains } from "../../wagmiConfig";
-import { useDetectedChainId } from "../../common";
+
 
 export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { address } = useAccount();
   const [showMyFateGifts, setShowMyFateGifts] = useState(false);
   const { disconnect } = useDisconnect();
   const [isBGMPlaying, setIsBGMPlaying] = useState(false);
   const bgmAudioRef = useRef<HTMLAudioElement | null>(null);
-  const chainId = useDetectedChainId();
-  
-  const isSupportedChain = chainId ? supportedChains.includes(chainId) : false;
-  
+
   useEffect(() => {
     // Initialize background music
     bgmAudioRef.current = new Audio('/audio/BGM.mp3');
@@ -59,7 +53,7 @@ export default function Header() {
   };
 
   const handleMyWishesClick = () => {
-      navigate("/my-wishes");
+    navigate("/my-wishes");
   };
 
   return (
@@ -69,9 +63,9 @@ export default function Header() {
       </div>
       <nav className={styles.nav}>
         <button
-            onClick={() => navigate("/")}
-            className={styles.navItem}
-          >
+          onClick={() => navigate("/")}
+          className={styles.navItem}
+        >
           Home
         </button>
         <button
@@ -121,7 +115,6 @@ export default function Header() {
                       userSelect: 'none',
                     },
                   })}
-                  
                 >
                   {(() => {
                     if (!connected) {
@@ -133,18 +126,27 @@ export default function Header() {
                     }
                     if (chain.unsupported) {
                       return (
-                        <button onClick={openChainModal} type="button" className={styles.navItem} style={{color: "#FF494A"}}>
+                        <button onClick={openChainModal} type="button" className={styles.navItem} style={{ color: "#FF494A" }}>
                           Wrong network
                         </button>
                       );
                     }
                     return (
-                      <button onClick={openAccountModal} type="button" className={styles.navItem}>
-                        {account.displayName}
-                        {account.displayBalance
-                          ? ` (${account.displayBalance})`
-                          : ''}
-                      </button>
+                      <>
+                        <button onClick={openAccountModal} type="button" className={styles.navItem}>
+                          {account.displayName}
+                          {account.displayBalance
+                            ? ` (${account.displayBalance})`
+                            : ''}
+                        </button>
+                        {
+                          <div className={styles.dropdown}>
+                            <div className={styles.dropdownItem} style={{ paddingTop: "15px" }} onClick={handleMyWishesClick}>My Wishes</div>
+                            <div className={styles.dropdownItem} style={{ lineHeight: "30px" }} onClick={() => setShowMyFateGifts(!showMyFateGifts)}>My Wish Rewards</div>
+                            <div className={styles.dropdownItem} style={{ paddingBottom: "15px" }} onClick={() => disconnect()}>Disconnect</div>
+                          </div>
+                        }
+                      </>
                     );
                   })()}
                 </div>
@@ -152,13 +154,6 @@ export default function Header() {
             }}
           </ConnectButton.Custom>
 
-          {
-            address && isSupportedChain && <div className={styles.dropdown}>
-              <div className={styles.dropdownItem} style={{ paddingTop: "15px" }} onClick={handleMyWishesClick}>My Wishes</div>
-              <div className={styles.dropdownItem} style={{ lineHeight: "30px" }} onClick={() => setShowMyFateGifts(!showMyFateGifts)}>My Wish Rewards</div>
-              <div className={styles.dropdownItem} style={{ paddingBottom: "15px" }} onClick={() => disconnect()}>Disconnect</div>
-            </div>
-          }
         </div>
         <button className={styles.bgmButton} onClick={toggleBGM}>
           <img

@@ -4,15 +4,15 @@ import carouselStyles from "./carousel.module.css";
 import { getComponentValue } from "@latticexyz/recs";
 import { components } from "../../mud/recs";
 import { encodeEntity } from "@latticexyz/store-sync/recs";
-import { WISH_POOL_ID } from "../../utils/contants";
+import { CURRENCY_SYMBOL, WISH_POOL_ID } from "../../utils/contants";
 import { formatEther, TransactionReceipt } from "viem";
 import { useAccount } from "wagmi";
-import { useAccountModal } from "@latticexyz/entrykit/internal";
-import { incenseData } from "../../utils/incenseData";
+import { ImageItem, incenseData } from "../../utils/incenseData";
 import { blindBoxData } from "../../utils/blindBoxData";
 import { ErrorToast } from "../common/ErrorToast";
 import { useLocation } from "react-router-dom";
 import { ConnectButton, useConnectModal } from '@rainbow-me/rainbowkit';
+import commonStyles from "../common/common.module.css";
 
 export type Props = {
   readonly wish?: (
@@ -156,12 +156,7 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
             <h1>MAKE A WISH</h1>
-            <span className={styles.dividingLine}>
-              <img
-                src="/images/wish/WishPanel/DividingLine.webp"
-                alt="dividing line"
-              />
-            </span>
+            <div className={commonStyles.divider} style={{width: "100%", marginLeft: "auto"}}/>
 
             <span className={styles.itemTitle}>WISH</span>
             <div className={styles.inputBoxContainer}>
@@ -197,13 +192,12 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
               />
             </div>
             <p className={styles.totalEth}>
-              Total: {formatEther(totalAmount)} ETH
+              Total: {formatEther(totalAmount)} {CURRENCY_SYMBOL}
             </p>
             <ConnectButton.Custom>
               {({
                 account,
                 chain,
-                openAccountModal,
                 openChainModal,
                 openConnectModal,
                 authenticationStatus,
@@ -248,8 +242,7 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
                             className={styles.sendButton}
                             onClick={openChainModal}
                           >
-                            <span className={styles.wrongNetwork}
-                             style={{color: "#FF494A"}}>
+                            <span className={styles.wrongNetwork}>
                               Wrong network
                             </span>
                           </button>
@@ -271,15 +264,6 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
                 );
               }}
             </ConnectButton.Custom>
-            {/* <button
-              className={styles.sendButton}
-              onClick={() => handleSubmit()}
-              disabled={isSubmitting}
-            >
-              <span className={styles.sendButtonText}>
-                {isSubmitting ? "Loading..." : "Send the wish"}
-              </span>
-            </button> */}
             <button
               className={styles.closeButton}
               onClick={() => setShowModal(false)}
@@ -422,7 +406,7 @@ const Carousel = ({ images, onSelectId, type = "incense" }: CarouselProps) => {
         <div className={carouselStyles.sub}>
           <span className={carouselStyles.price}>
             {currentItemData?.amount
-              ? `${formatEther(currentItemData.amount)} ETH`
+              ? `${formatEther(currentItemData.amount)} ${CURRENCY_SYMBOL}`
               : "Free"}
           </span>
           {type === "incense" && (

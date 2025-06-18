@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import styles from './myFateGifts.module.css';
-import commonStyle from "../wishWall/index.module.css";
+import commonStyles from "../common/common.module.css";
 import { useAccount } from 'wagmi';
 import { formatEther } from 'viem';
 import { components } from "../../mud/recs";
@@ -94,7 +94,6 @@ const MyFateGifts = ({ onClose }: Props) => {
           };
         });
       });
-
       setAllRewardsData(rewardsData);
     } catch (err) {
       console.error('Failed to load wish rewards:', err);
@@ -130,7 +129,7 @@ const MyFateGifts = ({ onClose }: Props) => {
           <div className={styles.header}>
             <h2>My Wish Rewards</h2>
           </div>
-          <div className={styles.divider} />
+          <div className={commonStyles.divider} />
           <div className={styles.body}>
             <div className={styles.totalInfo}>
               <div className={styles.totalInfoItem}>
@@ -149,9 +148,9 @@ const MyFateGifts = ({ onClose }: Props) => {
             <p className={styles.pTitle}>MY SELECTION HISTORY :</p>
             <div className={styles.tableWrapper}>
               <div className={styles.tableHeader}>
-                <div className={styles.cell}>Time</div>
+                <div className={`${styles.cell} ${styles.cellTime}`}>Time</div>
                 <div className={styles.cell}>Type</div>
-                <div className={styles.cell}>Received</div>
+                <div className={`${styles.cell} ${styles.cellReceived}`}>Received</div>
                 <div className={styles.scrollbarSpacer} />
               </div>
               <div className={styles.scrollContainer}>
@@ -159,7 +158,7 @@ const MyFateGifts = ({ onClose }: Props) => {
                   <div className={styles.tableBody}>
                     {allRewardsData.map((data, i) => (
                       <div key={i} className={styles.row}>
-                        <div className={styles.cell}>
+                        <div className={`${styles.cell} ${styles.cellTime}`}>
                           {
                             formatInTimeZone(
                               new Date(data.wishTime * 1000),
@@ -169,12 +168,12 @@ const MyFateGifts = ({ onClose }: Props) => {
                           }
                         </div>
                         <div className={styles.cell}>{data.type}</div>
-                        <div className={styles.cell}>{formatEther(data.reward)} ETH</div>
+                        <div className={`${styles.cell} ${styles.cellReceived}`}>{formatEther(data.reward)} ETH</div>
                       </div>
                     ))}
                   </div>
                   {loading && (
-                    <div className={commonStyle.loading}>
+                    <div className={commonStyles.loading}>
                       <img src="/images/wishWall/Loading.webp" alt="Loading..." />
                     </div>
                   )}
