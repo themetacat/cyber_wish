@@ -37,27 +37,27 @@ const MetaCatDev = defineChain({
 
 export const chains = [
   MetaCatDev,
-  {
-    ...anvil,
-    contracts: {
-      ...anvil.contracts,
-      paymaster: {
-        address: "0xf03E61E7421c43D9068Ca562882E98d1be0a6b6e",
-      },
-    },
-    blockExplorers: {
-      default: {} as never,
-      worldsExplorer: {
-        name: "MUD Worlds Explorer",
-        url: "http://localhost:13690/anvil/worlds",
-      },
-    },
-  },
+  // {
+  //   ...anvil,
+  //   contracts: {
+  //     ...anvil.contracts,
+  //     paymaster: {
+  //       address: "0xf03E61E7421c43D9068Ca562882E98d1be0a6b6e",
+  //     },
+  //   },
+  //   blockExplorers: {
+  //     default: {} as never,
+  //     worldsExplorer: {
+  //       name: "MUD Worlds Explorer",
+  //       url: "http://localhost:13690/anvil/worlds",
+  //     },
+  //   },
+  // },
 ] as const satisfies Chain[];
 
 export const transports = {
   [MetaCatDev.id]: webSocket(),
-  [anvil.id]: webSocket(),
+  // [anvil.id]: webSocket(),
 } as const;
 
 export const wagmiConfig = createWagmiConfig({
@@ -69,7 +69,7 @@ export const wagmiConfig = createWagmiConfig({
   transports,
   pollingInterval: {
     [MetaCatDev.id]: 2000,
-    [anvil.id]: 2000,
+    // [anvil.id]: 2000,
   },
 });
 
