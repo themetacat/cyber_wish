@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import styles from './myFateGifts.module.css';
-import commonStyle from "../wishWall/index.module.css";
+import commonStyles from "../common/common.module.css";
 import { useAccount } from 'wagmi';
 import { formatEther } from 'viem';
 import { components } from "../../mud/recs";
@@ -130,7 +130,7 @@ const MyFateGifts = ({ onClose }: Props) => {
           <div className={styles.header}>
             <h2>My Wish Rewards</h2>
           </div>
-          <div className={styles.divider} />
+          <div className={commonStyles.divider} />
           <div className={styles.body}>
             <div className={styles.totalInfo}>
               <div className={styles.totalInfoItem}>
@@ -174,7 +174,7 @@ const MyFateGifts = ({ onClose }: Props) => {
                     ))}
                   </div>
                   {loading && (
-                    <div className={commonStyle.loading}>
+                    <div className={commonStyles.loading}>
                       <img src="/images/wishWall/Loading.webp" alt="Loading..." />
                     </div>
                   )}

@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useMemo, useCallback } from "react";
 import styles from "./index.module.css";
-import commonStyle from "../wishWall/index.module.css";
+import commonStyles from "../common/common.module.css";
 import wishWallStyles from "../wishWall/index.module.css";
 import { components } from "../../mud/recs";
 import { getComponentValue } from "@latticexyz/recs";
@@ -156,13 +156,7 @@ export default function MyWishes() {
     <div className={styles.page}>
       <h1 className={styles.title}>My Wishes</h1>
       <div className={styles.content} ref={containerRef}>
-        <span className={styles.dividingLine}>
-          <img
-            src="/images/wish/WishPanel/DividingLine.webp"
-            alt="dividing line"
-          />
-        </span>
-
+       <div className={commonStyles.divider} />
         <div className={styles.wishSummary}>
           <div className={styles.wishSummaryItem}>
             <span>{wishCount} Wishes</span>
@@ -174,7 +168,8 @@ export default function MyWishes() {
             <span>My Wish Rewards</span>
           </div>
         </div>
-
+      <div className={commonStyles.divider} />
+      <br />
         {wishes.map((item, index) => (
           <div key={index} className={styles.infoBox}>
             <div className={styles.textContent}>
@@ -216,7 +211,7 @@ export default function MyWishes() {
           </div>
         ))}
         {loading && (
-          <div className={commonStyle.loading}>
+          <div className={commonStyles.loading}>
             <img src="/images/wishWall/Loading.webp" alt="Loading..." />
           </div>
         )}

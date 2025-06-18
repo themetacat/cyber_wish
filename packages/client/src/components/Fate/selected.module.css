@@ -49,16 +49,6 @@
     font-family: 'FSKim-Medium';
 }
 
-.divider {
-    height: 1px;
-    margin-left: 5%;
-    margin-top: 1%;
-    width: 90%;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0.05), rgba(242, 201, 109, 1), rgba(255, 255, 255, 0.05));
-    filter: blur(0px);
-    flex-shrink: 0;
-}
-
 .tableWrapper {
     height: 72.9%;
     display: flex;

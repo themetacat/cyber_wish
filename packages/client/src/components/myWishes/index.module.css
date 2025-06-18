@@ -130,20 +130,6 @@
   box-sizing: border-box;
 }
 
-.dividingLine {
-  width: 100%;
-  height: 2.08px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.dividingLine img {
-  width: 98%;
-  height: auto;
-  display: block;
-}
 
 .wishSummary {
   display: flex;

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styles from './selected.module.css';
-import commonStyle from "../wishWall/index.module.css";
+import commonStyles from "../common/common.module.css";
 import { shortenAddress } from '../../utils/common';
 import { useAccount } from 'wagmi';
-import { getBoostWisherRecords, getCycleInfo, getWisherByIndex, getWisherCycleRecords } from '../common';
+import { getBoostWisherRecords, getCycleInfo, getWisherByIndex } from '../common';
 import { formatEther } from 'viem';
 import { CURRENCY_SYMBOL } from "../../utils/contants"
 import { apiServer } from '../../common';
@@ -126,7 +126,7 @@ const Selected = ({ cycle, onClose }: Props) => {
         <div className={styles.header}>
           <h2>Cycle Details</h2>
         </div>
-        <div className={styles.divider} />
+        <div className={commonStyles.divider} />
 
         <div className={styles.tableWrapper}>
           <div className={styles.tableHeader}>
@@ -155,7 +155,7 @@ const Selected = ({ cycle, onClose }: Props) => {
                 ))}
               </div>
               {loading && (
-                <div className={commonStyle.loading}>
+                <div className={commonStyles.loading}>
                   <img src="/images/wishWall/Loading.webp" alt="Loading..." />
                 </div>
               )}
