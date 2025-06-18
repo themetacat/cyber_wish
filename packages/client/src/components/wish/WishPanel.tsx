@@ -127,6 +127,8 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
           setErrorMessage("Insufficient balance.");
         } else if (errorMessage.includes("Free times limit reached.")) {
           setErrorMessage("Free times limit reached.");
+        } else if (errorMessage.includes("User rejected the request")) {
+          setErrorMessage("You rejected the request.");
         } else {
           setErrorMessage("Failed to make a wish. Please try again.");
         }
@@ -156,7 +158,7 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
             <h1>MAKE A WISH</h1>
-            <div className={commonStyles.divider} style={{width: "100%", marginLeft: "auto"}}/>
+            <div className={commonStyles.divider} style={{ width: "100%", marginLeft: "auto" }} />
 
             <span className={styles.itemTitle}>WISH</span>
             <div className={styles.inputBoxContainer}>
