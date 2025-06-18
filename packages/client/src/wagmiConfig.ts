@@ -16,8 +16,8 @@ const MetaCatDev = defineChain({
   },
   nativeCurrency: {
     decimals: 18,
-    name: 'Ether',
-    symbol: 'ETH',
+    name: 'Binance Coin',
+    symbol: 'BNB',
   },
 
   rpcUrls: {
