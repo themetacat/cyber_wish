@@ -212,7 +212,7 @@ export default function FateGifts() {
                                                             {row.isBoost ? `Selected: ${box.selectedCount}` : `Participants: ${participantCount}`}
                                                         </span>
                                                     </div>
-                                                    {box.wisherList.length === 0 ? (
+                                                    {row.isBoost && box.wisherList.length === 0 ? (
                                                         <div className={style.dataRow1}>No one was selected!</div>
                                                     ) : (
                                                         box.wisherList.slice(0, showRows).map((item: string, i) => (
