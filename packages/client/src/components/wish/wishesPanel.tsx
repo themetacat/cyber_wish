@@ -15,39 +15,38 @@ interface WishInfo {
   wishTime: number;
 }
 
-const MAX_WISHES = 20;
-const ITEM_HEIGHT = 96;
+const MAX_WISHES = 30;
+const SPEED = 0.5;
 
 export default function WishesPanel() {
-  const leftRef = useRef<HTMLDivElement>(null);
-  const rightRef = useRef<HTMLDivElement>(null);
-
-  const wishInfoArr = useRef<WishInfo[]>([]);
+  const leftRef = useRef<HTMLUListElement>(null);
+  const rightRef = useRef<HTMLUListElement>(null);
+  const wishInfoArrLeft = useRef<WishInfo[]>([]);
+  const wishInfoArrRight = useRef<WishInfo[]>([]);
   const [leftOffset, setLeftOffset] = useState(0);
   const [rightOffset, setRightOffset] = useState(0);
   const lastFetchIndexRef = useRef<number>(0);
-  const [visibleCount, setVisibleCount] = useState(4);
   const [oldWishCount, setOldWishCount] = useState(-1);
-
-  const getLeftData = () =>
-    wishInfoArr.current.filter((_, i) => i % 2 === 0).slice(0, visibleCount + 1);
-  const getRightData = () =>
-    wishInfoArr.current.filter((_, i) => i % 2 === 1).slice(0, visibleCount + 1);
-
-  const SCROLL_INTERVAL = 2000;
   const Wishes = components.Wishes;
+  const lastAddedSideRef = useRef<'left' | 'right'>('right');
 
   useEffect(() => {
     const wishCount = getWishCount();
     // lastFetchIndexRef.current = wishCount;
 
     const fetchInitialWishes = () => {
+      let turn = 0;
       // for (let index = wishCount; index >= wishCount - MAX_WISHES && index > 0; index--) {
       for (let index = wishCount; index >= wishCount - MAX_WISHES; index--) {
 
         const wishInfo = popOneWish();
         if (wishInfo) {
-          wishInfoArr.current.push(wishInfo);
+          if (turn === 0) {
+            wishInfoArrLeft.current.push(wishInfo);
+          } else {
+            wishInfoArrRight.current.push(wishInfo);
+          }
+          turn = 1 - turn;
         }
       }
     }
@@ -72,7 +71,6 @@ export default function WishesPanel() {
   }
 
   const fetchOneWish = (wishIndex: number): WishInfo | undefined => {
-
     const id = pad(`0x${wishIndex.toString(16)}`, { size: 32 });
     const key = encodeEntity(Wishes.metadata.keySchema, { poolId: WISH_POOL_ID, id: id });
     const wishData = getComponentValue(Wishes, key);
@@ -106,7 +104,21 @@ export default function WishesPanel() {
       return;
     }
 
-    wishInfoArr.current.push(wishInfo);
+    const sides: ('left' | 'right')[] =
+      lastAddedSideRef.current === 'right' ? ['left', 'right'] : ['right', 'left'];
+
+    for (const side of sides) {
+      const len = side === 'left' ? wishInfoArrLeft.current.length : wishInfoArrRight.current.length;
+      if (len < 40) {
+        if (side === 'left') {
+          wishInfoArrLeft.current.push(wishInfo);
+        } else {
+          wishInfoArrRight.current.push(wishInfo);
+        }
+        lastAddedSideRef.current = side;
+        break;
+      }
+    }
   }, [wishCountData, oldWishCount])
 
 
@@ -119,46 +131,77 @@ export default function WishesPanel() {
     return wishCount;
   }
 
+
   useEffect(() => {
-    function updateVisibleCount() {
-      const leftHeight = leftRef.current?.clientHeight ?? 200;
-      const rightHeight = rightRef.current?.clientHeight ?? 200;
-      const minHeight = Math.min(leftHeight, rightHeight);
-      const count = Math.floor(minHeight / ITEM_HEIGHT);
-      setVisibleCount(count > 0 ? count : 1);
-    }
-    updateVisibleCount();
-    window.addEventListener("resize", updateVisibleCount);
-    return () => window.removeEventListener("resize", updateVisibleCount);
-  }, []);
+    let animationFrameId: number;
+    let currentOffset = 0;
 
-  const scrollOnce = async () => {
-    setLeftOffset(-ITEM_HEIGHT);
-    setRightOffset(-ITEM_HEIGHT);
+    const animate = () => {
+      currentOffset -= SPEED;
 
-    setTimeout(async () => {
-      wishInfoArr.current.shift();
-      wishInfoArr.current.shift();
+      const container = leftRef.current;
+      const firstItem = container?.children[0] as HTMLElement | undefined;
+      if (firstItem && Math.abs(currentOffset) >= firstItem.offsetHeight) {
+        const consumedHeight = firstItem.offsetHeight;
 
-      if (wishInfoArr.current.length < MAX_WISHES) {
-        const newWish1 = popOneWish();
-        const newWish2 = popOneWish();
-        if (newWish1) {
-          wishInfoArr.current.push(newWish1);
+        wishInfoArrLeft.current.shift();
+        if (wishInfoArrLeft.current.length < MAX_WISHES / 2) {
+          const newWish = popOneWish();
+          if (newWish) wishInfoArrLeft.current.push(newWish);
         }
-        if (newWish2) {
-          wishInfoArr.current.push(newWish2);
-        }
+        currentOffset += consumedHeight + 25;
       }
-      setLeftOffset(0);
-      setRightOffset(0);
-    }, 500);
-  };
+
+      setLeftOffset(currentOffset);
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, []);
 
   useEffect(() => {
-    const interval = setInterval(scrollOnce, SCROLL_INTERVAL);
-    return () => clearInterval(interval);
+    let animationFrameId: number;
+    let currentOffset = 0;
+
+    const animate = () => {
+      currentOffset -= SPEED;
+
+      const container = rightRef.current;
+      const firstItem = container?.children[0] as HTMLElement | undefined;
+      if (firstItem && Math.abs(currentOffset) >= firstItem.offsetHeight) {
+        const consumedHeight = firstItem.offsetHeight;
+
+        wishInfoArrRight.current.shift();
+        if (wishInfoArrRight.current.length < MAX_WISHES / 2) {
+          const newWish = popOneWish();
+          if (newWish) wishInfoArrRight.current.push(newWish);
+        }
+        currentOffset += consumedHeight + 25;
+      }
+
+      setRightOffset(currentOffset);
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrameId);
   }, []);
+
+
+  // useEffect(() => {
+  //   function updateVisibleCount() {
+  //     const leftHeight = leftRef.current?.clientHeight ?? 200;
+  //     const rightHeight = rightRef.current?.clientHeight ?? 200;
+  //     const minHeight = Math.min(leftHeight, rightHeight);
+  //     const count = Math.floor(minHeight / ITEM_HEIGHT);
+  //     setVisibleCount(count > 0 ? count : 1);
+  //   }
+  //   updateVisibleCount();
+  //   window.addEventListener("resize", updateVisibleCount);
+  //   return () => window.removeEventListener("resize", updateVisibleCount);
+  // }, []);
+
 
   function shortenAddress(address: string) {
     return `${address.slice(0, 5)}...${address.slice(-4)}`;
@@ -166,16 +209,17 @@ export default function WishesPanel() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.panel} ref={leftRef}>
+      <div className={styles.panel}>
         <div className={styles.scrollWindow}>
           <ul
+            ref={leftRef}
             className={styles.list}
             style={{
               transform: `translateY(${leftOffset}px)`,
-              transition: leftOffset === 0 ? "none" : "transform 0.5s ease",
+              transition: "none",
             }}
           >
-            {getLeftData().map((wish, i) => (
+            {wishInfoArrLeft.current.map((wish, i) => (
               <li key={i} className={styles.item}>
                 <div className={styles.wishContent}>{wish.wishContent}</div>
                 <div className={styles.wishMeta}>
@@ -192,16 +236,17 @@ export default function WishesPanel() {
         </div>
       </div>
 
-      <div className={styles.panel} ref={rightRef}>
+      <div className={styles.panel}>
         <div className={styles.scrollWindow}>
           <ul
+            ref={rightRef}
             className={styles.list}
             style={{
               transform: `translateY(${rightOffset}px)`,
-              transition: rightOffset === 0 ? "none" : "transform 0.5s ease",
+              transition: "none",
             }}
           >
-            {getRightData().map((wish, i) => (
+            {wishInfoArrRight.current.map((wish, i) => (
               <li key={i} className={styles.item}>
                 <div className={styles.wishContent}>{wish.wishContent}</div>
                 <div className={styles.wishMeta}>

@@ -35,7 +35,7 @@
 }
 
 .item {
-    height: 96px;
+    min-height: 96px;
     padding: 0 8px;
     display: flex;
     flex-direction: column;
@@ -47,6 +47,7 @@
     font-size: 14px;
     color: #333;
     line-height: 1.2;
+    margin-bottom: 25px;
 }
 
 .item:hover {
@@ -55,7 +56,6 @@
 }
 
 .wishContent {
-    width: 570px;
     font-family: '155-SSZhongZhengSongTi';
     font-weight: 400;
     font-size: 16px;
