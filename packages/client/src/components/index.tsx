@@ -31,7 +31,7 @@ export default function Main() {
       sync.data && worldContract
         ? async (incenseId: number, blindBoxId: number, wishContent: string, value: number) => {
           const tx = await worldContract.write.cyberwish__wish([WISH_POOL_ID
-            , BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: parseEther(value.toString()), gas: 15000000n, });
+            , BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: parseEther(value.toString()), gas: 2000000n, });
           const res = await sync.data.waitForTransaction(tx);
           if (res && res.status != "success") {
             await worldContract.simulate.cyberwish__wish([WISH_POOL_ID, BigInt(incenseId), BigInt(blindBoxId), wishContent], { value: parseEther(value.toString()) });
