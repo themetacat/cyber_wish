@@ -19,7 +19,7 @@ contract PostDeploy is Script {
     vm.startBroadcast(deployerPrivateKey);
 
     bytes32 poolId = bytes32(uint256(1));
-    WishingPool.set(poolId, 0x60EA96f57B3a5715A90DAe1440a78f8bb339C92e, 0, block.timestamp, 300, "CyberWish");
+    WishingPool.set(poolId, 0x8C03Aaca79584F3e00FE74c7c723be78Ad55f586, 0, 1750248000, 86400, "CyberWish");
 
     Incense.set(poolId, 1, 0, 3600, 0, 3, 0, false, "Pure Wish");
     Incense.set(poolId, 2, 19 * 10 ** 14, 3600 * 6, 15, 30, 20, true, "Luck Wish");
