@@ -125,7 +125,7 @@ export default function WishingWall() {
             <div className={styles.textContent}>
               <div className={styles.wishContent}>{item.wishContent}</div>
               <div className={styles.wishMeta}>
-                <span>{shortenAddress(item.wisher)}</span>
+                <span>By {shortenAddress(item.wisher)}</span>
                 <span>{format(new Date(item.wishTime * 1000), "h:mm a·MMM d,yyyy")}</span>
               </div>
               <div className={styles.wishInteractData}>

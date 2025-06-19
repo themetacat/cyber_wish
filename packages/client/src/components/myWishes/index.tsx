@@ -164,7 +164,7 @@ export default function MyWishes() {
           <div className={styles.wishSummaryItem}>
             <span>{wishPoints} Wish Points</span>
           </div>
-          <div className={styles.myFatedGifts} onClick={() => setShowMyFateGifts(!showMyFateGifts)}>
+          <div className={styles.wishSummaryItem} onClick={() => setShowMyFateGifts(!showMyFateGifts)}>
             <span>My Wish Rewards</span>
           </div>
         </div>

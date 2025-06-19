@@ -50,14 +50,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 116px;
   margin-bottom: 10px;
   box-sizing: border-box;
   border: 2px solid #F8E49C;
   border-radius: 20px;
   background-color: rgba(255, 245, 204, 0.1);
   backdrop-filter: blur(1px);
-  padding: 0 30px;
+  padding: 17px 30px;
   cursor: pointer;
 }
 
@@ -70,7 +69,7 @@
   display: flex;
   flex-direction: column;
   width: calc(100% - 160px);
-  gap: 3px;
+  gap: 10px;
 }
 
 .wishContent {
@@ -81,16 +80,14 @@
   line-height: 31px;
   word-break: break-word;
   align-items: center;
-
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
   display: block;
 }
 
 .wishMeta {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 30px;
 
   font-family: '155-SSZhongZhengSongTi';
@@ -137,6 +134,10 @@
   align-items: center;
   width: 100%;
   margin: 20px 0;
+  color: #F4C874;
+  font-family: 'Sling';
+  font-size: 18px;
+  font-weight: 200;
 }
 
 .wishSummaryItem {
@@ -149,32 +150,9 @@
   transform: scale(1.05);
 }
 
-.wishSummaryItem span {
-  color: #F4C874;
-  font-family: 'Sling';
-  font-size: 18px;
-  font-weight: 200;
-}
-
-.myFatedGifts {
-  text-align: center;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-.myFatedGifts:hover {
-  transform: scale(1.05);
-}
-
-.myFatedGifts span {
-  color: #F4C874;
-  font-family: 'Sling';
-  font-size: 18px;
-  font-weight: 200;
-}
 
 .blessingItemContainer {
-  height: 85%;
+  max-height: 87%;
   display: none;
   position: absolute;
   right: 140px;
@@ -182,24 +160,24 @@
   border: 1px solid #F8E49C;
   border-radius: 20px;
   background-color: #000;
-  padding: 6px;
-  width: 400px;
+  padding: 10px;
+  max-width: 550px;
   pointer-events: none;
   z-index: 10000;
 }
 
 .blessingItemContainer img {
-  width: 30.33%;
+  width: 22%;
   height: 80px;
   object-fit: contain;
   transition: transform 0.2s ease;
 }
 
 .blessingItemContentContainer {
-  width: 66.67%;
+  width: 78%;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   cursor: pointer;
   letter-spacing: 0.1em;
   transition: transform 0.2s ease;
@@ -224,7 +202,7 @@
   text-align: center;
 }
 
-.image:hover + .blessingItemContainer {
+.image:hover+.blessingItemContainer {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -232,8 +210,20 @@
   transform: scale(1.1);
 }
 
-@media (max-height: 743px) {
-  .content{
-    height: 100vh;
+@media (max-width: 768px) {
+  .title {
+    font-size: 28px;
+  }
+
+  .content {
+    width: 95vw;
+  }
+
+  .textContent {
+    width: calc(100% - 80px);
+  }
+
+  .wishSummary {
+    font-size: 14px;
   }
 }
