@@ -11,6 +11,9 @@ export let apiServer = "http://127.0.0.1:5000";
 if (chainId == 31338) {
   indexerUrl = "https://indexerdev.pixelaw.world"
   apiServer = "https://api.metacat.world"
+}else if(chainId == 56){
+  indexerUrl = "https://indexerbnb.pixelaw.world"
+  apiServer = "https://api.metacat.world"
 }
 
 export const url = new URL(window.location.href);

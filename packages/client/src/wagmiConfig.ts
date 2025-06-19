@@ -1,4 +1,4 @@
-import { Chain, defineChain, http, webSocket } from "viem";
+import { Chain, defineChain, webSocket } from "viem";
 import { anvil } from "viem/chains";
 import { createWagmiConfig } from "@latticexyz/entrykit/internal";
 import { chainId } from "./common";
@@ -35,8 +35,38 @@ const MetaCatDev = defineChain({
   },
 })
 
+const BSC = defineChain({
+  id: 56,
+  name: 'BNB Smart Chain Mainnet',
+  network: 'BNB Smart Chain Mainnet',
+  iconUrl: 'https://ugc.production.linktr.ee/a31e9139-afd3-4ea2-bb1c-62de47a6ad49_Group-480971734--4-.png?io=true&size=avatar-v3_0',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Binance Coin',
+    symbol: 'BNB',
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://bsc-dataseed.bnbchain.org'],
+      webSocket: ['wss://bsc-rpc.publicnode.com'],
+    },
+    public: {
+      http: ['https://bsc-dataseed.bnbchain.org'],
+      webSocket: ['wss://bsc-rpc.publicnode.com'],
+    },
+  },
+  blockExplorers: {
+    default: {} as never,
+    worldsExplorer: {
+      name: "BNB Smart Chain Explorer",
+      url: "https://bscscan.com/",
+    },
+  },
+})
+
 export const chains = [
-  MetaCatDev,
+  BSC,
+  // MetaCatDev,
   // {
   //   ...anvil,
   //   contracts: {
@@ -56,8 +86,9 @@ export const chains = [
 ] as const satisfies Chain[];
 
 export const transports = {
-  [MetaCatDev.id]: webSocket(),
+  // [MetaCatDev.id]: webSocket(),
   // [anvil.id]: webSocket(),
+  [BSC.id]: webSocket(),
 } as const;
 
 export const wagmiConfig = createWagmiConfig({
@@ -68,9 +99,8 @@ export const wagmiConfig = createWagmiConfig({
   chains,
   transports,
   pollingInterval: {
-    [MetaCatDev.id]: 2000,
+    // [MetaCatDev.id]: 2000,
     // [anvil.id]: 2000,
+    [BSC.id]: 2000,
   },
 });
-
-export const supportedChains = [31337, 31338];
