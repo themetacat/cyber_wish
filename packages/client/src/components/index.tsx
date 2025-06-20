@@ -42,43 +42,10 @@ export default function Main() {
     [sync.data, worldContract],
   );
 
-  const boostByPoints = useMemo(
-    () =>
-      sync.data && worldContract
-        ? async () => {
-          console.log("boost points");
-          const tx = await worldContract.write.cyberwish__BoostWisherByPoints([WISH_POOL_ID, BigInt(2)]);
-          console.log("tx", tx);
-          console.log(await sync.data.waitForTransaction(tx));
-          const simulateRes = await worldContract.simulate.cyberwish__BoostWisherByPoints([WISH_POOL_ID, BigInt(1)]);
-          console.log(simulateRes);
-        }
-        : undefined,
-    [sync.data, worldContract],
-  );
-
-  const boostByStar = useMemo(
-    () =>
-      sync.data && worldContract
-        ? async () => {
-          console.log("boost star");
-          const tx = await worldContract.write.cyberwish__BoostWisherByStar([WISH_POOL_ID, BigInt(2)]);
-          console.log("tx", tx);
-          console.log(await sync.data.waitForTransaction(tx));
-          const simulateRes = await worldContract.simulate.cyberwish__BoostWisherByStar([WISH_POOL_ID, BigInt(3)]);
-          console.log(simulateRes);
-        }
-        : undefined,
-    [sync.data, worldContract],
-  );
-
   return (
     <>
       <div className={styles.container}>
         <Header />
-        {/* <button onClick={() => boostByStar()}>boost star</button>
-        <br />
-        <button onClick={() => boostByPoints()}>boost points</button> */}
         <WishPanel wish={wish} setWishStatus={setWishStatus} />
         {location.pathname === "/" && <WishesPanel />}
         {location.pathname === "/" && address && <MyIncenseCarousel />}
