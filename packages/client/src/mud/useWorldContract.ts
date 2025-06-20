@@ -9,12 +9,12 @@ import { useAccount } from "wagmi";
 
 export function useWorldContract():
   | GetContractReturnType<
-      typeof worldAbi,
-      {
-        public: Client<Transport, Chain>;
-        wallet: Client<Transport, Chain, Account>;
-      }
-    >
+    typeof worldAbi,
+    {
+      public: Client<Transport, Chain>;
+      wallet: Client<Transport, Chain, Account>;
+    }
+  >
   | undefined {
   const chainId = useChainId();
   const client = useClient({ chainId });
@@ -24,15 +24,15 @@ export function useWorldContract():
   const { data: worldContract } = useQuery({
     queryKey: ["worldContract", client?.uid, userAddress, chainId],
     queryFn: () => {
-      if (!client) throw new Error("Not connected.");
-        return getContract({
-          abi: worldAbi,
-          address: getWorldAddress(),
-          client: {
-            public: client,
-            wallet: eoaWalletClient,
-          },
-        });
+      if (!client || !eoaWalletClient) throw new Error("Not connected.");
+      return getContract({
+        abi: worldAbi,
+        address: getWorldAddress(),
+        client: {
+          public: client,
+          wallet: eoaWalletClient,
+        },
+      });
     },
     enabled: !!client,
     staleTime: Infinity,
@@ -49,9 +49,12 @@ const clientOptions = {
   pollingInterval: 1000,
 } as const satisfies ClientConfig;
 
-export const useEOAWalletFun =  () => {
+export const useEOAWalletFun = () => {
   const { address: userAddress } = useAccount();
-  
+  if (!userAddress) {
+    return undefined;
+  }
+
   const eoaWalletClient = createWalletClient({
     chain: clientOptions.chain,
     transport: custom(window.ethereum!),
