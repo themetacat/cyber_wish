@@ -30,7 +30,7 @@
   text-align: center;
   font-family: 'FSKim-Medium';
   font-weight: 400;
-  font-size: clamp(28px, 4vw, 60px);
+  font-size: clamp(35px, 6vw, 60px);
   background: linear-gradient(-49deg, #F4C873 0%, #E9CD90 52.5146484375%, #F2C96D 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -51,6 +51,7 @@
 .infoBox {
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
   align-items: center;
   border: 2px solid #F8E49C;
   border-radius: 20px;
@@ -59,7 +60,6 @@
   backdrop-filter: blur(1px);
   padding: 17px 30px;
   cursor: pointer;
-  position: relative;
 }
 
 .infoBox:hover {
@@ -70,8 +70,26 @@
 .textContent {
   display: flex;
   flex-direction: column;
-  width: calc(100% - 160px);
+  text-align: left;
+  width: 100%;
   gap: 10px;
+}
+
+.wishMetaContainer {
+  align-items: center;
+  display: flex;
+  width: 100%;
+
+  &>div:nth-child(1) {
+    width: 63%;
+  }
+
+  &>div:nth-child(2) {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin-left: auto;
+  }
 }
 
 .wishContent {
@@ -88,10 +106,6 @@
 }
 
 .wishMeta {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 30px;
-
   font-family: '155-SSZhongZhengSongTi';
   font-size: 12px;
   font-weight: 400;
@@ -101,13 +115,22 @@
   align-items: center;
 }
 
+.wishMetaImg {
+  width: 75px;
+  height: 75px;
+}
+
+.wishMetaImg:hover {
+  transform: scale(1.1);
+}
+
 .wishInteractData {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 30px;
   justify-content: flex-start;
-  margin-top: 3px;
+  margin-top: 15px;
 
   &>div {
     display: inline-flex;
@@ -156,31 +179,21 @@
   }
 }
 
-.image {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  margin-left: 20px;
-  position: relative;
-}
-
-.image:hover {
-  transform: scale(1.1);
-}
 
 .blessingItemContainer {
-  max-height: 86%;
   display: none;
   position: absolute;
-  right: 140px;
-  transform: translateY(-50%);
+  top: -50%;
+  right: 140%;
   border: 1px solid #F8E49C;
   border-radius: 20px;
   background-color: #000;
   padding: 10px;
-  max-width: 500px;
+  width: max-content;
+  max-width:  calc(28vw + 60px);
+  white-space: normal;
   pointer-events: none;
-  z-index: 10000;
+  z-index: 1000;
 }
 
 .blessingItemContainer img {
@@ -219,7 +232,7 @@
   text-align: center;
 }
 
-.image:hover + .blessingItemContainer {
+.wishMetaImg:hover+.blessingItemContainer {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -288,27 +301,9 @@
 }
 
 
-@media (max-height: 800px) {
-  .title {
-    font-size: 30px;
-  }
-
-  .content {
-    width: 80vw;
-  }
-}
-
 @media (max-width: 768px) {
-  .title {
-    font-size: 28px;
-  }
-
   .content {
     width: 90vw;
-  }
-
-  .textContent{
-    width: calc(100% - 80px);
   }
 
 }

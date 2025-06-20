@@ -28,7 +28,7 @@
 .nav {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: clamp(1px, calc(100vw / 122), 18px);
 }
 
 .navItem {
@@ -36,7 +36,7 @@
   height: 36px;
   font-family: 'Orbitron';
   font-weight: 400;
-  font-size: 18px;
+  font-size: clamp(12px, 2vw, 18px);
   color: #E2BE76;
   text-decoration: none;
   text-transform: capitalize;
@@ -53,7 +53,6 @@
 }
 
 .navItem:hover {
-  /* color: #ffd700; */
   transform: scale(1.05);
 }
 
@@ -84,7 +83,7 @@
   cursor: pointer;
   transition: all 0.1s ease;
   background-color: rgba(255, 245, 204, 0.2);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(5px);
   overflow: hidden;
 }
 
@@ -123,4 +122,11 @@
   width: 24px;
   height: 24px;
   object-fit: contain;
+}
+
+
+@media (max-width: 630px) {
+  .logo {
+    opacity: 0;
+  }
 }

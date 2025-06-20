@@ -72,19 +72,13 @@ export default function Header() {
           onClick={() => navigate("/wishing-wall")}
           className={`${styles.navItem} ${location.pathname === "/wishing-wall" ? styles.selected : ""}`}
         >
-          Wishing Wall
+          Wishes
         </button>
         <button
           onClick={() => navigate("/wishflow-rewards")}
           className={`${styles.navItem} ${location.pathname === "/wishflow-rewards" ? styles.selected : ""}`}
         >
-          Wishflow Rewards
-        </button>
-        <button
-          onClick={() => window.open("https://www.notion.so/Q-A-CyberWish-209d5656f3d980e0af0ef0bfed4aa355", "_blank")}
-          className={styles.navItem}
-        >
-          Q&A
+          Rewards
         </button>
         <div className={styles.connectButton}>
           <ConnectButton.Custom>
@@ -135,9 +129,9 @@ export default function Header() {
                       <>
                         <button onClick={openAccountModal} type="button" className={styles.navItem}>
                           {account.displayName}
-                          {account.displayBalance
+                          {/* {account.displayBalance
                             ? ` (${account.displayBalance})`
-                            : ''}
+                            : ''} */}
                         </button>
                         {
                           <div className={styles.dropdown}>

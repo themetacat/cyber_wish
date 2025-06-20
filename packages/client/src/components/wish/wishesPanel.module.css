@@ -1,6 +1,6 @@
 .container {
     position: fixed;
-    top: 45%;
+    top: 51%;
     left: 0;
     right: 0;
     display: flex;
@@ -15,7 +15,7 @@
 
 .panel {
     width: 30vw;
-    height: 60vh;
+    height: 80vh;
     border-radius: 12px;
     display: flex;
     flex-direction: column;
@@ -82,11 +82,14 @@
 @media (max-width: 768px) {
     .panel {
         width: 40vw;
-        height: 56vh;
-        /* height: 102vw; */
+        height: 68vh;
     }
 
     .wishContent {
         font-size: 14px;
+    }
+
+    .container{
+        top: 46%;
     }
 }
