@@ -303,7 +303,11 @@
 
 @media (max-width: 768px) {
   .content {
-    width: 90vw;
+    width: 100vw;
+  }
+
+  .wishInteractData{
+    gap: 15px;
   }
 
 }
