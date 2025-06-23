@@ -1,6 +1,6 @@
 .myIncenseCarouselContainer {
   position: absolute;
-  bottom: 120px;
+  bottom: calc(9vh + 40px);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -15,7 +15,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 30px;
+  gap: 20px;
   width: auto;
 }
 
@@ -28,6 +28,12 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 1;
+
+    backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+
+  border-radius: 8px;
+  display: inline-block;
 }
 
 .navButton img {
@@ -53,8 +59,8 @@
 }
 
 .incenseImageContainer {
-  width: 100px;
-  height: 100px;
+  width: calc(4vw + 50px);
+  height: calc(4vw + 50px);
   position: relative;
   background-image: url('/images/wish/WishPanel/ItemBorder.webp');
   background-size: cover;
@@ -66,26 +72,30 @@
   border-radius: 0.1rem;
   cursor: pointer;
   transition: transform 0.3s ease;
-  filter: drop-shadow(0 0 18px rgba(244, 200, 115, 0.6));
-
+  filter: drop-shadow(0px 0px 12px rgba(244, 200, 115, 0.6));
 }
 
 .incenseImageContainer:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .incenseImage {
-  width: calc(100% - 5px);
-  height: calc(100% - 5px);
+  width: 95%;
+  height: 95%;
   object-fit: contain;
-  border-radius: 0.1rem;
-  transition: transform 0.3s ease;
+  border-radius: 5px;
+  transition: transform 0.15s ease;
 }
 
 .countdownTimer {
-  margin-top: 8px;
+  margin-top: 5px;
   font-family: "Orbitron";
-  font-size: 1rem;
+  font-size: clamp(14px, 2vw, 18px);
   color: #FFF5CC;
   text-align: center;
-} 
+
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+  border-radius: 8px;
+  display: inline-block;
+}

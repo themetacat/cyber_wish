@@ -1,13 +1,13 @@
 .buttonContainer {
   position: absolute;
-  bottom: 50px;
   width: 100%;
   display: flex;
   justify-content: center;
+   bottom: calc(5vh + 15px);
 }
 
 .mainButton {
-  padding: 12px 24px;
+  padding: 9px 22px;
   background-color: rgba(255, 255, 255, 0.85);
   color: black;
   border: none;
@@ -46,7 +46,7 @@
 .mainButtonText {
   font-family: 'Orbitron';
   font-weight: 700;
-  font-size: 1.2rem;
+  font-size: clamp(12px, 2vw, 20px);
   color: rgba(255, 169, 20, 0.35);
   background: linear-gradient(2deg, rgba(191, 144, 76, 1) 34.6484375%, rgba(255, 238, 219, 1) 77.2216796875%, rgba(255, 238, 219, 1) 100%);
   -webkit-background-clip: text;
@@ -270,9 +270,9 @@
 }
 
 @media (max-width: 768px) {
-  .buttonContainer {
+  /* .buttonContainer {
     bottom: 10vh;
-  }
+  } */
 
   .modalContent {
     padding: 10px 20px;
