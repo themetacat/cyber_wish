@@ -29,7 +29,7 @@
   text-align: center;
   font-family: 'FSKim-Medium';
   font-weight: 400;
-  font-size: 54.08px;
+  font-size: clamp(35px, 6vw, 60px);
   background: linear-gradient(-49deg, #F4C873 0%, #E9CD90 52.5146484375%, #F2C96D 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -58,6 +58,7 @@
   backdrop-filter: blur(1px);
   padding: 17px 30px;
   cursor: pointer;
+  flex-direction: column;
 }
 
 .infoBox:hover {
@@ -68,8 +69,9 @@
 .textContent {
   display: flex;
   flex-direction: column;
-  width: calc(100% - 160px);
   gap: 10px;
+  text-align: left;
+  width: 100%;
 }
 
 .wishContent {
@@ -85,11 +87,24 @@
   display: block;
 }
 
-.wishMeta {
+.wishMetaContainer {
+  align-items: center;
   display: flex;
-  flex-wrap: nowrap;
-  gap: 30px;
+  width: 100%;
 
+  &>div:nth-child(1) {
+    width: 63%;
+  }
+
+  &>div:nth-child(2) {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin-left: auto;
+  }
+}
+
+.wishMeta {
   font-family: '155-SSZhongZhengSongTi';
   font-size: 12px;
   font-weight: 400;
@@ -97,13 +112,16 @@
   color: #FFF6D9;
   display: flex;
   align-items: center;
+  white-space: nowrap;
 }
 
-.image {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  margin-left: 20px;
+.wishMetaImg {
+  width: 75px;
+  height: 75px;
+}
+
+.wishMetaImg:hover {
+  transform: scale(1.1);
 }
 
 @keyframes rotate {
@@ -152,18 +170,19 @@
 
 
 .blessingItemContainer {
-  max-height: 87%;
   display: none;
   position: absolute;
-  right: 140px;
-  transform: translateY(-50%);
+    top: -50%;
+  right: 140%;
   border: 1px solid #F8E49C;
   border-radius: 20px;
   background-color: #000;
   padding: 10px;
-  max-width: 550px;
+    width: max-content;
+  max-width:  calc(28vw + 60px);
+  white-space: normal;
   pointer-events: none;
-  z-index: 10000;
+  z-index: 1000;
 }
 
 .blessingItemContainer img {
@@ -202,7 +221,7 @@
   text-align: center;
 }
 
-.image:hover+.blessingItemContainer {
+.wishMetaImg:hover+.blessingItemContainer {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -211,19 +230,16 @@
 }
 
 @media (max-width: 768px) {
-  .title {
-    font-size: 28px;
-  }
-
   .content {
-    width: 95vw;
+    width: 100vw;
   }
 
-  .textContent {
-    width: calc(100% - 80px);
-  }
 
   .wishSummary {
     font-size: 14px;
+  }
+
+  .infoBox {
+    padding: 17px 19px;
   }
 }

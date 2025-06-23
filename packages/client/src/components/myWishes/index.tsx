@@ -156,7 +156,7 @@ export default function MyWishes() {
     <div className={styles.page}>
       <h1 className={styles.title}>My Wishes</h1>
       <div className={styles.content} ref={containerRef}>
-       <div className={commonStyles.divider} />
+        <div className={commonStyles.divider} />
         <div className={styles.wishSummary}>
           <div className={styles.wishSummaryItem}>
             <span>{wishCount} Wishes</span>
@@ -168,45 +168,51 @@ export default function MyWishes() {
             <span>My Wish Rewards</span>
           </div>
         </div>
-      <div className={commonStyles.divider} />
-      <br />
+        <div className={commonStyles.divider} />
+        <br />
         {wishes.map((item, index) => (
           <div key={index} className={styles.infoBox}>
             <div className={styles.textContent}>
-              <div className={styles.wishContent}>{item.wishContent}</div>
-
               <div className={styles.wishMeta}>
                 By {shortenAddress(item.wisher)}
-                <span className={styles.metaTime}>
-                  {format(new Date(item.wishTime * 1000), "h:mm a·MMM d,yyyy")}
-                </span>
               </div>
-
-              <div className={wishWallStyles.wishInteractData}>
-                <div data-tooltip="Coming Soon"><img src="/images/wishWall/Worship.webp" alt="Worship" /></div>
-                <div data-tooltip="Coming Soon"><img src="/images/wishWall/Msg.webp" alt="Message" /></div>
-                <div data-tooltip="Wish Point(WP)">
-                  <img src="/images/wishWall/Points.webp" alt="Points" />
-                  {item.pointsIncense + item.pointsBlindBox + item.pointsIncenseEasterEgg + item.pointsBlindBoxEasterEgg}
-                </div>
-              </div>
+              <div className={styles.wishContent}>{item.wishContent}</div>
             </div>
 
-            <img
-              src={propsData[item.propId].imageUrl}
-              className={styles.image}
-              alt="blessing item"
-            />
-            <div className={styles.blessingItemContainer}>
-              <img src={propsData[item.propId].imageUrl} alt="blessing item img" />
-              <span className={styles.blessingItemContentContainer}>
-                <span className={styles.blessingItemName}>
-                  {propsData[item.propId].name}
-                </span>
-                <span className={styles.blessingItemDesc}>
-                  {propsData[item.propId].desc}
-                </span>
-              </span>
+            <div className={styles.wishMetaContainer}>
+              <div>
+                <div className={styles.wishMeta}>
+                  <span>
+                    {format(new Date(item.wishTime * 1000), "h:mm a·MMM d,yyyy")}
+                  </span>
+                </div>
+                <div className={wishWallStyles.wishInteractData}>
+                  <div data-tooltip="Coming Soon"><img src="/images/wishWall/Worship.webp" alt="Worship" /></div>
+                  <div data-tooltip="Coming Soon"><img src="/images/wishWall/Msg.webp" alt="Message" /></div>
+                  <div data-tooltip="Wish Point(WP)">
+                    <img src="/images/wishWall/Points.webp" alt="Points" />
+                    {item.pointsIncense + item.pointsBlindBox + item.pointsIncenseEasterEgg + item.pointsBlindBoxEasterEgg}
+                  </div>
+                </div>
+              </div>
+              <div>
+                <img
+                  src={propsData[item.propId].imageUrl}
+                  className={styles.wishMetaImg}
+                  alt="blessing item"
+                />
+                <div className={styles.blessingItemContainer}>
+                  <img src={propsData[item.propId].imageUrl} alt="blessing item img" />
+                  <span className={styles.blessingItemContentContainer}>
+                    <span className={styles.blessingItemName}>
+                      {propsData[item.propId].name}
+                    </span>
+                    <span className={styles.blessingItemDesc}>
+                      {propsData[item.propId].desc}
+                    </span>
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         ))}
