@@ -1,16 +1,16 @@
 .carouselWrapper {
-    height: 11.8rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     width: 100%;
-    background-image: url('/images/wish/WishPanel/CarouselBg.webp'), url('/images/wish/WishPanel/CarouselBgBorder.webp');
-    background-size: cover, 100% 100%;
-    background-position: center, center;
-    background-repeat: no-repeat, no-repeat;
-    border-radius: 0.00625rem;
+    background-color: rgba(255, 245, 204, 0.1);
+    backdrop-filter: blur(1px);
+    border: 1px solid #F8E49C;
+    border-radius: 15px;
     margin: 0 auto;
+    padding: 1vh 1vw;
+    transition: all 0.15s ease-in-out;
 }
 
 .carouselContainer {
@@ -18,9 +18,8 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    overflow: hidden;
     width: 100%;
-    height: 8.2rem;
+    height: calc(9.5vh + 15px);
 }
 
 .carouselInner {
@@ -33,17 +32,17 @@
 
 .card {
     position: absolute;
-    transition: transform 0.4s ease, opacity 0.4s ease;
     opacity: 0;
-    transform: scale(0.8);
+    transform: scale(0.9);
     z-index: 1;
-    width: 4.375rem;
-    height: 4.375rem;
+    width: calc((2.5vw + 2.5vh) / 2 + 30px);
+    height: calc((2.5vw + 2.5vh) / 2 + 30px);
     border-radius: 0.1rem;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    transition: all 0.3s ease-in-out;
 }
 
 .card.incense {
@@ -54,8 +53,8 @@
 }
 
 .card img {
-    width: calc(100% - 0.36rem);
-    height: calc(100% - 0.36rem);
+    width: 93%;
+    height: 93%;
     object-fit: cover;
     border-radius: 0.1rem;
 }
@@ -106,24 +105,24 @@
     transform: scale(1.2);
 }
 
-.navButton:active img{
+.navButton:active img {
     transform: scale(1);
 }
 
 .carouselText {
     text-align: center;
-    margin-top: -0.85rem;
+    margin-top: -1vh;
     line-height: 1.4;
     font-family: "AlibabaPuHuiTi";
 
     .title {
         font-weight: bold;
-        font-size: 1.1rem;
+        font-size: clamp(12px, 2vw, 17px);
         color: #FFF5CC;
     }
 
     .sub {
-        font-size: 0.8rem;
+        font-size: clamp(11px, 2vw, 13px);
         color: #a69a86;
 
         .price {
@@ -136,10 +135,10 @@
     }
 
     .desc {
-        font-size: 0.85rem;
+        font-size: clamp(12px, 2vw, 15px);
         font-weight: 500;
         color: #FFF5CC;
-        margin-top: 0.25rem;
+        margin-top: 0.2vh;
     }
 }
 
@@ -155,10 +154,6 @@
 }
 
 @media (max-width: 768px) {
-    .card {
-        width: 3.125rem;
-        height: 3.125rem;
-    }
 
     .left {
         transform: translateX(-19vw) scale(0.9);
@@ -168,11 +163,8 @@
         transform: translateX(19vw) scale(0.9);
     }
 
-    .carouselContainer {
-        height: 4.6875rem;
+    .carouselInner {
+        width: 78%;
     }
 
-    .carouselInner {
-        width: 73%;
-    }
 }
