@@ -16,10 +16,12 @@ import { useLocation } from "react-router-dom";
 import { WISH_POOL_ID } from "../utils/contants";
 import { useAccount } from 'wagmi';
 import { parseEther } from "viem";
+import Welcome from "./Header/welcome";
 
 
 export default function Main() {
   const [wishStatus, setWishStatus] = useState(false);
+  const [showWelcomePage, setShowWelcomePage] = useState(true);
   const location = useLocation();
   const { address } = useAccount(); // Get the connected address
 
@@ -46,6 +48,7 @@ export default function Main() {
     <>
       <div className={styles.container}>
         <Header />
+        {showWelcomePage && <Welcome onClose={() => setShowWelcomePage(false)} />}
         <WishPanel wish={wish} setWishStatus={setWishStatus} />
         {location.pathname === "/" && <WishesPanel />}
         {location.pathname === "/" && address && <MyIncenseCarousel />}
