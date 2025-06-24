@@ -15,7 +15,7 @@ export default function Welcome({ onClose }: Props) {
 
             <div className={styles.module}>
                 <div className={styles.moduleHeader}>
-                    <img src="/images/Header/hands.webp" alt="hands" className={styles.iconHand} />
+                    <img src="/images/Header/Welcome/Hands.webp" alt="hands" className={styles.iconHand} />
                     <span className={styles.moduleTitle}>Make A Wish</span>
                 </div>
                 <div className={styles.moduleContent}>
@@ -25,7 +25,7 @@ export default function Welcome({ onClose }: Props) {
 
             <div className={styles.module}>
                 <div className={styles.moduleHeader}>
-                    <img src="/images/Header/gift.webp" alt="gift" className={styles.iconGift} />
+                    <img src="/images/Header/Welcome/Gift.webp" alt="gift" className={styles.iconGift} />
                     <span className={styles.moduleTitle}>Two Prize Pools</span>
                 </div>
                 <div className={styles.moduleContent}>
@@ -35,6 +35,8 @@ export default function Welcome({ onClose }: Props) {
             <button className={commonStyles.closeButton} onClick={() => onClose()}>
                 <img src="/images/wish/WishPanel/Close.webp" alt="Close" />
             </button>
+            <img src="/images/Header/Welcome/WelcomeHandBg.webp" alt="WelcomeHandBg" className={styles.cornerImage} />
+
         </div>
     );
 } 
