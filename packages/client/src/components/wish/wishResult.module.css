@@ -13,9 +13,9 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    padding: 18px 30px;
+    padding: 1vh 2vw;
     border-radius: 8px;
-    width: 35.26rem;
+    width: calc(15vw + 285px);
     height: auto;
     display: flex;
     flex-direction: column;
@@ -63,7 +63,7 @@
     text-align: center;
     font-weight: 500;
     font-family: 'FSKim-Medium';
-    font-size: 42px;
+    font-size: clamp(27px, 3vw, 42px);
     color: #F4C873;
     margin: 0 auto;
     display: flex;
@@ -78,7 +78,7 @@
     text-align: center;
     font-weight: 400;
     font-family: 'FSKimTrial-Regular';
-    font-size: 21px;
+    font-size: clamp(15px, 2vw, 21px);
     color: #FFF5CC;
     letter-spacing: 0.12em;
     opacity: 0;
@@ -86,7 +86,7 @@
 }
 
 .dividingLine {
-    margin-bottom: 20px;
+    margin-bottom: 2vh;
     opacity: 0;
     animation: fadeIn 1.0s ease forwards 3.0s;
 }
@@ -95,7 +95,7 @@
     text-align: left;
     font-weight: 400;
     font-family: 'Sling';
-    font-size: 14px;
+    font-size: clamp(12px, 2vw, 14px);
     color: #F4C874;
     opacity: 0;
     text-transform: uppercase;
@@ -106,25 +106,24 @@
 .blessingItemContainer {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 7px;
     width: 100%;
     height: auto;
-    margin: 8px 0;
+    margin-top: 1vh;
     background-image: url('/images/wish/WishResult/blessingItemContainerBG.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
-    padding: 16px;
+    padding: 1.5vh 2.2vw;
     opacity: 0;
     cursor: pointer;
     animation: fadeIn 2.0s ease forwards 11.0s;
 }
 
 .blessingItemContainer img {
-    width: 30.33%;
+    width: calc((9vw + 9vh) / 2);
     height: auto;
     object-fit: contain;
-    margin-left: 16px;
     transition: transform 0.2s ease;
 }
 
@@ -133,7 +132,7 @@
 }
 
 .blessingItemContainer>span {
-    width: 66.67%;
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -155,7 +154,7 @@
 
 .blessingItemName {
     font-family: 'FSKim-Medium';
-    font-size: 21px;
+    font-size: clamp(18px, 2vw, 21px);
     color: #FFF5CC;
     white-space: nowrap;
     overflow: hidden;
@@ -165,7 +164,7 @@
 
 .blessingItemDesc {
     font-family: 'FSKimTrial-Regular';
-    font-size: 16px;
+    font-size: clamp(14px, 2vw, 16px);
     color: #F4C873;
     line-height: 1.4;
     word-wrap: break-word;
@@ -178,7 +177,7 @@
     font-family: 'Sling';
     font-size: 14px;
     color: #F4C874;
-    margin-top: 2px;
+    margin-top: 1vh;
     opacity: 0;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -189,15 +188,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    padding: 2vh;
     width: 100%;
     height: auto;
-    margin: 8px 0;
     background-image: url('/images/wish/WishResult/wishPointsTitleConainerBG.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
-    padding: 24px;
     cursor: pointer;
     opacity: 0;
     animation: fadeIn 2.0s ease forwards 13.5s;
@@ -239,7 +236,7 @@
 }
 
 .wishPointsColumn:last-child {
-    width: 40%;
+    width: calc(3vw + 100px);
     flex-direction: row;
     justify-content: center;
     gap: 8px;
@@ -247,15 +244,15 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    aspect-ratio: 5/1.94;
-
+    aspect-ratio: 11/4.3;
+    border-radius: 6px;
     font-family: 'FSKim-Medium';
-    font-size: 28px;
+    font-size: clamp(22px, 2.1vw, 26px);
     font-weight: 500;
     color: #FAE3A1;
     line-height: 1.4;
     white-space: nowrap;
-    transition: transform 0.2s ease;
+    transition: transform 0.1s ease;
 }
 
 .wishPointsColumn:last-child:hover {
@@ -268,7 +265,7 @@
     background-position: center;
     background-repeat: no-repeat;
     aspect-ratio: auto;
-    padding: 5px;
+    padding: 3px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -295,23 +292,24 @@
 }
 
 .wishPointsColumn img {
-    width: 100px;
-    height: 100px;
+    width: calc((3vw + 3vh) / 2 + 40px);
+    height: auto;
     object-fit: contain;
     position: relative;
     z-index: 1;
+    border-radius: 5px;
 }
 
 .wishPointsValue {
     font-family: 'FSKim-Medium';
-    font-size: 24px;
+    font-size: clamp(20px, 2vw, 24px);
     color: #F4C873;
     white-space: nowrap;
 }
 
 .wishPointsSwellValue {
     font-family: 'FSKim-Medium';
-    font-size: 25px;
+    font-size: clamp(20px, 2vw, 24px);
     color: #FAE3A1;
     white-space: nowrap;
 }
@@ -325,7 +323,7 @@
 
 .wishPointsTotal {
     font-family: 'FSKim-Medium';
-    font-size: 26px;
+    font-size: clamp(21px, 2.2vw, 27px);
     font-weight: 400;
     color: #F4C873;
     line-height: 1.4;
@@ -341,7 +339,6 @@
 .wishPointsTotalValue {
     color: #FFF200;
     font-family: 'FSKim-Medium';
-    font-size: 27px;
     font-weight: 500;
     white-space: nowrap;
     text-transform: uppercase;
@@ -435,6 +432,7 @@
 }
 
 .blindBoxImg {
+    width: calc((14vw + 14vh) / 2 + 100px);
     height: auto;
     object-fit: contain;
     animation: rotateY 2s linear infinite;
@@ -522,7 +520,7 @@
     justify-content: center;
     align-items: center;
     font-family: 'FSKim-Medium';
-    font-size: 24px;
+    font-size: clamp(20px, 2vw, 24px);
     color: #F4C873;
     margin-top: auto;
     opacity: 0;
@@ -537,92 +535,7 @@
 }
 
 .congratulationImage {
-    height: 32px;
-}
-
-@media (max-width: 768px) {
-    .modalContent {
-        padding: 20px 8px;
-        width: 90vw;
-        max-width: 98vw;
-        min-width: unset;
-        height: unset;
-        max-height: 85vh;
-        gap: 2vw;
-        border-radius: 4vw;
-        overflow-y: auto;
-    }
-    .title {
-        font-size: 1.6rem;
-    }
-    .subtitle {
-        font-size: 1rem;
-    }
-    .blessingItemContainer {
-        padding: 8px;
-        gap: 8px;
-    }
-    .blessingItemName {
-        font-size: 1rem;
-    }
-    .blessingItemDesc {
-        font-size: 0.9rem;
-    }
-    .wishPointsContainer {
-        padding: 12px;
-        gap: 8px;
-    }
-    .wishPointsColumn img {
-        width: 60px;
-        height: 60px;
-    }
-    .wishPointsTotal {
-        font-size: 1.1rem;
-    }
-    .wishPointsTotalValue {
-        font-size: 1.2rem;
-    }
-    .closeButton {
-        width: 20px;
-        height: 20px;
-        top: 8px;
-        right: 8px;
-    }
-}
-
-@media (min-width: 769px) and (max-height: 800px) {
-    .modalContent {
-        max-height: 85vh;
-        padding: 1.2rem 1.5rem;
-        gap: 0.25rem;
-        border-radius: 0.5rem;
-        overflow-y: auto;
-    }
-    .title {
-        font-size: 2rem;
-    }
-    .subtitle {
-        font-size: 1.1rem;
-    }
-    .blessingItemName {
-        font-size: 1.1rem;
-    }
-    .blessingItemDesc {
-        font-size: 1rem;
-    }
-    .wishPointsContainer {
-        padding: 16px;
-    }
-    .wishPointsColumn img {
-        width: 80px;
-        height: 80px;
-    }
-    .closeButton {
-        width: 22px;
-        height: 22px;
-        top: 10px;
-        right: 10px;
-    }
+    height: 3.5vh;
 }
 
 .modalContent::-webkit-scrollbar {
@@ -641,4 +554,11 @@
 
 .modalContent::-webkit-scrollbar-thumb:hover {
     background: rgba(244, 200, 115, 0.8);
+}
+
+@media (max-width: 768px) {
+    .closeButton {
+        top: 11px;
+        right: 11px;
+    }
 }

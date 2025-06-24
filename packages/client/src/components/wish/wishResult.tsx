@@ -311,7 +311,7 @@ export default function WishesResult({ wishStatus }: Props) {
               Good fortune follows you......
             </span>
 
-            <div className={`${commonStyles.divider} ${styles.dividingLine}`} style={{width: "100%", marginLeft: "auto"}}/>
+            <div className={`${commonStyles.divider} ${styles.dividingLine}`} style={{ width: "100%", marginLeft: "auto" }} />
             <span className={styles.blessingItemTitle}>
               Your blessing item is:
             </span>
@@ -406,8 +406,8 @@ export default function WishesResult({ wishStatus }: Props) {
             <span className={styles.congratulationText}>
               <div className={styles.congratulationContainer}>
                 <span>Fated Rewards:</span>
-                <img 
-                  src={isStar ? "/images/wish/WishResult/Qualified.webp" : "/images/wish/WishResult/Missed.webp"} 
+                <img
+                  src={isStar ? "/images/wish/WishResult/Qualified.webp" : "/images/wish/WishResult/Missed.webp"}
                   alt={isStar ? "Qualified" : "Missed"}
                   className={styles.congratulationImage}
                 />
