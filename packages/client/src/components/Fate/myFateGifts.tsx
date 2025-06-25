@@ -87,7 +87,7 @@ const MyFateGifts = ({ onClose }: Props) => {
 
           return {
             wishTime,
-            type: isPointsType ? "Wish Points Fund" : "Fated Wish Fund",
+            type: isPointsType ? "Wish Points Rewards" : "Fated Rewards",
             reward: isPointsType
               ? wisherCycleRecords?.boostedPointsAmount ?? 0n
               : wisherCycleRecords?.boostedStarAmount ?? 0n,
