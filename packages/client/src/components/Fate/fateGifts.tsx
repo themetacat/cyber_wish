@@ -6,7 +6,7 @@ import { useEntityQuery } from "@latticexyz/react";
 import { formatInTimeZone } from 'date-fns-tz';
 import commonStyle from "../wishWall/index.module.css";
 import style from './fateGifts.module.css';
-import { getCycleInfo, getTimeStampByCycle, getWisherCycleRecords, getWishPoolInfo } from "../common";
+import { getCycleInfo, getTimeStampByCycle, getWisherByIndex, getWisherCycleRecords, getWishPoolInfo } from "../common";
 import { formatEther } from 'viem';
 import { shortenAddress } from "../../utils/common";
 import Selected from "./selected";
@@ -131,6 +131,24 @@ export default function FateGifts() {
         return elapsedTime < Number(poolInfo.duration);
     };
 
+    const getWillWinCount = (boostType: number, wisherCount: number, wisherIndexId: number): number => {
+        if (wisherCount === 0 || wisherIndexId === 0) return 0;
+
+        if (boostType === 1) {
+            let payCount = 0;
+
+            for (let i = 1; i <= wisherCount; i++) {
+                const wisher = getWisherByIndex(boostType, wisherIndexId, i);
+                if (wisher?.freeWishTime !== wisher?.wishCount) {
+                    payCount++;
+                }
+            }
+            return payCount > 0 ? Math.max(1, Math.floor(payCount / 3)) : 0;
+        }
+
+        return wisherCount <= 3 ? 1 : wisherCount <= 9 ? 2 : 3;
+    };
+
     return (
         <div className={commonStyle.page}>
             <h1 className={commonStyle.title}>Wishflow Rewards</h1>
@@ -176,8 +194,8 @@ export default function FateGifts() {
                                         {row.isBoost ? "Ended" : "Ongoing"}
                                     </span>
                                     <span className={style.viewAllButton} onClick={(e) => {
-                                            e.stopPropagation();
-                                            setSelectedCycle(row.cycle)
+                                        e.stopPropagation();
+                                        setSelectedCycle(row.cycle)
                                     }}>
                                         {isExpanded ? "Cycle Details" : ""}
                                     </span>
@@ -193,7 +211,7 @@ export default function FateGifts() {
                                         {[boostByPointsInfo, boostByStarInfo].map((box, i) => {
                                             const index = i + 1
                                             const cycleInfo = getCycleInfo(row.cycle, index);
-                                            const participantCount = cycleInfo?.wisherCount ?? 0;
+                                            const participantCount = Number(cycleInfo?.wisherCount ?? 0);
 
                                             return (
                                                 <div key={index} className={index === BOOST_TYLE_STAR ? style.box1 : style.box}>
@@ -209,7 +227,7 @@ export default function FateGifts() {
                                                             } {CURRENCY_SYMBOL}
                                                         </span>
                                                         <span style={{ marginLeft: "2vw" }}>
-                                                            {row.isBoost ? `Selected: ${box.selectedCount}` : `Participants: ${participantCount}`}
+                                                            {row.isBoost ? `Won/Total: ${box.selectedCount}/${participantCount}` : `Win/Join: ${getWillWinCount(index, participantCount, Number(cycleInfo?.wisherIndexId))}/${participantCount}`}
                                                         </span>
                                                     </div>
                                                     {row.isBoost && box.wisherList.length === 0 ? (
@@ -217,7 +235,7 @@ export default function FateGifts() {
                                                     ) : (
                                                         box.wisherList.slice(0, showRows).map((item: string, i) => (
                                                             <div key={i} className={index === BOOST_TYLE_STAR ? style.dataRow1 : style.dataRow}>
-                                                                <span style={{minWidth: "47%"}} className={item === userAddress ? (index === BOOST_TYLE_STAR ? style.dataRowYouColor1 : style.dataRowYouColor) : ""}>
+                                                                <span style={{ minWidth: "47%" }} className={item === userAddress ? (index === BOOST_TYLE_STAR ? style.dataRowYouColor1 : style.dataRowYouColor) : ""}>
                                                                     {item === userAddress ? "YOU" : shortenAddress(item)}
                                                                 </span>
                                                                 <span>
