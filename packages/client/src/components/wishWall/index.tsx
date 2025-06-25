@@ -4,7 +4,7 @@ import commonStyles from "../common/common.module.css";
 import { components } from "../../mud/recs";
 import { getComponentValue } from "@latticexyz/recs";
 import { encodeEntity, singletonEntity } from "@latticexyz/store-sync/recs";
-import { WISH_POOL_ID } from "../../utils/contants";
+import { INVALID_ADDRESS, WISH_POOL_ID } from "../../utils/contants";
 import { pad } from "viem";
 import { format } from "date-fns";
 import { propsData } from "../../utils/propsData";
@@ -31,22 +31,26 @@ export default function WishingWall() {
 
   const loadWishes = async () => {
     if (loading || !hasMore) return;
-
     setLoading(true);
     const newWishes: WishInfo[] = [];
 
+    let validCount = 0;
+    let total = 0;
     for (
       let i = noLoadCount.current;
-      i > noLoadCount.current - onceLoadWishesCount && i > 0;
+      i > 0 && validCount < onceLoadWishesCount;
       i--
     ) {
       const wish = fetchOneWish(i);
-      if (wish) {
-        newWishes.push(wish);
-      }
-    }
 
-    noLoadCount.current -= onceLoadWishesCount;
+      if (wish && !INVALID_ADDRESS.includes(wish.wisher)) {
+        newWishes.push(wish);
+        validCount++;
+      }
+      total++;
+    }
+    noLoadCount.current -= total;
+
     if (noLoadCount.current <= 0) {
       setHasMore(false);
     }

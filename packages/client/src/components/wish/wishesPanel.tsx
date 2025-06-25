@@ -4,7 +4,7 @@ import { useComponentValue } from "@latticexyz/react";
 import { components } from "../../mud/recs";
 import { getComponentValue } from "@latticexyz/recs";
 import { encodeEntity, singletonEntity } from "@latticexyz/store-sync/recs";
-import { WISH_POOL_ID } from "../../utils/contants";
+import { INVALID_ADDRESS, WISH_POOL_ID } from "../../utils/contants";
 import { pad } from "viem";
 import { format } from "date-fns";
 
@@ -65,9 +65,21 @@ export default function WishesPanel() {
       }
       lastFetchIndexRef.current = wishCount;
     }
-    const wishInfo = fetchOneWish(lastFetchIndexRef.current);
-    lastFetchIndexRef.current -= 1;
-    return wishInfo;
+    for (let i = 0; i < 100; i++) {
+      const index = lastFetchIndexRef.current;
+      if (index <= 0) break;
+
+      const wishInfo = fetchOneWish(index);
+      lastFetchIndexRef.current -= 1;
+
+      if (wishInfo && !INVALID_ADDRESS.includes(wishInfo.wisher)) {
+        return wishInfo;
+      }
+      if (lastFetchIndexRef.current == 0) {
+        break;
+      }
+    }
+    return;
   }
 
   const fetchOneWish = (wishIndex: number): WishInfo | undefined => {
@@ -83,8 +95,12 @@ export default function WishesPanel() {
       wishContent: wishData.wishContent,
       wishTime: Number(wishData.wishTime)
     }
+    if (wishInfo && !INVALID_ADDRESS.includes(wishInfo.wisher)) {
+      return wishInfo;
+    } else {
+      return undefined
+    }
 
-    return wishInfo;
   }
 
   const wishCountData = useComponentValue(components.WishCount, singletonEntity);
