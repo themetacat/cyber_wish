@@ -26,7 +26,7 @@ contract BoostWisherSystem is System {
     require(wisherCount > 0, "No Wisher");
 
     BoostWisherRecordsData memory boostWisherRecordsData = BoostWisherRecords.get(poolId, boostCycle);
-    uint256 totalBoostAmount = (boostWisherRecordsData.amount * 24) / 100;
+    uint256 totalBoostAmount = (boostWisherRecordsData.amount * 32) / 100;
 
     CycleInfo.setIsboost(poolId, boostCycle, 1, true);
     WisherIndexId.setInUse(cycleInfoData.wisherIndexId, 1, false);
@@ -77,7 +77,7 @@ contract BoostWisherSystem is System {
     require(wisherCount > 0, "No Wisher");
 
     BoostWisherRecordsData memory boostWisherRecordsData = BoostWisherRecords.get(poolId, boostCycle);
-    uint256 boostAmount = (boostWisherRecordsData.amount * 36) / 100;
+    uint256 boostAmount = (boostWisherRecordsData.amount * 48) / 100;
 
     WisherIndexId.setInUse(cycleInfoData.wisherIndexId, 2, false);
     CycleInfo.setIsboost(poolId, boostCycle, 2, true);

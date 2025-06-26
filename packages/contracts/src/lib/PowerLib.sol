@@ -8,7 +8,7 @@ library PowerCalculator {
     if(x == 0) return 0;
 
     UD60x18 base = ud(x);
-    UD60x18 exponent = ud(8e17);
+    UD60x18 exponent = ud(3e17);
 
     UD60x18 result = base.pow(exponent);
 

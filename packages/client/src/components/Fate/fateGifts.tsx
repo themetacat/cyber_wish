@@ -223,7 +223,7 @@ export default function FateGifts() {
                                                             Pool: {
                                                                 cycleInfo?.isboost
                                                                     ? formatEther(box.amount)
-                                                                    : formatEther((row.totalAmount * BigInt(index === 1 ? 24 : 36)) / 100n)
+                                                                    : formatEther((row.totalAmount * BigInt(index === 1 ? 32 : 48)) / 100n)
                                                             } {CURRENCY_SYMBOL}
                                                         </span>
                                                         <span style={{ marginLeft: "2vw" }}>
