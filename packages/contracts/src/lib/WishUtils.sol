@@ -15,7 +15,7 @@ library WishUtils {
   }
 
   function getRandom(uint256 num, uint256 range, address sender) internal view returns (uint256 res) {
-    res = uint256(keccak256(abi.encodePacked(block.timestamp, num, sender, range))) % range;
+    res = uint256(keccak256(abi.encodePacked(block.timestamp, blockhash(block.number - 1), block.prevrandao, num, sender, range))) % range;
   }
 
   function getPoints(
