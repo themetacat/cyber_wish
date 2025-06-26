@@ -65,9 +65,9 @@ library WishPointsLib {
       } else if (randomValue < 30) {
         expansionRatio = 50 + WishUtils.getRandom(num, 51, wisher);
       } else if (randomValue < 65) {
-        expansionRatio = 5 + WishUtils.getRandom(num, 46, wisher);
+        expansionRatio = 30 + WishUtils.getRandom(num, 26, wisher);
       } else {
-        expansionPoints = 5 + WishUtils.getRandom(num, 21, wisher);
+        expansionRatio = 5 + WishUtils.getRandom(num, 21, wisher);
       }
     }
     if (expansionRatio > 0) {
