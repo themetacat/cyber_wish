@@ -6,9 +6,9 @@ import { useEntityQuery } from "@latticexyz/react";
 import { formatInTimeZone } from 'date-fns-tz';
 import commonStyle from "../wishWall/index.module.css";
 import style from './fateGifts.module.css';
-import { getCycleInfo, getTimeStampByCycle, getWisherByIndex, getWisherCycleRecords, getWishPoolInfo } from "../common";
+import { getCycleInfo, getFormattedAmountAndUsd, getTimeStampByCycle, getWisherByIndex, getWisherCycleRecords, getWishPoolInfo } from "../common";
 import { formatEther } from 'viem';
-import { shortenAddress } from "../../utils/common";
+import { getBNBUSDPrice, shortenAddress } from "../../utils/common";
 import Selected from "./selected";
 import { useAccount } from "wagmi";
 import MyFateGifts from "./myFateGifts";
@@ -38,6 +38,7 @@ export default function FateGifts() {
     const boostWisherRecordsData = useEntityQuery([Has(BoostWisherRecords)]);
     const { address: userAddress } = useAccount();
     const [showMyFateGifts, setShowMyFateGifts] = useState(false);
+    const [bnbUsdPrice, setBnbUsdPrice] = useState<number>(0);
 
     const BOOST_TYLE_POINT = 1;
     const BOOST_TYLE_STAR = 2;
@@ -80,6 +81,15 @@ export default function FateGifts() {
             .filter((item): item is TotalPoolData => !!item)
             .sort((a, b) => b.cycle - a.cycle);
     }, [boostWisherRecordsData, BoostWisherRecords]);
+
+    useEffect(() => {
+        const fetchPrice = async () => {
+            const bnb = await getBNBUSDPrice();
+            setBnbUsdPrice(bnb);
+        };
+
+        fetchPrice();
+    }, []);
 
     useEffect(() => {
         // expandedId == null && data.length > 0 && setExpandedId(0);
@@ -209,41 +219,66 @@ export default function FateGifts() {
                                         e.stopPropagation();
                                     }}>
                                         {[boostByPointsInfo, boostByStarInfo].map((box, i) => {
-                                            const index = i + 1
+                                            const index = i + 1;
                                             const cycleInfo = getCycleInfo(row.cycle, index);
                                             const participantCount = Number(cycleInfo?.wisherCount ?? 0);
+                                            const isStar = index === BOOST_TYLE_STAR;
+                                            const boxStyle = isStar ? style.box1 : style.box;
+                                            const headerStyle = isStar ? style.boxSubtitle1 : style.boxSubtitle;
+                                            const noOneSelectedStyle = isStar ? style.noOneSelected1 : style.noOneSelected;
+
+                                            // Pool amount
+                                            const amount = cycleInfo?.isboost
+                                                ? box.amount
+                                                : (row.totalAmount * BigInt(isStar ? 48 : 32)) / 100n;
+
+                                            const { nativeStr: poolAmount, usdStr: poolUsd } = getFormattedAmountAndUsd(amount, bnbUsdPrice);
 
                                             return (
-                                                <div key={index} className={index === BOOST_TYLE_STAR ? style.box1 : style.box}>
+                                                <div key={index} className={boxStyle}>
                                                     <div className={style.boxHeader}>
                                                         <span className={style.boxHeaderTitle}>{box.title}</span>
                                                     </div>
-                                                    <div className={index === BOOST_TYLE_STAR ? style.boxSubtitle1 : style.boxSubtitle}>
+
+                                                    <div className={headerStyle}>
                                                         <span>
-                                                            Pool: {
-                                                                cycleInfo?.isboost
-                                                                    ? formatEther(box.amount)
-                                                                    : formatEther((row.totalAmount * BigInt(index === 1 ? 32 : 48)) / 100n)
-                                                            } {CURRENCY_SYMBOL}
+                                                            Pool: {poolAmount} {CURRENCY_SYMBOL} ({poolUsd})
                                                         </span>
                                                         <span style={{ marginLeft: "2vw" }}>
-                                                            {row.isBoost ? `Won/Total: ${box.selectedCount}/${participantCount}` : `Win/Join: ${getWillWinCount(index, participantCount, Number(cycleInfo?.wisherIndexId))}/${participantCount}`}
+                                                            {row.isBoost
+                                                                ? `Won/Total: ${box.selectedCount}/${participantCount}`
+                                                                : `Win/Join: ${getWillWinCount(index, participantCount, Number(cycleInfo?.wisherIndexId))}/${participantCount}`}
                                                         </span>
                                                     </div>
+
                                                     {row.isBoost && box.wisherList.length === 0 ? (
-                                                        <div className={index === BOOST_TYLE_STAR ? style.noOneSelected1 : style.noOneSelected}>No one was selected!</div>
+                                                        <div className={noOneSelectedStyle}>No one was selected!</div>
                                                     ) : (
-                                                        box.wisherList.slice(0, showRows).map((item: string, i) => (
-                                                            <div key={i} className={index === BOOST_TYLE_STAR ? style.dataRow1 : style.dataRow}>
-                                                                <span style={{ minWidth: "47%" }} className={item === userAddress ? (index === BOOST_TYLE_STAR ? style.dataRowYouColor1 : style.dataRowYouColor) : ""}>
-                                                                    {item === userAddress ? "YOU" : shortenAddress(item)}
-                                                                </span>
-                                                                <span>
-                                                                    {index == 1 ? Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedPointsAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '') : Number(formatEther(getWisherCycleRecords(row.cycle, item)?.boostedStarAmount ?? 0n)).toFixed(6).replace(/\.?0+$/, '')} {CURRENCY_SYMBOL}
-                                                                </span>
-                                                            </div>
-                                                        ))
+                                                        box.wisherList.slice(0, showRows).map((item: string, i) => {
+                                                            const record = getWisherCycleRecords(row.cycle, item);
+                                                            const amount = isStar
+                                                                ? record?.boostedStarAmount ?? 0n
+                                                                : record?.boostedPointsAmount ?? 0n;
+
+                                                            const { nativeStr, usdStr } = getFormattedAmountAndUsd(amount, bnbUsdPrice);
+
+                                                            const isYou = item === userAddress;
+                                                            const rowStyle = isStar ? style.dataRow1 : style.dataRow;
+                                                            const youStyle = isStar ? style.dataRowYouColor1 : style.dataRowYouColor;
+
+                                                            return (
+                                                                <div key={i} className={rowStyle}>
+                                                                    <span style={{ minWidth: "47%" }} className={isYou ? youStyle : ""}>
+                                                                        {isYou ? "YOU" : shortenAddress(item)}
+                                                                    </span>
+                                                                    <span>
+                                                                        {nativeStr} {CURRENCY_SYMBOL} ({usdStr})
+                                                                    </span>
+                                                                </div>
+                                                            );
+                                                        })
                                                     )}
+
                                                     {box.wisherList.length > 0 && box.wisherList.length < showRows &&
                                                         Array(showRows - box.wisherList.length)
                                                             .fill(null)
@@ -251,8 +286,7 @@ export default function FateGifts() {
                                                                 <div key={i} className={style.dataRow}>&nbsp;</div>
                                                             ))}
                                                 </div>
-                                            )
-
+                                            );
                                         })}
                                     </div>
                                 )}

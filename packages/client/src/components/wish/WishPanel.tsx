@@ -13,6 +13,8 @@ import { ErrorToast } from "../common/ErrorToast";
 import { useLocation } from "react-router-dom";
 import { ConnectButton, useConnectModal } from '@rainbow-me/rainbowkit';
 import commonStyles from "../common/common.module.css";
+import { getBNBUSDPrice } from "../../utils/common";
+import { formatUsd } from "../common";
 
 export type Props = {
   readonly wish?: (
@@ -33,6 +35,16 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
   const { openConnectModal } = useConnectModal();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const location = useLocation();
+  const [bnbUsdPrice, setBnbUsdPrice] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchPrice = async () => {
+      const bnb = await getBNBUSDPrice();
+      setBnbUsdPrice(bnb);
+    };
+
+    fetchPrice();
+  }, []);
 
   useEffect(() => {
     if (showModal && textareaRef.current) {
@@ -194,7 +206,7 @@ const WishPanel = ({ wish, setWishStatus }: Props) => {
               />
             </div>
             <p className={styles.totalEth}>
-              Total: {formatEther(totalAmount)} {CURRENCY_SYMBOL}
+              TOTAL: {formatEther(totalAmount)} {CURRENCY_SYMBOL} ({formatUsd(Number(formatEther(totalAmount)), bnbUsdPrice)})
             </p>
             <ConnectButton.Custom>
               {({
@@ -317,6 +329,16 @@ const Carousel = ({ images, onSelectId, type = "incense" }: CarouselProps) => {
   const [currentItemData, setCurrentItemData] = useState<
     IncenseData | BlindBoxData | null
   >(null);
+  const [bnbUsdPrice, setBnbUsdPrice] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchPrice = async () => {
+      const bnb = await getBNBUSDPrice();
+      setBnbUsdPrice(bnb);
+    };
+
+    fetchPrice();
+  }, []);
 
   const goPrev = () => {
     setCurrentIndex((prev) => (prev - 1 + total) % total);
@@ -408,7 +430,7 @@ const Carousel = ({ images, onSelectId, type = "incense" }: CarouselProps) => {
         <div className={carouselStyles.sub}>
           <span className={carouselStyles.price}>
             {currentItemData?.amount
-              ? `${formatEther(currentItemData.amount)} ${CURRENCY_SYMBOL}`
+              ? `${formatEther(currentItemData.amount)} ${CURRENCY_SYMBOL} (${formatUsd(Number(formatEther(currentItemData.amount)), bnbUsdPrice)})`
               : "Free"}
           </span>
           {type === "incense" && (
